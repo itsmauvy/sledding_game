@@ -332,6 +332,21 @@
             transform: rotate(8deg) translateY(16%);
         }
 
+        .video-section .track-band {
+            right: -26vw;
+            bottom: -18vh;
+            left: -26vw;
+            height: clamp(320px, 48vh, 560px);
+            border-radius: 48% 52% 18% 22% / 30% 34% 10% 12%;
+            background:
+                radial-gradient(circle at 14% 22%, rgba(255, 255, 255, 0.95) 0 2px, transparent 3px),
+                radial-gradient(circle at 22% 30%, rgba(255, 255, 255, 0.75) 0 3px, transparent 4px),
+                radial-gradient(circle at 78% 32%, rgba(255, 255, 255, 0.82) 0 2px, transparent 3px),
+                linear-gradient(170deg, transparent 0 30%, rgba(126, 194, 235, 0.15) 31% 39%, transparent 40%),
+                linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, #fbfeff 52%, #edf9ff 100%);
+            transform: rotate(-7.5deg) translateY(20%);
+        }
+
         .track-band::before {
             position: absolute;
             inset: 24% 7% auto;
@@ -553,10 +568,10 @@
         const heroVideo = document.querySelector('.hero-video');
         const scrollFrog = document.querySelector('.scroll-frog');
         const frogRuns = [
-            { section: document.querySelector('.intro-section'), fromRight: true },
-            { section: document.querySelector('.character-section'), fromRight: false },
-            { section: document.querySelector('.media-section'), fromRight: true },
-            { section: document.querySelector('.news-section'), fromRight: false }
+            { section: document.querySelector('.video-section'), fromRight: true },
+            { section: document.querySelector('.intro-section'), fromRight: false },
+            { section: document.querySelector('.character-section'), fromRight: true },
+            { section: document.querySelector('.media-section'), fromRight: false }
         ];
 
         window.setTimeout(() => {
@@ -580,8 +595,9 @@
             let progress = 0;
 
             frogRuns.some((run) => {
-                const start = run.section.offsetTop - window.innerHeight * 0.62;
-                const end = run.section.offsetTop + run.section.offsetHeight * 0.42;
+                const trackY = run.section.offsetTop + run.section.offsetHeight;
+                const start = trackY - window.innerHeight * 0.95;
+                const end = trackY - window.innerHeight * 0.12;
                 const runProgress = (window.scrollY - start) / (end - start);
 
                 if (runProgress >= 0 && runProgress <= 1) {
@@ -603,11 +619,11 @@
             const fadeOut = clamp((1 - progress) / 0.22, 0, 1);
             const visible = fadeIn * fadeOut;
             const wave = Math.sin(eased * Math.PI);
-            const xStart = activeRun.fromRight ? 94 : 6;
-            const xEnd = activeRun.fromRight ? 61 : 39;
+            const xStart = activeRun.fromRight ? 112 : -12;
+            const xEnd = activeRun.fromRight ? -12 : 112;
             const x = xStart + (xEnd - xStart) * eased;
-            const y = 37 + eased * 37 + wave * 2.5;
-            const rotate = activeRun.fromRight ? -16 + eased * 8 : 16 - eased * 8;
+            const y = 35 + eased * 35 + wave * 2.5;
+            const rotate = activeRun.fromRight ? 12 + eased * 5 : -12 - eased * 5;
 
             scrollFrog.style.setProperty('--frog-opacity', visible);
             scrollFrog.style.setProperty('--frog-x', `${x.toFixed(2)}vw`);
