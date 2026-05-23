@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sledding Game</title>
+    <title>썰매 게임</title>
     <style>
         @font-face {
             font-family: 'OngleipParkDahyeon';
@@ -12,19 +12,47 @@
             font-display: swap;
         }
 
+        :root {
+            --ink: #113143;
+            --green: #2f4732;
+            --snow: #f8fdff;
+            --ice: #dff4ff;
+            --track: #b8e2fb;
+        }
+
         * {
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            display: grid;
             min-height: 100vh;
             min-height: 100dvh;
             margin: 0;
+            overflow-x: hidden;
+            background: #fff;
+            color: var(--ink);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .loader-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 30;
+            display: grid;
             place-items: center;
             background: #000;
             color: #fff;
-            font-family: Arial, Helvetica, sans-serif;
+            transition: opacity 0.45s ease, visibility 0.45s ease;
+        }
+
+        body.is-ready .loader-screen {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
         }
 
         .loader {
@@ -39,8 +67,8 @@
         }
 
         .loading {
-            font-size: clamp(28px, 7vw, 68px);
             font-family: 'OngleipParkDahyeon', "Comic Sans MS", cursive;
+            font-size: clamp(28px, 7vw, 68px);
             font-weight: normal;
             letter-spacing: 0;
         }
@@ -63,6 +91,275 @@
             animation-delay: 0.3s;
         }
 
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 20;
+            display: grid;
+            width: 100%;
+            min-height: 64px;
+            grid-template-columns: 158px 1fr 150px;
+            align-items: start;
+            gap: 24px;
+            padding: 10px 24px 0;
+            color: #fff;
+            mix-blend-mode: normal;
+            filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.32));
+        }
+
+        .header-logo {
+            width: 126px;
+            height: auto;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(24px, 7vw, 90px);
+            font-family: 'OngleipParkDahyeon', "Comic Sans MS", cursive;
+            font-size: clamp(20px, 1.8vw, 28px);
+            font-weight: 800;
+        }
+
+        .nav a {
+            position: relative;
+            display: inline-flex;
+            min-height: 36px;
+            align-items: center;
+            color: inherit;
+            text-decoration: none;
+            text-shadow: 0 3px 8px rgba(0, 0, 0, 0.48);
+            transition: color 0.18s ease, transform 0.18s ease;
+        }
+
+        .nav a::after {
+            position: absolute;
+            top: 32px;
+            left: 50%;
+            width: 34px;
+            height: 34px;
+            content: "";
+            background: url("images/frog1.png") center / contain no-repeat;
+            opacity: 0;
+            transform: translate(-50%, -8px) scale(0.7) rotate(-7deg);
+            transition: opacity 0.18s ease, transform 0.18s ease;
+            pointer-events: none;
+        }
+
+        .nav a:hover,
+        .nav a:focus-visible {
+            color: #dffaff;
+            outline: 0;
+            transform: translateY(-2px);
+        }
+
+        .nav a:hover::after,
+        .nav a:focus-visible::after {
+            opacity: 1;
+            transform: translate(-50%, 0) scale(1) rotate(-7deg);
+        }
+
+        .play-link,
+        .cta {
+            position: relative;
+            border: 3px solid #203723;
+            border-radius: 14px;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.24) 0 24%, transparent 25%),
+                linear-gradient(135deg, #3f6845 0%, #2f4732 56%, #193024 100%);
+            color: #f8fdff;
+            font-family: 'OngleipParkDahyeon', "Comic Sans MS", cursive;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #14291e, 0 14px 24px rgba(23, 48, 68, 0.24);
+            text-shadow: 0 2px 0 rgba(0, 0, 0, 0.24);
+            transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
+        }
+
+        .play-link {
+            justify-self: end;
+            min-height: 42px;
+            padding: 7px 22px 9px;
+            font-size: 23px;
+        }
+
+        .play-link:hover,
+        .play-link:focus-visible,
+        .cta:hover,
+        .cta:focus-visible {
+            outline: 0;
+            filter: saturate(1.08);
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 #14291e, 0 8px 12px rgba(23, 48, 68, 0.18);
+        }
+
+        .page-section {
+            position: relative;
+            display: grid;
+            min-height: 68vh;
+            place-items: center;
+            padding: 92px 24px 140px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .section-title {
+            position: relative;
+            z-index: 4;
+            margin: 0;
+            font-family: 'OngleipParkDahyeon', "Comic Sans MS", cursive;
+            font-size: clamp(52px, 8vw, 104px);
+            font-weight: normal;
+            letter-spacing: 0;
+            text-align: center;
+        }
+
+        .video-section {
+            min-height: 100vh;
+            min-height: 100dvh;
+            align-content: start;
+            gap: 0;
+        }
+
+        .video-section .section-title {
+            display: none;
+        }
+
+        .trailer-wrap {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            aspect-ratio: auto;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.45s ease, transform 0.45s ease;
+        }
+
+        body.has-video .trailer-wrap {
+            opacity: 1;
+        }
+
+        .hero-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            filter: brightness(0.72) saturate(0.96) contrast(1.05);
+        }
+
+        .video-poster {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, #fff, #eefaff);
+            transition: opacity 0.35s ease;
+            pointer-events: none;
+        }
+
+        body.has-video .video-poster {
+            opacity: 0;
+        }
+
+        .track-band {
+            position: absolute;
+            right: -16vw;
+            bottom: -8vh;
+            left: -16vw;
+            z-index: 3;
+            height: clamp(190px, 31vh, 360px);
+            overflow: hidden;
+            border-radius: 52% 48% 0 0 / 28% 30% 0 0;
+            background:
+                radial-gradient(circle at 18% 26%, rgba(255, 255, 255, 0.9) 0 2px, transparent 3px),
+                radial-gradient(circle at 84% 34%, rgba(255, 255, 255, 0.76) 0 2px, transparent 3px),
+                linear-gradient(170deg, transparent 0 36%, rgba(126, 194, 235, 0.16) 37% 45%, transparent 46%),
+                linear-gradient(180deg, #ffffff 0%, #f8fdff 58%, #dff4ff 100%);
+            box-shadow:
+                inset 0 12px 0 rgba(255, 255, 255, 0.86),
+                inset 0 -26px 38px rgba(134, 203, 238, 0.18),
+                0 -12px 34px rgba(129, 198, 234, 0.2);
+            transform: rotate(-6.5deg);
+        }
+
+        .track-band.reverse {
+            transform: rotate(6.5deg);
+        }
+
+        .track-band::before {
+            position: absolute;
+            inset: 32% 9% auto;
+            height: 9px;
+            content: "";
+            border-radius: 999px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent);
+            box-shadow: 0 28px 0 rgba(255, 255, 255, 0.46);
+        }
+
+        .track-band::after {
+            position: absolute;
+            left: 8%;
+            bottom: 34%;
+            width: 86%;
+            height: 32px;
+            content: "";
+            border-radius: 999px;
+            background:
+                radial-gradient(ellipse at 8% 60%, rgba(95, 151, 160, 0.42) 0 6px, transparent 7px),
+                radial-gradient(ellipse at 9.5% 42%, rgba(95, 151, 160, 0.36) 0 5px, transparent 6px),
+                radial-gradient(ellipse at 78% 54%, rgba(95, 151, 160, 0.38) 0 6px, transparent 7px),
+                linear-gradient(90deg, transparent, rgba(99, 176, 228, 0.24), transparent);
+            filter: blur(0.3px);
+        }
+
+        .scroll-frog {
+            position: fixed;
+            z-index: 5;
+            left: var(--frog-x, 14vw);
+            top: var(--frog-y, 58vh);
+            width: clamp(128px, 19vw, 230px);
+            height: auto;
+            opacity: var(--frog-opacity, 0);
+            filter: drop-shadow(0 16px 16px rgba(63, 128, 164, 0.18));
+            transform: translate(-50%, -50%) rotate(var(--frog-rotate, -10deg));
+            transition: opacity 0.18s ease, filter 0.18s ease;
+            pointer-events: none;
+        }
+
+        .intro-section,
+        .character-section {
+            min-height: 66vh;
+        }
+
+        .intro-copy {
+            position: relative;
+            z-index: 4;
+            width: min(620px, 90vw);
+            margin: 18px auto 0;
+            color: rgba(17, 49, 67, 0.78);
+            font-size: clamp(16px, 2vw, 22px);
+            font-weight: 800;
+            line-height: 1.55;
+            text-align: center;
+        }
+
+        .cta {
+            z-index: 4;
+            min-width: min(70vw, 260px);
+            min-height: 66px;
+            margin-top: 28px;
+            padding: 13px 38px 16px;
+            font-size: clamp(25px, 4vw, 38px);
+            border-width: 4px;
+            border-color: #dffaff;
+            box-shadow: 0 9px 0 #14291e, 0 20px 30px rgba(23, 48, 68, 0.24);
+        }
+
+        .cta::before {
+            content: none;
+        }
+
         @keyframes dot-bounce {
             0%,
             80%,
@@ -76,12 +373,135 @@
                 transform: translateY(-0.18em);
             }
         }
+
+        @media (max-width: 760px) {
+            .site-header {
+                min-height: 62px;
+                grid-template-columns: 96px 1fr;
+                gap: 10px;
+                padding: 10px 12px 0;
+            }
+
+            .header-logo {
+                width: 88px;
+            }
+
+            .nav {
+                justify-content: end;
+                gap: 14px;
+                font-size: 18px;
+            }
+
+            .nav a:nth-child(3),
+            .nav a:nth-child(4),
+            .play-link {
+                display: none;
+            }
+
+            .page-section {
+                min-height: 72vh;
+                padding-top: 84px;
+            }
+
+            .trailer-wrap {
+                width: min(94vw, 560px);
+            }
+
+            .scroll-frog {
+                width: clamp(118px, 42vw, 190px);
+            }
+        }
     </style>
 </head>
 <body>
-    <main class="loader" aria-label="게임 로딩 중">
-        <img class="loading-gif" src="images/loadinggif.gif" alt="">
-        <div class="loading">loading<span class="dots"><span>.</span><span>.</span><span>.</span></span></div>
+    <main class="loader-screen" aria-label="게임 로딩 중">
+        <div class="loader">
+            <img class="loading-gif" src="images/loadinggif.gif" alt="">
+            <div class="loading">loading<span class="dots"><span>.</span><span>.</span><span>.</span></span></div>
+        </div>
     </main>
+
+    <header class="site-header">
+        <img class="header-logo" src="images/logo_whitestroke.png" alt="썰매 게임">
+        <nav class="nav" aria-label="주요 메뉴">
+            <a href="#intro">게임 소개</a>
+            <a href="#characters">캐릭터</a>
+            <a href="#media">미디어</a>
+            <a href="#news">뉴스</a>
+        </nav>
+        <button class="play-link" type="button">플레이 하기</button>
+    </header>
+
+    <section class="page-section video-section" id="media">
+        <div class="trailer-wrap">
+            <video class="hero-video" autoplay muted loop playsinline>
+                <source src="Sledding Game - Official Early Access Release Date Trailer _ The Triple-i Initiative Showcase 2026.mp4" type="video/mp4">
+            </video>
+            <div class="video-poster" aria-hidden="true"></div>
+        </div>
+        <div class="track-band" aria-hidden="true"></div>
+    </section>
+
+    <section class="page-section intro-section" id="intro">
+        <div>
+            <h2 class="section-title">게임 소개</h2>
+            <p class="intro-copy">작은 개구리와 함께 눈길을 질주하고, 장애물을 피하며 결승선까지 미끄러져 내려가세요.</p>
+            <button class="cta" type="button">플레이 하기</button>
+        </div>
+        <div class="track-band reverse" aria-hidden="true"></div>
+    </section>
+
+    <section class="page-section character-section" id="characters">
+        <h2 class="section-title">캐릭터</h2>
+        <div class="track-band" aria-hidden="true"></div>
+    </section>
+
+    <section class="page-section news-section" id="news">
+        <h2 class="section-title">뉴스</h2>
+    </section>
+
+    <img class="scroll-frog" src="images/frog3.png" alt="">
+
+    <script>
+        const body = document.body;
+        const heroVideo = document.querySelector('.hero-video');
+        const scrollFrog = document.querySelector('.scroll-frog');
+        const introSection = document.querySelector('.intro-section');
+        const characterSection = document.querySelector('.character-section');
+
+        window.setTimeout(() => {
+            body.classList.add('is-ready');
+        }, 1500);
+
+        heroVideo.addEventListener('canplay', () => {
+            body.classList.add('has-video');
+        });
+
+        function clamp(value, min, max) {
+            return Math.min(Math.max(value, min), max);
+        }
+
+        function updateScrollFrog() {
+            const introTop = introSection.offsetTop;
+            const characterBottom = characterSection.offsetTop + characterSection.offsetHeight;
+            const start = introTop - window.innerHeight * 0.48;
+            const end = characterBottom - window.innerHeight * 0.42;
+            const progress = clamp((window.scrollY - start) / (end - start), 0, 1);
+            const visible = window.scrollY >= start && window.scrollY <= end ? 1 : 0;
+            const wave = Math.sin(progress * Math.PI * 2);
+            const x = 7 + progress * 80;
+            const y = 59 + progress * 22 + wave * 3;
+            const rotate = -13 + progress * 24;
+
+            scrollFrog.style.setProperty('--frog-opacity', visible);
+            scrollFrog.style.setProperty('--frog-x', `${x.toFixed(2)}vw`);
+            scrollFrog.style.setProperty('--frog-y', `${y.toFixed(2)}vh`);
+            scrollFrog.style.setProperty('--frog-rotate', `${rotate.toFixed(2)}deg`);
+        }
+
+        updateScrollFrog();
+        window.addEventListener('scroll', updateScrollFrog, { passive: true });
+        window.addEventListener('resize', updateScrollFrog);
+    </script>
 </body>
 </html>
