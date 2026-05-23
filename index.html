@@ -179,9 +179,37 @@
 
         .play-link {
             justify-self: end;
-            min-height: 42px;
-            padding: 7px 22px 9px;
+            min-width: 190px;
+            min-height: 44px;
+            padding: 7px 62px 9px 28px;
             font-size: 23px;
+            line-height: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            border-color: #2f4732;
+            border-radius: 999px;
+            background:
+                radial-gradient(circle at 82% 42%, rgba(223, 250, 255, 0.88) 0 12px, transparent 13px),
+                linear-gradient(180deg, #ffffff 0%, #f8fdff 48%, #dff4ff 100%);
+            color: #203723;
+            box-shadow:
+                inset 0 3px 0 rgba(255, 255, 255, 0.95),
+                0 5px 0 #9fd2eb,
+                0 12px 20px rgba(55, 127, 165, 0.2);
+            text-shadow: none;
+        }
+
+        .play-link::before {
+            position: absolute;
+            right: 18px;
+            bottom: -3px;
+            width: 34px;
+            height: 34px;
+            content: "";
+            background: url("images/frog1.png") center / contain no-repeat;
+            transform: rotate(-8deg);
+            transition: transform 0.18s ease;
+            pointer-events: none;
         }
 
         .play-link:hover,
@@ -192,6 +220,21 @@
             filter: saturate(1.08);
             transform: translateY(3px);
             box-shadow: 0 3px 0 #14291e, 0 8px 12px rgba(23, 48, 68, 0.18);
+        }
+
+        .play-link:hover,
+        .play-link:focus-visible {
+            color: #203723;
+            filter: none;
+            box-shadow:
+                inset 0 3px 0 rgba(255, 255, 255, 0.95),
+                0 2px 0 #9fd2eb,
+                0 7px 12px rgba(55, 127, 165, 0.18);
+        }
+
+        .play-link:hover::before,
+        .play-link:focus-visible::before {
+            transform: translateY(-3px) rotate(5deg);
         }
 
         .page-section {
@@ -264,52 +307,55 @@
 
         .track-band {
             position: absolute;
-            right: -16vw;
-            bottom: -8vh;
-            left: -16vw;
+            right: -22vw;
+            bottom: -3vh;
+            left: -22vw;
             z-index: 3;
-            height: clamp(190px, 31vh, 360px);
+            height: clamp(150px, 23vh, 270px);
             overflow: hidden;
-            border-radius: 52% 48% 0 0 / 28% 30% 0 0;
+            border-radius: 48% 52% 42% 58% / 38% 42% 30% 32%;
             background:
-                radial-gradient(circle at 18% 26%, rgba(255, 255, 255, 0.9) 0 2px, transparent 3px),
-                radial-gradient(circle at 84% 34%, rgba(255, 255, 255, 0.76) 0 2px, transparent 3px),
-                linear-gradient(170deg, transparent 0 36%, rgba(126, 194, 235, 0.16) 37% 45%, transparent 46%),
-                linear-gradient(180deg, #ffffff 0%, #f8fdff 58%, #dff4ff 100%);
+                radial-gradient(circle at 14% 30%, rgba(255, 255, 255, 0.95) 0 2px, transparent 3px),
+                radial-gradient(circle at 22% 36%, rgba(255, 255, 255, 0.75) 0 3px, transparent 4px),
+                radial-gradient(circle at 80% 38%, rgba(255, 255, 255, 0.82) 0 2px, transparent 3px),
+                linear-gradient(170deg, transparent 0 38%, rgba(126, 194, 235, 0.18) 39% 47%, transparent 48%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, #f9fdff 56%, #dff4ff 100%);
             box-shadow:
-                inset 0 12px 0 rgba(255, 255, 255, 0.86),
-                inset 0 -26px 38px rgba(134, 203, 238, 0.18),
-                0 -12px 34px rgba(129, 198, 234, 0.2);
-            transform: rotate(-6.5deg);
+                inset 0 10px 0 rgba(255, 255, 255, 0.9),
+                inset 0 -24px 36px rgba(134, 203, 238, 0.16),
+                0 -10px 30px rgba(129, 198, 234, 0.16);
+            transform: rotate(-8deg) translateY(16%);
+            transform-origin: 50% 50%;
         }
 
         .track-band.reverse {
-            transform: rotate(6.5deg);
+            transform: rotate(8deg) translateY(16%);
         }
 
         .track-band::before {
             position: absolute;
-            inset: 32% 9% auto;
-            height: 9px;
+            inset: 24% 7% auto;
+            height: 11px;
             content: "";
             border-radius: 999px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent);
-            box-shadow: 0 28px 0 rgba(255, 255, 255, 0.46);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95), transparent);
+            box-shadow: 0 25px 0 rgba(255, 255, 255, 0.42), 0 48px 0 rgba(209, 238, 255, 0.3);
+            transform: rotate(-2deg);
         }
 
         .track-band::after {
             position: absolute;
-            left: 8%;
-            bottom: 34%;
-            width: 86%;
-            height: 32px;
+            left: 7%;
+            bottom: 28%;
+            width: 88%;
+            height: 42px;
             content: "";
             border-radius: 999px;
             background:
-                radial-gradient(ellipse at 8% 60%, rgba(95, 151, 160, 0.42) 0 6px, transparent 7px),
-                radial-gradient(ellipse at 9.5% 42%, rgba(95, 151, 160, 0.36) 0 5px, transparent 6px),
-                radial-gradient(ellipse at 78% 54%, rgba(95, 151, 160, 0.38) 0 6px, transparent 7px),
-                linear-gradient(90deg, transparent, rgba(99, 176, 228, 0.24), transparent);
+                radial-gradient(ellipse at 7% 60%, rgba(95, 151, 160, 0.28) 0 5px, transparent 6px),
+                radial-gradient(ellipse at 9% 42%, rgba(95, 151, 160, 0.2) 0 4px, transparent 5px),
+                radial-gradient(ellipse at 78% 54%, rgba(95, 151, 160, 0.22) 0 5px, transparent 6px),
+                linear-gradient(90deg, transparent, rgba(99, 176, 228, 0.18), transparent);
             filter: blur(0.3px);
         }
 
@@ -328,7 +374,8 @@
         }
 
         .intro-section,
-        .character-section {
+        .character-section,
+        .media-section {
             min-height: 66vh;
         }
 
@@ -346,18 +393,52 @@
 
         .cta {
             z-index: 4;
-            min-width: min(70vw, 260px);
-            min-height: 66px;
+            min-width: min(76vw, 300px);
+            min-height: 70px;
             margin-top: 28px;
-            padding: 13px 38px 16px;
+            padding: 12px 76px 15px 38px;
             font-size: clamp(25px, 4vw, 38px);
-            border-width: 4px;
-            border-color: #dffaff;
-            box-shadow: 0 9px 0 #14291e, 0 20px 30px rgba(23, 48, 68, 0.24);
+            overflow: hidden;
+            border: 4px solid #2f4732;
+            border-radius: 999px;
+            background:
+                radial-gradient(circle at 82% 42%, rgba(223, 250, 255, 0.9) 0 18px, transparent 19px),
+                linear-gradient(180deg, #ffffff 0%, #f8fdff 48%, #dff4ff 100%);
+            color: #203723;
+            box-shadow:
+                inset 0 4px 0 rgba(255, 255, 255, 0.95),
+                0 8px 0 #9fd2eb,
+                0 18px 30px rgba(55, 127, 165, 0.22);
+            text-shadow: none;
         }
 
         .cta::before {
-            content: none;
+            position: absolute;
+            right: 18px;
+            bottom: -4px;
+            width: 58px;
+            height: 58px;
+            content: "";
+            background: url("images/frog1.png") center / contain no-repeat;
+            transform: rotate(-8deg);
+            transition: transform 0.18s ease;
+            pointer-events: none;
+        }
+
+        .cta:hover,
+        .cta:focus-visible {
+            color: #203723;
+            filter: none;
+            transform: translateY(4px);
+            box-shadow:
+                inset 0 4px 0 rgba(255, 255, 255, 0.95),
+                0 4px 0 #9fd2eb,
+                0 10px 18px rgba(55, 127, 165, 0.2);
+        }
+
+        .cta:hover::before,
+        .cta:focus-visible::before {
+            transform: translateY(-4px) rotate(5deg);
         }
 
         @keyframes dot-bounce {
@@ -432,7 +513,7 @@
         <button class="play-link" type="button">플레이 하기</button>
     </header>
 
-    <section class="page-section video-section" id="media">
+    <section class="page-section video-section" id="trailer">
         <div class="trailer-wrap">
             <video class="hero-video" autoplay muted loop playsinline>
                 <source src="Sledding Game - Official Early Access Release Date Trailer _ The Triple-i Initiative Showcase 2026.mp4" type="video/mp4">
@@ -456,6 +537,11 @@
         <div class="track-band" aria-hidden="true"></div>
     </section>
 
+    <section class="page-section media-section" id="media">
+        <h2 class="section-title">미디어</h2>
+        <div class="track-band reverse" aria-hidden="true"></div>
+    </section>
+
     <section class="page-section news-section" id="news">
         <h2 class="section-title">뉴스</h2>
     </section>
@@ -466,8 +552,12 @@
         const body = document.body;
         const heroVideo = document.querySelector('.hero-video');
         const scrollFrog = document.querySelector('.scroll-frog');
-        const introSection = document.querySelector('.intro-section');
-        const characterSection = document.querySelector('.character-section');
+        const frogRuns = [
+            { section: document.querySelector('.intro-section'), fromRight: true },
+            { section: document.querySelector('.character-section'), fromRight: false },
+            { section: document.querySelector('.media-section'), fromRight: true },
+            { section: document.querySelector('.news-section'), fromRight: false }
+        ];
 
         window.setTimeout(() => {
             body.classList.add('is-ready');
@@ -481,17 +571,43 @@
             return Math.min(Math.max(value, min), max);
         }
 
+        function smoothstep(value) {
+            return value * value * (3 - 2 * value);
+        }
+
         function updateScrollFrog() {
-            const introTop = introSection.offsetTop;
-            const characterBottom = characterSection.offsetTop + characterSection.offsetHeight;
-            const start = introTop - window.innerHeight * 0.48;
-            const end = characterBottom - window.innerHeight * 0.42;
-            const progress = clamp((window.scrollY - start) / (end - start), 0, 1);
-            const visible = window.scrollY >= start && window.scrollY <= end ? 1 : 0;
-            const wave = Math.sin(progress * Math.PI * 2);
-            const x = 7 + progress * 80;
-            const y = 59 + progress * 22 + wave * 3;
-            const rotate = -13 + progress * 24;
+            let activeRun = null;
+            let progress = 0;
+
+            frogRuns.some((run) => {
+                const start = run.section.offsetTop - window.innerHeight * 0.62;
+                const end = run.section.offsetTop + run.section.offsetHeight * 0.42;
+                const runProgress = (window.scrollY - start) / (end - start);
+
+                if (runProgress >= 0 && runProgress <= 1) {
+                    activeRun = run;
+                    progress = clamp(runProgress, 0, 1);
+                    return true;
+                }
+
+                return false;
+            });
+
+            if (!activeRun) {
+                scrollFrog.style.setProperty('--frog-opacity', 0);
+                return;
+            }
+
+            const eased = smoothstep(progress);
+            const fadeIn = clamp(progress / 0.18, 0, 1);
+            const fadeOut = clamp((1 - progress) / 0.22, 0, 1);
+            const visible = fadeIn * fadeOut;
+            const wave = Math.sin(eased * Math.PI);
+            const xStart = activeRun.fromRight ? 94 : 6;
+            const xEnd = activeRun.fromRight ? 61 : 39;
+            const x = xStart + (xEnd - xStart) * eased;
+            const y = 37 + eased * 37 + wave * 2.5;
+            const rotate = activeRun.fromRight ? -16 + eased * 8 : 16 - eased * 8;
 
             scrollFrog.style.setProperty('--frog-opacity', visible);
             scrollFrog.style.setProperty('--frog-x', `${x.toFixed(2)}vw`);
