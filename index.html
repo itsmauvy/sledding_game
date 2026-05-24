@@ -638,7 +638,7 @@
         }
 
         .intro-section {
-            z-index: 2;
+            z-index: auto;
             min-height: 86vh;
             margin-top: -1px;
             padding: clamp(150px, 17vh, 210px) 24px 132px;
@@ -856,6 +856,335 @@
             text-align: left;
         }
 
+        .character-section {
+            align-content: center;
+            min-height: 100vh;
+            padding: 110px 24px 230px;
+            background:
+                radial-gradient(circle at 16% 24%, rgba(255, 255, 255, 0.2) 0 3px, transparent 4px),
+                radial-gradient(circle at 78% 18%, rgba(255, 255, 255, 0.18) 0 4px, transparent 5px),
+                radial-gradient(circle at 58% 74%, rgba(255, 255, 255, 0.14) 0 6px, transparent 7px),
+                linear-gradient(180deg, #8edcff 0%, #b8e2fb 44%, #f8fdff 100%);
+        }
+
+        .character-layout {
+            position: relative;
+            z-index: 5;
+            display: grid;
+            width: min(1500px, 88vw);
+            grid-template-columns: minmax(420px, 0.95fr) minmax(360px, 0.78fr);
+            align-items: center;
+            gap: clamp(42px, 7vw, 110px);
+        }
+
+        .character-stage {
+            position: relative;
+            display: grid;
+            min-height: clamp(440px, 55vh, 680px);
+            place-items: center;
+            order: 2;
+            overflow: visible;
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .character-stage::before {
+            position: absolute;
+            right: -12%;
+            bottom: 3%;
+            left: 8%;
+            height: 18%;
+            content: "";
+            border-radius: 50%;
+            background: rgba(55, 127, 165, 0.16);
+            filter: blur(3px);
+        }
+
+        .character-preview {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            justify-items: center;
+            width: min(560px, 92%);
+        }
+
+        .character-preview .character-face {
+            width: clamp(280px, 31vw, 500px);
+            height: clamp(280px, 31vw, 500px);
+            border-width: 10px;
+            box-shadow:
+                inset 0 12px 0 rgba(255, 255, 255, 0.38),
+                0 28px 30px rgba(22, 70, 96, 0.18);
+        }
+
+        .character-name {
+            margin: 0;
+            color: #113143;
+            font-family: 'OngleipParkDahyeon', "Comic Sans MS", cursive;
+            font-size: clamp(86px, 12vw, 190px);
+            font-weight: normal;
+            line-height: 0.82;
+            text-align: left;
+            text-transform: uppercase;
+            text-shadow: 0 5px 0 rgba(255, 255, 255, 0.58);
+        }
+
+        .character-tag {
+            margin: 26px 0 0;
+            color: rgba(17, 49, 67, 0.78);
+            font-size: clamp(18px, 2vw, 30px);
+            font-weight: 900;
+            text-align: left;
+            text-transform: uppercase;
+        }
+
+        .character-roster {
+            position: relative;
+            display: grid;
+            justify-items: start;
+            order: 1;
+        }
+
+        .character-roster .section-title {
+            display: none;
+        }
+
+        .character-copy {
+            width: min(620px, 100%);
+            margin: 22px 0 0;
+            color: rgba(17, 49, 67, 0.78);
+            font-size: clamp(18px, 2vw, 30px);
+            font-weight: 900;
+            line-height: 1.35;
+        }
+
+        .character-section .track-band {
+            display: none;
+        }
+
+        .character-carousel {
+            position: absolute;
+            bottom: 34px;
+            left: 50%;
+            z-index: 7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(12px, 2vw, 24px);
+            transform: translateX(-50%);
+        }
+
+        .character-grid {
+            display: flex;
+            width: min(610px, 68vw);
+            align-items: center;
+            justify-content: center;
+            gap: clamp(14px, 2vw, 28px);
+            overflow: hidden;
+        }
+
+        .character-carousel-button {
+            position: relative;
+            display: grid;
+            flex: 0 0 auto;
+            width: 52px;
+            height: 52px;
+            place-items: center;
+            border: 4px solid #f8fdff;
+            border-radius: 999px;
+            background: rgba(47, 71, 50, 0.76);
+            color: #f8fdff;
+            cursor: pointer;
+            box-shadow: 0 5px 0 rgba(159, 210, 235, 0.86), 0 12px 16px rgba(55, 127, 165, 0.16);
+            transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+        }
+
+        .character-carousel-button::before {
+            width: 14px;
+            height: 14px;
+            content: "";
+            border-top: 5px solid currentColor;
+            border-right: 5px solid currentColor;
+        }
+
+        .character-carousel-button.prev::before {
+            transform: translateX(3px) rotate(-135deg);
+        }
+
+        .character-carousel-button.next::before {
+            transform: translateX(-3px) rotate(45deg);
+        }
+
+        .character-carousel-button:hover,
+        .character-carousel-button:focus-visible {
+            outline: 0;
+            background: #2f4732;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 0 rgba(159, 210, 235, 0.86), 0 18px 20px rgba(55, 127, 165, 0.18);
+        }
+
+        .character-tile.is-window-hidden {
+            display: none;
+        }
+
+        .character-tile {
+            display: grid;
+            flex: 0 0 clamp(72px, 7vw, 112px);
+            width: clamp(72px, 7vw, 112px);
+            height: clamp(72px, 7vw, 112px);
+            place-items: center;
+            padding: 7px;
+            border: 4px solid #f8fdff;
+            border-radius: 18px;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(223, 244, 255, 0.76)),
+                #2fb2ee;
+            cursor: pointer;
+            box-shadow: 0 6px 0 rgba(159, 210, 235, 0.86), 0 14px 18px rgba(55, 127, 165, 0.15);
+            transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
+        }
+
+        .character-tile:hover,
+        .character-tile:focus-visible,
+        .character-tile.is-selected {
+            outline: 0;
+            filter: saturate(1.1);
+            transform: translateY(-6px);
+            box-shadow: 0 10px 0 rgba(159, 210, 235, 0.86), 0 22px 24px rgba(55, 127, 165, 0.18);
+        }
+
+        .character-tile.is-selected {
+            border-color: #f6d744;
+            background:
+                linear-gradient(180deg, #fff6a6, #ffe95b);
+            box-shadow: 0 10px 0 #e2bb25, 0 22px 26px rgba(128, 103, 12, 0.18);
+        }
+
+        .character-face {
+            position: relative;
+            display: block;
+            width: 100%;
+            height: 100%;
+            border: 4px solid rgba(17, 49, 67, 0.16);
+            border-radius: 42% 42% 48% 48%;
+            background: var(--face, #8fc45f);
+        }
+
+        .character-face::before,
+        .character-face::after {
+            position: absolute;
+            top: 30%;
+            width: 13%;
+            height: 13%;
+            content: "";
+            border-radius: 50%;
+            background: #102f27;
+            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.28);
+        }
+
+        .character-face::before {
+            left: 26%;
+        }
+
+        .character-face::after {
+            right: 26%;
+        }
+
+        .character-face span {
+            position: absolute;
+            right: 24%;
+            bottom: 24%;
+            left: 24%;
+            height: 28%;
+            border-radius: 50%;
+            background: var(--belly, rgba(255, 244, 154, 0.88));
+        }
+
+        .character-face span::after {
+            position: absolute;
+            top: -28%;
+            left: 50%;
+            width: 36%;
+            height: 10%;
+            content: "";
+            border-radius: 999px;
+            background: rgba(17, 49, 67, 0.72);
+            transform: translateX(-50%) rotate(5deg);
+        }
+
+        .character-face.frog {
+            --face: #8fc45f;
+            --belly: #eef099;
+        }
+
+        .character-face.penguin {
+            --face: #1e3642;
+            --belly: #f7fbff;
+            border-radius: 50% 50% 46% 46%;
+        }
+
+        .character-face.seal {
+            --face: #b9b8ae;
+            --belly: #dbd8cf;
+        }
+
+        .character-face.otter {
+            --face: #77563b;
+            --belly: #b88a55;
+        }
+
+        .character-face.bear {
+            --face: #f5fbff;
+            --belly: #f9fdff;
+        }
+
+        .character-face.blackbear {
+            --face: #1f2d32;
+            --belly: #31464c;
+        }
+
+        .character-face.orange {
+            --face: #ef7f2d;
+            --belly: #ffc46d;
+        }
+
+        .character-face.lime {
+            --face: #9ad95d;
+            --belly: #dff589;
+        }
+
+        .character-face.duck {
+            --face: #e6a532;
+            --belly: #ffd66e;
+        }
+
+        .character-face.dog {
+            --face: #8c6a2e;
+            --belly: #c49a50;
+        }
+
+        .character-face.fox {
+            --face: #ef8f32;
+            --belly: #fff4df;
+        }
+
+        .character-face.rabbit {
+            --face: #dceaf0;
+            --belly: #f7fbff;
+        }
+
+        .character-face.panda {
+            --face: #f8fbff;
+            --belly: #f8fbff;
+        }
+
+        .character-face.yellow {
+            --face: #f7d84d;
+            --belly: #ffe987;
+        }
+
         .cta {
             z-index: 4;
             min-width: min(76vw, 300px);
@@ -1056,6 +1385,72 @@
                 text-align: center;
             }
 
+            .character-section {
+                padding: 96px 16px 150px;
+            }
+
+            .character-layout {
+                grid-template-columns: 1fr;
+                width: min(560px, 92vw);
+                gap: 18px;
+            }
+
+            .character-stage {
+                min-height: 280px;
+                order: 2;
+            }
+
+            .character-preview .character-face {
+                width: clamp(190px, 58vw, 300px);
+                height: clamp(190px, 58vw, 300px);
+            }
+
+            .character-roster {
+                justify-items: center;
+                order: 1;
+                text-align: center;
+            }
+
+            .character-name {
+                font-size: clamp(70px, 22vw, 118px);
+                text-align: center;
+            }
+
+            .character-tag,
+            .character-copy {
+                text-align: center;
+            }
+
+            .character-grid {
+                width: min(276px, 58vw);
+                gap: 12px;
+            }
+
+            .character-carousel {
+                bottom: 22px;
+                gap: 10px;
+            }
+
+            .character-carousel-button {
+                width: 42px;
+                height: 42px;
+                border-width: 3px;
+            }
+
+            .character-carousel-button::before {
+                width: 11px;
+                height: 11px;
+                border-width: 4px;
+            }
+
+            .character-tile {
+                flex-basis: 76px;
+                width: 76px;
+                height: 76px;
+                border-width: 3px;
+                border-radius: 15px;
+            }
+
             .scroll-frog {
                 width: clamp(118px, 42vw, 190px);
             }
@@ -1126,7 +1521,7 @@
         <div class="intro-layout">
             <div class="intro-showcase" aria-label="게임 소개 영상">
                 <video class="intro-video" autoplay muted loop playsinline>
-                    <source src="Sledding Game - Official Early Access Release Date Trailer _ The Triple-i Initiative Showcase 2026.mp4" type="video/mp4">
+                    <source src="20260516-0520-43.7799556.mp4" type="video/mp4">
                 </video>
             </div>
             <div class="intro-content">
@@ -1145,7 +1540,41 @@
     </section>
 
     <section class="page-section character-section" id="characters">
-        <h2 class="section-title">캐릭터</h2>
+        <div class="character-layout">
+            <div class="character-stage" aria-live="polite">
+                <div class="character-preview">
+                    <span class="character-face frog" aria-hidden="true"><span></span></span>
+                </div>
+            </div>
+            <div class="character-roster">
+                <h2 class="section-title">캐릭터</h2>
+                <p class="character-name">개구리</p>
+                <p class="character-tag">기본 썰매 친구</p>
+                <p class="character-copy">좋아하는 친구를 골라 눈길을 내려가세요. 각 캐릭터는 같은 코스를 조금 다른 표정으로 미끄러집니다.</p>
+            </div>
+        </div>
+        <div class="character-carousel" aria-label="캐릭터 선택 캐러셀">
+            <button class="character-carousel-button prev" type="button" aria-label="이전 캐릭터"></button>
+                <div class="character-grid" aria-label="캐릭터 선택">
+                    <button class="character-tile is-selected" type="button" aria-label="개구리 선택" data-name="개구리" data-tag="기본 썰매 친구" data-face="frog"><span class="character-face frog" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="펭귄 선택" data-name="펭귄" data-tag="얼음길 균형왕" data-face="penguin"><span class="character-face penguin" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="물범 선택" data-name="물범" data-tag="둥글둥글 스피드" data-face="seal"><span class="character-face seal" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="수달 선택" data-name="수달" data-tag="장난꾸러기 레이서" data-face="otter"><span class="character-face otter" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="북극곰 선택" data-name="북극곰" data-tag="묵직한 눈길 돌파" data-face="bear"><span class="character-face bear" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="검은곰 선택" data-name="검은곰" data-tag="밤눈길 질주자" data-face="blackbear"><span class="character-face blackbear" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="회색 물범 선택" data-name="회색 물범" data-tag="차분한 코너링" data-face="seal"><span class="character-face seal" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="해달 선택" data-name="해달" data-tag="느긋한 미끄럼" data-face="blackbear"><span class="character-face blackbear" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="주황 개구리 선택" data-name="주황 개구리" data-tag="통통 튀는 스타트" data-face="orange"><span class="character-face orange" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="초록 개구리 선택" data-name="초록 개구리" data-tag="깡충깡충 점프" data-face="lime"><span class="character-face lime" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="오리 선택" data-name="오리" data-tag="노란 눈길 친구" data-face="duck"><span class="character-face duck" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="강아지 선택" data-name="강아지" data-tag="꼬리 흔드는 질주" data-face="dog"><span class="character-face dog" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="여우 선택" data-name="여우" data-tag="가벼운 코너 탈출" data-face="fox"><span class="character-face fox" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="토끼 선택" data-name="토끼" data-tag="가장 높은 점프" data-face="rabbit"><span class="character-face rabbit" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="판다 선택" data-name="판다" data-tag="느긋하지만 단단하게" data-face="panda"><span class="character-face panda" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="노랑이 선택" data-name="노랑이" data-tag="햇살 같은 응원단" data-face="yellow"><span class="character-face yellow" aria-hidden="true"><span></span></span></button>
+                </div>
+            <button class="character-carousel-button next" type="button" aria-label="다음 캐릭터"></button>
+        </div>
         <div class="track-band" aria-hidden="true"></div>
     </section>
 
@@ -1173,6 +1602,13 @@
         const introDots = document.querySelectorAll('.intro-dot');
         const introPrev = document.querySelector('.intro-prev');
         const introNext = document.querySelector('.intro-next');
+        const characterTiles = document.querySelectorAll('.character-tile');
+        const characterPrev = document.querySelector('.character-carousel-button.prev');
+        const characterNext = document.querySelector('.character-carousel-button.next');
+        const characterPreviewFace = document.querySelector('.character-preview .character-face');
+        const characterName = document.querySelector('.character-name');
+        const characterTag = document.querySelector('.character-tag');
+        let currentCharacterIndex = 0;
         const translations = {
             ko: {
                 htmlLang: 'ko',
@@ -1198,6 +1634,8 @@
                 introTitle: '게임 소개',
                 introCopy: '작은 개구리들이 썰매를 타고 눈길을 가릅니다. 점프하고, 부딪히고, 마지막 언덕까지 미끄러지며 친구들과 가장 유쾌한 겨울 레이스를 즐겨보세요.',
                 characters: '캐릭터',
+                characterCopy: '좋아하는 친구를 골라 눈길을 내려가세요. 각 캐릭터는 같은 코스를 조금 다른 표정으로 미끄러집니다.',
+                characterGridLabel: '캐릭터 선택',
                 media: '미디어',
                 news: '뉴스'
             },
@@ -1225,6 +1663,8 @@
                 introTitle: 'About',
                 introCopy: 'Tiny frogs carve through snowy tracks on bright blue sleds. Jump, bump, slide, and race with friends all the way down the happiest winter hill.',
                 characters: 'Characters',
+                characterCopy: 'Pick your favorite buddy and slide down the snow. Every character brings a different mood to the same wild course.',
+                characterGridLabel: 'Choose character',
                 media: 'Media',
                 news: 'News'
             },
@@ -1252,6 +1692,8 @@
                 introTitle: 'ゲーム紹介',
                 introCopy: '小さなカエルたちが青いそりで雪道を滑ります。ジャンプして、ぶつかって、友だちと一緒に楽しい冬の坂を最後まで走り抜けましょう。',
                 characters: 'キャラクター',
+                characterCopy: '好きな仲間を選んで雪道を滑りましょう。どのキャラクターも同じコースを少し違う表情で走ります。',
+                characterGridLabel: 'キャラクターを選択',
                 media: 'メディア',
                 news: 'ニュース'
             }
@@ -1280,6 +1722,8 @@
             const navLinks = document.querySelectorAll('.nav a');
             const ctaButtons = document.querySelectorAll('.play-link, .cta');
             const characterTitle = document.querySelector('.character-section .section-title');
+            const characterCopy = document.querySelector('.character-copy');
+            const characterGrid = document.querySelector('.character-grid');
             const mediaTitle = document.querySelector('.media-section .section-title');
             const newsTitle = document.querySelector('.news-section .section-title');
             const introTitle = document.querySelector('.intro-section .section-title');
@@ -1329,10 +1773,52 @@
                 introCopy.textContent = copy.introCopy;
             }
             characterTitle.textContent = copy.characters;
+            characterCopy.textContent = copy.characterCopy;
+            characterGrid.setAttribute('aria-label', copy.characterGridLabel);
             mediaTitle.textContent = copy.media;
             newsTitle.textContent = copy.news;
             musicButton.setAttribute('aria-label', soundtrackAudio.paused ? copy.musicOn : copy.musicOff);
         }
+
+        function updateCharacterWindow(index) {
+            const visibleCount = window.matchMedia('(max-width: 760px)').matches ? 3 : 5;
+            const maxStart = Math.max(characterTiles.length - visibleCount, 0);
+            const start = clamp(index - Math.floor(visibleCount / 2), 0, maxStart);
+            const end = start + visibleCount;
+
+            characterTiles.forEach((tile, tileIndex) => {
+                tile.classList.toggle('is-window-hidden', tileIndex < start || tileIndex >= end);
+            });
+        }
+
+        function selectCharacter(index) {
+            currentCharacterIndex = (index + characterTiles.length) % characterTiles.length;
+            const tile = characterTiles[currentCharacterIndex];
+
+            characterTiles.forEach((item) => item.classList.remove('is-selected'));
+            tile.classList.add('is-selected');
+            characterPreviewFace.className = `character-face ${tile.dataset.face}`;
+            characterPreviewFace.innerHTML = '<span></span>';
+            characterName.textContent = tile.dataset.name;
+            characterTag.textContent = tile.dataset.tag;
+            updateCharacterWindow(currentCharacterIndex);
+        }
+
+        characterTiles.forEach((tile, index) => {
+            tile.addEventListener('click', () => {
+                selectCharacter(index);
+            });
+        });
+
+        characterPrev.addEventListener('click', () => {
+            selectCharacter(currentCharacterIndex - 1);
+        });
+
+        characterNext.addEventListener('click', () => {
+            selectCharacter(currentCharacterIndex + 1);
+        });
+
+        updateCharacterWindow(currentCharacterIndex);
 
         function setIntroDot(index) {
             introDots.forEach((item, itemIndex) => {
@@ -1453,7 +1939,7 @@
             const xStart = activeRun.fromRight ? 112 : -12;
             const xEnd = activeRun.fromRight ? -12 : 112;
             const x = xStart + (xEnd - xStart) * eased;
-            const y = activeRun.lowRoad ? 76 + wave * 2.5 : 35 + eased * 35 + wave * 2.5;
+            const y = activeRun.lowRoad ? 88 + wave * 1.5 : 35 + eased * 35 + wave * 2.5;
             const rotate = activeRun.fromRight ? 12 + eased * 5 : -12 - eased * 5;
 
             scrollFrog.style.setProperty('--frog-opacity', visible);
@@ -1464,7 +1950,10 @@
 
         updateScrollFrog();
         window.addEventListener('scroll', updateScrollFrog, { passive: true });
-        window.addEventListener('resize', updateScrollFrog);
+        window.addEventListener('resize', () => {
+            updateScrollFrog();
+            updateCharacterWindow(currentCharacterIndex);
+        });
     </script>
 </body>
 </html>
