@@ -1699,7 +1699,7 @@
             }
         };
         const frogRuns = [
-            { section: document.querySelector('.video-section'), fromRight: true },
+            { section: document.querySelector('.video-section'), fromRight: true, startFactor: 0.72, endFactor: 0.5 },
             { section: document.querySelector('.intro-section'), fromRight: false, lowRoad: true },
             { section: document.querySelector('.character-section'), fromRight: true },
             { section: document.querySelector('.media-section'), fromRight: false }
@@ -1907,14 +1907,18 @@
             return value * value * (3 - 2 * value);
         }
 
+        function gentleStep(value) {
+            return smoothstep(smoothstep(value));
+        }
+
         function updateScrollFrog() {
             let activeRun = null;
             let progress = 0;
 
             frogRuns.some((run) => {
                 const trackY = run.section.offsetTop + run.section.offsetHeight;
-                const start = trackY - window.innerHeight * 0.95;
-                const end = trackY - window.innerHeight * 0.12;
+                const start = trackY - window.innerHeight * (run.startFactor ?? 1.45);
+                const end = trackY + window.innerHeight * (run.endFactor ?? 0.22);
                 const runProgress = (window.scrollY - start) / (end - start);
 
                 if (runProgress >= 0 && runProgress <= 1) {
@@ -1931,13 +1935,13 @@
                 return;
             }
 
-            const eased = smoothstep(progress);
-            const fadeIn = clamp(progress / 0.18, 0, 1);
-            const fadeOut = clamp((1 - progress) / 0.22, 0, 1);
+            const eased = gentleStep(progress);
+            const fadeIn = clamp(progress / 0.24, 0, 1);
+            const fadeOut = clamp((1 - progress) / 0.28, 0, 1);
             const visible = fadeIn * fadeOut;
             const wave = Math.sin(eased * Math.PI);
-            const xStart = activeRun.fromRight ? 112 : -12;
-            const xEnd = activeRun.fromRight ? -12 : 112;
+            const xStart = activeRun.fromRight ? 104 : -4;
+            const xEnd = activeRun.fromRight ? -4 : 104;
             const x = xStart + (xEnd - xStart) * eased;
             const y = activeRun.lowRoad ? 88 + wave * 1.5 : 35 + eased * 35 + wave * 2.5;
             const rotate = activeRun.fromRight ? 12 + eased * 5 : -12 - eased * 5;
