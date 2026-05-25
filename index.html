@@ -44,9 +44,33 @@
             z-index: 30;
             display: grid;
             place-items: center;
-            background: #000;
+            overflow: hidden;
+            background: transparent;
             color: #fff;
-            transition: opacity 0.45s ease, visibility 0.45s ease;
+            transition:
+                opacity 0.95s cubic-bezier(0.22, 1, 0.36, 1),
+                visibility 0.95s;
+        }
+
+        .loader-screen::before,
+        .loader-screen::after {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 52%;
+            content: "";
+            background: #000;
+            transition: transform 1.05s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+
+        .loader-screen::before {
+            left: 0;
+            transform-origin: left center;
+        }
+
+        .loader-screen::after {
+            right: 0;
+            transform-origin: right center;
         }
 
         body.is-ready .loader-screen {
@@ -55,10 +79,28 @@
             pointer-events: none;
         }
 
+        body.is-ready .loader-screen::before {
+            transform: translateX(-102%) skewX(-4deg);
+        }
+
+        body.is-ready .loader-screen::after {
+            transform: translateX(102%) skewX(-4deg);
+        }
+
         .loader {
+            position: relative;
+            z-index: 2;
             display: grid;
             justify-items: center;
             gap: 18px;
+            transition:
+                opacity 0.55s ease,
+                transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        body.is-ready .loader {
+            opacity: 0;
+            transform: translateY(-18px) scale(0.96);
         }
 
         .loading-gif {
@@ -107,6 +149,21 @@
             color: #fff;
             mix-blend-mode: normal;
             filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.32));
+        }
+
+        body:not(.is-ready) .site-header,
+        body:not(.is-ready) .page-section {
+            opacity: 0;
+            transform: translateY(18px);
+        }
+
+        body.is-ready .site-header,
+        body.is-ready .page-section {
+            opacity: 1;
+            transform: translateY(0);
+            transition:
+                opacity 0.9s ease 0.18s,
+                transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.18s;
         }
 
         .site-header::before {
@@ -919,6 +976,18 @@
                 0 28px 30px rgba(22, 70, 96, 0.18);
         }
 
+        .character-preview .character-face.has-large {
+            width: clamp(300px, 34vw, 560px);
+            height: clamp(330px, 38vw, 620px);
+            border: 0;
+            border-radius: 0;
+            background-image: var(--large-character);
+            background-position: center bottom;
+            background-size: var(--large-character-size, contain);
+            filter: drop-shadow(0 28px 26px rgba(22, 70, 96, 0.22));
+            box-shadow: none;
+        }
+
         .character-name {
             margin: 0;
             color: #113143;
@@ -966,23 +1035,25 @@
 
         .character-carousel {
             position: absolute;
-            bottom: 34px;
+            bottom: 24px;
             left: 50%;
             z-index: 7;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: clamp(12px, 2vw, 24px);
+            gap: clamp(24px, 3.4vw, 54px);
             transform: translateX(-50%);
         }
 
         .character-grid {
             display: flex;
-            width: min(610px, 68vw);
+            width: min(660px, 70vw);
             align-items: center;
             justify-content: center;
             gap: clamp(14px, 2vw, 28px);
-            overflow: hidden;
+            margin-block: -18px;
+            padding-block: 18px;
+            overflow: visible;
         }
 
         .character-carousel-button {
@@ -1035,11 +1106,11 @@
             width: clamp(72px, 7vw, 112px);
             height: clamp(72px, 7vw, 112px);
             place-items: center;
-            padding: 7px;
-            border: 4px solid #f8fdff;
-            border-radius: 18px;
+            padding: 8px;
+            border: 0;
+            border-radius: 16px;
             background:
-                linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(223, 244, 255, 0.76)),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(184, 226, 251, 0.78)),
                 #2fb2ee;
             cursor: pointer;
             box-shadow: 0 6px 0 rgba(159, 210, 235, 0.86), 0 14px 18px rgba(55, 127, 165, 0.15);
@@ -1056,7 +1127,6 @@
         }
 
         .character-tile.is-selected {
-            border-color: #f6d744;
             background:
                 linear-gradient(180deg, #fff6a6, #ffe95b);
             box-shadow: 0 10px 0 #e2bb25, 0 22px 26px rgba(128, 103, 12, 0.18);
@@ -1067,21 +1137,16 @@
             display: block;
             width: 100%;
             height: 100%;
-            border: 4px solid rgba(17, 49, 67, 0.16);
-            border-radius: 42% 42% 48% 48%;
-            background: var(--face, #8fc45f);
+            border: 0;
+            border-radius: 12px;
+            background: url("미니 프로필.png")
+                calc(var(--profile-x, 0%) + var(--profile-shift-x, 0px))
+                calc(var(--profile-y, 0%) + var(--profile-shift-y, 0px)) / 800% 200% no-repeat;
         }
 
         .character-face::before,
         .character-face::after {
-            position: absolute;
-            top: 30%;
-            width: 13%;
-            height: 13%;
-            content: "";
-            border-radius: 50%;
-            background: #102f27;
-            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.28);
+            content: none;
         }
 
         .character-face::before {
@@ -1093,26 +1158,29 @@
         }
 
         .character-face span {
-            position: absolute;
-            right: 24%;
-            bottom: 24%;
-            left: 24%;
-            height: 28%;
-            border-radius: 50%;
-            background: var(--belly, rgba(255, 244, 154, 0.88));
+            display: none;
         }
 
         .character-face span::after {
-            position: absolute;
-            top: -28%;
-            left: 50%;
-            width: 36%;
-            height: 10%;
             content: "";
-            border-radius: 999px;
-            background: rgba(17, 49, 67, 0.72);
-            transform: translateX(-50%) rotate(5deg);
         }
+
+        .character-tile:nth-child(1) .character-face { --profile-x: 0%; --profile-y: 0%; --profile-shift-x: 5px; --profile-shift-y: 0px; }
+        .character-tile:nth-child(2) .character-face { --profile-x: 14.285%; --profile-y: 0%; --profile-shift-x: 4px; --profile-shift-y: 3px; }
+        .character-tile:nth-child(3) .character-face { --profile-x: 28.571%; --profile-y: 0%; --profile-shift-x: 2px; --profile-shift-y: 2px; }
+        .character-tile:nth-child(4) .character-face { --profile-x: 42.857%; --profile-y: 100%; --profile-shift-x: 0px; --profile-shift-y: -4px; }
+        .character-tile:nth-child(5) .character-face { --profile-x: 57.143%; --profile-y: 0%; --profile-shift-x: 0px; --profile-shift-y: 1px; }
+        .character-tile:nth-child(6) .character-face { --profile-x: 71.429%; --profile-y: 0%; --profile-shift-x: -2px; --profile-shift-y: 0px; }
+        .character-tile:nth-child(7) .character-face { --profile-x: 85.714%; --profile-y: 0%; --profile-shift-x: -5px; --profile-shift-y: 2px; }
+        .character-tile:nth-child(8) .character-face { --profile-x: 100%; --profile-y: 0%; --profile-shift-x: -5px; --profile-shift-y: 3px; }
+        .character-tile:nth-child(9) .character-face { --profile-x: 0%; --profile-y: 100%; --profile-shift-x: 5px; --profile-shift-y: -7px; }
+        .character-tile:nth-child(10) .character-face { --profile-x: 14.285%; --profile-y: 100%; --profile-shift-x: 4px; --profile-shift-y: -5px; }
+        .character-tile:nth-child(11) .character-face { --profile-x: 28.571%; --profile-y: 100%; --profile-shift-x: 2px; --profile-shift-y: -7px; }
+        .character-tile:nth-child(12) .character-face { --profile-x: 42.857%; --profile-y: 100%; --profile-shift-x: 0px; --profile-shift-y: -4px; }
+        .character-tile:nth-child(13) .character-face { --profile-x: 57.143%; --profile-y: 100%; --profile-shift-x: 0px; --profile-shift-y: -5px; }
+        .character-tile:nth-child(14) .character-face { --profile-x: 71.429%; --profile-y: 100%; --profile-shift-x: -1px; --profile-shift-y: -4px; }
+        .character-tile:nth-child(15) .character-face { --profile-x: 85.714%; --profile-y: 100%; --profile-shift-x: -3px; --profile-shift-y: -3px; }
+        .character-tile:nth-child(16) .character-face { --profile-x: 100%; --profile-y: 100%; --profile-shift-x: -5px; --profile-shift-y: -3px; }
 
         .character-face.frog {
             --face: #8fc45f;
@@ -1183,6 +1251,11 @@
         .character-face.yellow {
             --face: #f7d84d;
             --belly: #ffe987;
+        }
+
+        .character-preview .character-face,
+        .character-tile .character-face {
+            border-radius: 12px;
         }
 
         .cta {
@@ -1424,11 +1497,13 @@
             .character-grid {
                 width: min(276px, 58vw);
                 gap: 12px;
+                margin-block: -14px;
+                padding-block: 14px;
             }
 
             .character-carousel {
-                bottom: 22px;
-                gap: 10px;
+                bottom: 14px;
+                gap: 14px;
             }
 
             .character-carousel-button {
@@ -1447,8 +1522,8 @@
                 flex-basis: 76px;
                 width: 76px;
                 height: 76px;
-                border-width: 3px;
-                border-radius: 15px;
+                padding: 6px;
+                border-radius: 13px;
             }
 
             .scroll-frog {
@@ -1556,21 +1631,21 @@
         <div class="character-carousel" aria-label="캐릭터 선택 캐러셀">
             <button class="character-carousel-button prev" type="button" aria-label="이전 캐릭터"></button>
                 <div class="character-grid" aria-label="캐릭터 선택">
-                    <button class="character-tile is-selected" type="button" aria-label="개구리 선택" data-name="개구리" data-tag="기본 썰매 친구" data-face="frog"><span class="character-face frog" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="펭귄 선택" data-name="펭귄" data-tag="얼음길 균형왕" data-face="penguin"><span class="character-face penguin" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="물범 선택" data-name="물범" data-tag="둥글둥글 스피드" data-face="seal"><span class="character-face seal" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile is-selected" type="button" aria-label="개구리 선택" data-name="개구리" data-tag="기본 썰매 친구" data-face="frog" data-large="images/frpg.png" data-large-size="150%"><span class="character-face frog" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="펭귄 선택" data-name="펭귄" data-tag="얼음길 균형왕" data-face="penguin" data-large="images/penguin.png" data-large-size="150%"><span class="character-face penguin" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="물범 선택" data-name="물범" data-tag="둥글둥글 스피드" data-face="seal" data-large="images/light seal.png"><span class="character-face seal" aria-hidden="true"><span></span></span></button>
                     <button class="character-tile" type="button" aria-label="수달 선택" data-name="수달" data-tag="장난꾸러기 레이서" data-face="otter"><span class="character-face otter" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="북극곰 선택" data-name="북극곰" data-tag="묵직한 눈길 돌파" data-face="bear"><span class="character-face bear" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="검은곰 선택" data-name="검은곰" data-tag="밤눈길 질주자" data-face="blackbear"><span class="character-face blackbear" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="북극곰 선택" data-name="북극곰" data-tag="묵직한 눈길 돌파" data-face="bear" data-large="images/polar bear.png" data-large-size="150%"><span class="character-face bear" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="검은곰 선택" data-name="검은곰" data-tag="밤눈길 질주자" data-face="blackbear" data-large="images/bear.png" data-large-size="150%"><span class="character-face blackbear" aria-hidden="true"><span></span></span></button>
                     <button class="character-tile" type="button" aria-label="회색 물범 선택" data-name="회색 물범" data-tag="차분한 코너링" data-face="seal"><span class="character-face seal" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="해달 선택" data-name="해달" data-tag="느긋한 미끄럼" data-face="blackbear"><span class="character-face blackbear" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="주황 개구리 선택" data-name="주황 개구리" data-tag="통통 튀는 스타트" data-face="orange"><span class="character-face orange" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="초록 개구리 선택" data-name="초록 개구리" data-tag="깡충깡충 점프" data-face="lime"><span class="character-face lime" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="오리 선택" data-name="오리" data-tag="노란 눈길 친구" data-face="duck"><span class="character-face duck" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="해달 선택" data-name="해달" data-tag="느긋한 미끄럼" data-face="blackbear" data-large="images/dark seal.png" data-large-size="150%"><span class="character-face blackbear" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="주황 개구리 선택" data-name="주황 개구리" data-tag="통통 튀는 스타트" data-face="orange" data-large="images/orange frog.png" data-large-size="150%"><span class="character-face orange" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="초록 개구리 선택" data-name="초록 개구리" data-tag="깡충깡충 점프" data-face="lime" data-large="images/tree frog.png" data-large-size="150%"><span class="character-face lime" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="오리 선택" data-name="오리" data-tag="노란 눈길 친구" data-face="duck" data-large="images/orange toad.png" data-large-size="150%"><span class="character-face duck" aria-hidden="true"><span></span></span></button>
                     <button class="character-tile" type="button" aria-label="강아지 선택" data-name="강아지" data-tag="꼬리 흔드는 질주" data-face="dog"><span class="character-face dog" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="여우 선택" data-name="여우" data-tag="가벼운 코너 탈출" data-face="fox"><span class="character-face fox" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="토끼 선택" data-name="토끼" data-tag="가장 높은 점프" data-face="rabbit"><span class="character-face rabbit" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="판다 선택" data-name="판다" data-tag="느긋하지만 단단하게" data-face="panda"><span class="character-face panda" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="여우 선택" data-name="여우" data-tag="가벼운 코너 탈출" data-face="fox" data-large="images/fox.png" data-large-size="150%"><span class="character-face fox" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="토끼 선택" data-name="토끼" data-tag="가장 높은 점프" data-face="rabbit" data-large="images/arctic fox.png" data-large-size="150%"><span class="character-face rabbit" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="판다 선택" data-name="판다" data-tag="느긋하지만 단단하게" data-face="panda" data-large="images/panda.png" data-large-size="150%"><span class="character-face panda" aria-hidden="true"><span></span></span></button>
                     <button class="character-tile" type="button" aria-label="노랑이 선택" data-name="노랑이" data-tag="햇살 같은 응원단" data-face="yellow"><span class="character-face yellow" aria-hidden="true"><span></span></span></button>
                 </div>
             <button class="character-carousel-button next" type="button" aria-label="다음 캐릭터"></button>
@@ -1599,6 +1674,8 @@
         const languageButton = document.querySelector('.language-button');
         const languageOptions = document.querySelectorAll('.language-option');
         const musicButton = document.querySelector('.music-button');
+        const introVideo = document.querySelector('.intro-video');
+        const introVideoSource = document.querySelector('.intro-video source');
         const introDots = document.querySelectorAll('.intro-dot');
         const introPrev = document.querySelector('.intro-prev');
         const introNext = document.querySelector('.intro-next');
@@ -1698,6 +1775,11 @@
                 news: 'ニュース'
             }
         };
+        const introVideos = [
+            '20260516-0520-43.7799556.mp4',
+            'download.mp4',
+            '제목 없는 디자인.mp4'
+        ];
         const frogRuns = [
             { section: document.querySelector('.video-section'), fromRight: true, startFactor: 0.72, endFactor: 0.5 },
             { section: document.querySelector('.intro-section'), fromRight: false, lowRoad: true },
@@ -1707,7 +1789,7 @@
 
         window.setTimeout(() => {
             body.classList.add('is-ready');
-        }, 1500);
+        }, 2400);
 
         heroVideo.addEventListener('canplay', () => {
             body.classList.add('has-video');
@@ -1799,6 +1881,21 @@
             tile.classList.add('is-selected');
             characterPreviewFace.className = `character-face ${tile.dataset.face}`;
             characterPreviewFace.innerHTML = '<span></span>';
+            characterPreviewFace.style.removeProperty('--large-character');
+            characterPreviewFace.style.removeProperty('--large-character-size');
+            const tileFace = tile.querySelector('.character-face');
+            const tileFaceStyle = getComputedStyle(tileFace);
+            characterPreviewFace.style.setProperty('--profile-x', tileFaceStyle.getPropertyValue('--profile-x'));
+            characterPreviewFace.style.setProperty('--profile-y', tileFaceStyle.getPropertyValue('--profile-y'));
+            characterPreviewFace.style.setProperty('--profile-shift-x', tileFaceStyle.getPropertyValue('--profile-shift-x'));
+            characterPreviewFace.style.setProperty('--profile-shift-y', tileFaceStyle.getPropertyValue('--profile-shift-y'));
+            if (tile.dataset.large) {
+                characterPreviewFace.classList.add('has-large');
+                characterPreviewFace.style.setProperty('--large-character', `url("${tile.dataset.large}")`);
+                if (tile.dataset.largeSize) {
+                    characterPreviewFace.style.setProperty('--large-character-size', tile.dataset.largeSize);
+                }
+            }
             characterName.textContent = tile.dataset.name;
             characterTag.textContent = tile.dataset.tag;
             updateCharacterWindow(currentCharacterIndex);
@@ -1818,7 +1915,7 @@
             selectCharacter(currentCharacterIndex + 1);
         });
 
-        updateCharacterWindow(currentCharacterIndex);
+        selectCharacter(currentCharacterIndex);
 
         function setIntroDot(index) {
             introDots.forEach((item, itemIndex) => {
@@ -1826,6 +1923,12 @@
                 item.classList.toggle('is-active', selected);
                 item.setAttribute('aria-pressed', String(selected));
             });
+
+            if (introVideos[index] && introVideoSource.getAttribute('src') !== introVideos[index]) {
+                introVideoSource.setAttribute('src', introVideos[index]);
+                introVideo.load();
+                introVideo.play().catch(() => {});
+            }
         }
 
         introDots.forEach((dot, index) => {
