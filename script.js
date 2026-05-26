@@ -43,6 +43,8 @@ const characterPreviewFace = document.querySelector('.character-preview .charact
 const characterName = document.querySelector('.character-name');
 const characterTag = document.querySelector('.character-tag');
 let currentCharacterIndex = 0;
+let currentIntroIndex = 0;
+let currentLanguage = document.documentElement.lang || 'ko';
 const translations = {
     ko: {
         htmlLang: 'ko',
@@ -64,9 +66,26 @@ const translations = {
         prevIntro: '이전 소개',
         nextIntro: '다음 소개',
         introDotLabels: ['첫 번째 소개', '두 번째 소개', '세 번째 소개'],
-        introLabel: '미끄러지는 겨울 놀이터',
+        introLabel: '우당탕 눈길 레이스',
         introTitle: '게임 소개',
-        introCopy: '작은 개구리들이 썰매를 타고 눈길을 가릅니다. 점프하고, 부딪히고, 마지막 언덕까지 미끄러지며 친구들과 가장 유쾌한 겨울 레이스를 즐겨보세요.',
+        introCopy: '친구들과 썰매에 올라 눈길을 달려보세요. 방향을 틀고, 점프하고, 서로 부딪히며 끝까지 굴러가는 유쾌한 겨울 레이스가 기다립니다.',
+        introSlides: [
+            {
+                label: '우당탕 눈길 레이스',
+                title: '게임 소개',
+                copy: '친구들과 썰매에 올라 눈길을 달려보세요. 방향을 틀고, 점프하고, 서로 부딪히며 끝까지 굴러가는 유쾌한 겨울 레이스가 기다립니다.'
+            },
+            {
+                label: '함께 모이는 겨울 방',
+                title: '친구와 놀 준비',
+                copy: '따뜻한 실내에서 친구들과 만나고, 마음에 드는 캐릭터를 고른 뒤 눈밭으로 나갈 준비를 해보세요.'
+            },
+            {
+                label: '눈밭 위 한판 승부',
+                title: '끝까지 굴러가기',
+                copy: '넓은 설원에서는 작은 실수도 웃음이 됩니다. 속도를 붙이고, 틈을 찾고, 마지막 순간까지 신나게 미끄러져 보세요.'
+            }
+        ],
         characters: '캐릭터 소개',
         characterCopy: '좋아하는 친구를 골라 눈길을 내려가세요. 각 캐릭터는 같은 코스를 조금 다른 표정으로 미끄러집니다.',
         characterGridLabel: '캐릭터 선택',
@@ -93,9 +112,26 @@ const translations = {
         prevIntro: 'Previous intro',
         nextIntro: 'Next intro',
         introDotLabels: ['First intro', 'Second intro', 'Third intro'],
-        introLabel: 'A Slippery Winter Playground',
+        introLabel: 'A Bumpy Snowfield Race',
         introTitle: 'About',
-        introCopy: 'Tiny frogs carve through snowy tracks on bright blue sleds. Jump, bump, slide, and race with friends all the way down the happiest winter hill.',
+        introCopy: 'Hop on a sled with friends and race across the snow. Turn, jump, bump into each other, and keep rolling toward the finish in a cheerful winter dash.',
+        introSlides: [
+            {
+                label: 'A Bumpy Snowfield Race',
+                title: 'About',
+                copy: 'Hop on a sled with friends and race across the snow. Turn, jump, bump into each other, and keep rolling toward the finish in a cheerful winter dash.'
+            },
+            {
+                label: 'A Cozy Winter Hangout',
+                title: 'Get Ready With Friends',
+                copy: 'Meet up indoors, pick a favorite character, and get ready before everyone tumbles back out into the snow.'
+            },
+            {
+                label: 'One Last Snowy Push',
+                title: 'Slide to the Finish',
+                copy: 'Out on the open snow, every little mistake turns into a laugh. Build speed, find your line, and keep sliding to the end.'
+            }
+        ],
         characters: 'Meet the Characters',
         characterCopy: 'Pick your favorite buddy and slide down the snow. Every character brings a different mood to the same wild course.',
         characterGridLabel: 'Choose character',
@@ -122,9 +158,26 @@ const translations = {
         prevIntro: '前の紹介',
         nextIntro: '次の紹介',
         introDotLabels: ['1つ目の紹介', '2つ目の紹介', '3つ目の紹介'],
-        introLabel: 'すべって遊ぶ冬の遊び場',
+        introLabel: 'どたばた雪道レース',
         introTitle: 'ゲーム紹介',
-        introCopy: '小さなカエルたちが青いそりで雪道を滑ります。ジャンプして、ぶつかって、友だちと一緒に楽しい冬の坂を最後まで走り抜けましょう。',
+        introCopy: '友だちとそりに乗って雪道を走りましょう。曲がって、跳んで、ぶつかって、最後まで転がる楽しい冬のレースが待っています。',
+        introSlides: [
+            {
+                label: 'どたばた雪道レース',
+                title: 'ゲーム紹介',
+                copy: '友だちとそりに乗って雪道を走りましょう。曲がって、跳んで、ぶつかって、最後まで転がる楽しい冬のレースが待っています。'
+            },
+            {
+                label: '冬のたまり場',
+                title: '友だちと準備しよう',
+                copy: 'あたたかい部屋で仲間と集まり、お気に入りのキャラクターを選んで、雪の世界へ出かける準備をしましょう。'
+            },
+            {
+                label: '雪原のラストスパート',
+                title: 'ゴールまで滑ろう',
+                copy: '広い雪原では小さなミスも楽しい思い出に。スピードに乗って、最後まで元気に滑り抜けましょう。'
+            }
+        ],
         characters: 'キャラクター紹介',
         characterCopy: '好きな仲間を選んで雪道を滑りましょう。どのキャラクターも同じコースを少し違う表情で走ります。',
         characterGridLabel: 'キャラクターを選択',
@@ -156,18 +209,37 @@ soundtrackAudio.volume = 0.42;
 musicButton.setAttribute('aria-pressed', 'false');
 musicButton.setAttribute('aria-label', '음악 켜기');
 
+function updateIntroText(copy, index = currentIntroIndex) {
+    const slide = copy.introSlides?.[index] || {
+        label: copy.introLabel,
+        title: copy.introTitle,
+        copy: copy.introCopy
+    };
+    const introTitle = document.querySelector('.intro-section .section-title');
+    const introLabel = document.querySelector('.intro-label');
+    const introCopy = document.querySelector('.intro-copy');
+
+    if (introLabel) {
+        introLabel.textContent = slide.label;
+    }
+    if (introTitle) {
+        introTitle.textContent = slide.title;
+    }
+    if (introCopy) {
+        introCopy.textContent = slide.copy;
+    }
+}
+
 function setLanguage(lang) {
     const copy = translations[lang] || translations.ko;
+    currentLanguage = copy.htmlLang;
     const navLinks = document.querySelectorAll('.nav a');
     const ctaButtons = document.querySelectorAll('.play-link, .cta');
-    const characterTitle = document.querySelector('.character-section .section-title');
+    const characterTitle = document.querySelector('.character-section-title');
     const characterCopy = document.querySelector('.character-copy');
     const characterGrid = document.querySelector('.character-grid');
     const mediaTitle = document.querySelector('.media-section .section-title');
     const newsTitle = document.querySelector('.news-section .section-title');
-    const introTitle = document.querySelector('.intro-section .section-title');
-    const introLabel = document.querySelector('.intro-label');
-    const introCopy = document.querySelector('.intro-copy');
     const introShowcase = document.querySelector('.intro-showcase');
     const introDotsWrap = document.querySelector('.intro-dots');
 
@@ -202,15 +274,7 @@ function setLanguage(lang) {
     introDots.forEach((dot, index) => {
         dot.setAttribute('aria-label', copy.introDotLabels[index]);
     });
-    if (introLabel) {
-        introLabel.textContent = copy.introLabel;
-    }
-    if (introTitle) {
-        introTitle.textContent = copy.introTitle;
-    }
-    if (introCopy) {
-        introCopy.textContent = copy.introCopy;
-    }
+    updateIntroText(copy);
     characterTitle.textContent = copy.characters;
     characterCopy.textContent = copy.characterCopy;
     characterGrid.setAttribute('aria-label', copy.characterGridLabel);
@@ -279,14 +343,18 @@ characterNext.addEventListener('click', () => {
 selectCharacter(currentCharacterIndex);
 
 function setIntroDot(index) {
+    currentIntroIndex = (index + introDots.length) % introDots.length;
     introDots.forEach((item, itemIndex) => {
-        const selected = itemIndex === index;
+        const selected = itemIndex === currentIntroIndex;
         item.classList.toggle('is-active', selected);
         item.setAttribute('aria-pressed', String(selected));
     });
 
-    if (introVideos[index] && introVideoSource.getAttribute('src') !== introVideos[index]) {
-        introVideoSource.setAttribute('src', introVideos[index]);
+    const copy = translations[currentLanguage] || translations.ko;
+    updateIntroText(copy, currentIntroIndex);
+
+    if (introVideos[currentIntroIndex] && introVideoSource.getAttribute('src') !== introVideos[currentIntroIndex]) {
+        introVideoSource.setAttribute('src', introVideos[currentIntroIndex]);
         introVideo.load();
         introVideo.play().catch(() => {});
     }
