@@ -31,6 +31,7 @@ const languagePicker = document.querySelector('.language-picker');
 const languageButton = document.querySelector('.language-button');
 const languageOptions = document.querySelectorAll('.language-option');
 const musicButton = document.querySelector('.music-button');
+const heroCta = document.querySelector('.hero-content .cta');
 const introVideo = document.querySelector('.intro-video');
 const introVideoSource = document.querySelector('.intro-video source');
 const introDots = document.querySelectorAll('.intro-dot');
@@ -381,6 +382,13 @@ introDots.forEach((dot, index) => {
         setIntroDot(index);
     });
 });
+
+if (heroCta) {
+    heroCta.addEventListener('pointerenter', () => heroCta.classList.add('is-hovered'));
+    heroCta.addEventListener('pointerleave', () => heroCta.classList.remove('is-hovered'));
+    heroCta.addEventListener('focus', () => heroCta.classList.add('is-hovered'));
+    heroCta.addEventListener('blur', () => heroCta.classList.remove('is-hovered'));
+}
 
 languageButton.addEventListener('click', () => {
     const isOpen = languagePicker.classList.toggle('is-open');

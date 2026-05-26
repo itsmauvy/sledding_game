@@ -227,6 +227,9 @@ body.is-ready .page-section {
 .play-link,
 .cta {
     position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border: 3px solid #203723;
     border-radius: 14px;
     background:
@@ -235,6 +238,7 @@ body.is-ready .page-section {
     color: #f8fdff;
     font-family: 'OngleipParkDahyeon', "Comic Sans MS", cursive;
     cursor: pointer;
+    text-decoration: none;
     box-shadow: 0 6px 0 #14291e, 0 14px 24px rgba(23, 48, 68, 0.24);
     text-shadow: 0 2px 0 rgba(0, 0, 0, 0.24);
     transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
@@ -244,46 +248,64 @@ body.is-ready .page-section {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 10px;
+    gap: 8px;
+}
+
+.header-actions .language-picker,
+.header-actions .play-link {
+    margin-left: 18px;
+}
+
+.header-actions .language-picker::before,
+.header-actions .play-link::before {
+    position: absolute;
+    top: 50%;
+    left: -15px;
+    width: 2px;
+    height: 42px;
+    content: "";
+    border-radius: 999px;
+    background: rgba(248, 253, 255, 0.7);
+    box-shadow:
+        0 1px 0 rgba(17, 49, 67, 0.18),
+        0 0 12px rgba(223, 250, 255, 0.24);
+    transform: translateY(-50%);
 }
 
 .language-picker {
     position: relative;
+    display: inline-grid;
+    place-items: center;
+    order: 2;
+}
+
+.music-button {
+    order: 2;
+}
+
+.social-button {
+    order: 1;
 }
 
 .play-link {
+    order: 3;
     justify-self: end;
     min-width: 190px;
     min-height: 44px;
-    padding: 7px 62px 9px 28px;
+    padding: 7px 28px 9px;
     font-size: 23px;
     line-height: 1;
     white-space: nowrap;
     overflow: hidden;
     border-color: #2f4732;
     border-radius: 999px;
-    background:
-        radial-gradient(circle at 82% 42%, rgba(223, 250, 255, 0.88) 0 12px, transparent 13px),
-        linear-gradient(180deg, #ffffff 0%, #f8fdff 48%, #dff4ff 100%);
+    background: linear-gradient(180deg, #ffffff 0%, #f8fdff 48%, #dff4ff 100%);
     color: #203723;
     box-shadow:
         inset 0 3px 0 rgba(255, 255, 255, 0.95),
         0 5px 0 #9fd2eb,
         0 12px 20px rgba(55, 127, 165, 0.2);
     text-shadow: none;
-}
-
-.play-link::before {
-    position: absolute;
-    right: 18px;
-    bottom: -3px;
-    width: 34px;
-    height: 34px;
-    content: "";
-    background: url("images/frog1.png") center / contain no-repeat;
-    transform: rotate(-8deg);
-    transition: transform 0.18s ease;
-    pointer-events: none;
 }
 
 .header-icon-button {
@@ -294,11 +316,10 @@ body.is-ready .page-section {
     place-items: center;
     border: 3px solid #2f4732;
     border-radius: 999px;
-    background:
-        radial-gradient(circle at 70% 28%, rgba(223, 250, 255, 0.9) 0 9px, transparent 10px),
-        linear-gradient(180deg, #ffffff 0%, #f8fdff 48%, #dff4ff 100%);
+    background: linear-gradient(180deg, #ffffff 0%, #f8fdff 48%, #dff4ff 100%);
     color: #203723;
     cursor: pointer;
+    text-decoration: none;
     box-shadow:
         inset 0 3px 0 rgba(255, 255, 255, 0.95),
         0 5px 0 #9fd2eb,
@@ -316,6 +337,12 @@ body.is-ready .page-section {
     fill: none;
 }
 
+.social-button svg,
+.discord-button svg {
+    fill: currentColor;
+    stroke: none;
+}
+
 .header-icon-button:hover,
 .header-icon-button:focus-visible {
     outline: 0;
@@ -327,9 +354,7 @@ body.is-ready .page-section {
 }
 
 .header-icon-button.is-active {
-    background:
-        radial-gradient(circle at 70% 28%, rgba(223, 250, 255, 0.92) 0 9px, transparent 10px),
-        linear-gradient(180deg, #dffaff 0%, #f8fdff 48%, #b8e2fb 100%);
+    background: linear-gradient(180deg, #dffaff 0%, #f8fdff 48%, #b8e2fb 100%);
     color: #173044;
 }
 
@@ -463,11 +488,6 @@ body.is-ready .page-section {
         inset 0 3px 0 rgba(255, 255, 255, 0.95),
         0 2px 0 #9fd2eb,
         0 7px 12px rgba(55, 127, 165, 0.18);
-}
-
-.play-link:hover::before,
-.play-link:focus-visible::before {
-    transform: translateY(-3px) rotate(5deg);
 }
 
 .page-section {
@@ -1276,9 +1296,7 @@ body.has-video .video-poster {
     overflow: hidden;
     border: 4px solid #2f4732;
     border-radius: 999px;
-    background:
-        radial-gradient(circle at 82% 42%, rgba(223, 250, 255, 0.9) 0 18px, transparent 19px),
-        linear-gradient(180deg, #ffffff 0%, #f8fdff 48%, #dff4ff 100%);
+    background: linear-gradient(180deg, #ffffff 0%, #f8fdff 48%, #dff4ff 100%);
     color: #203723;
     box-shadow:
         inset 0 4px 0 rgba(255, 255, 255, 0.95),
@@ -1290,13 +1308,14 @@ body.has-video .video-poster {
 .cta::before {
     position: absolute;
     right: 18px;
-    bottom: -4px;
+    bottom: -18px;
     width: 58px;
     height: 58px;
     content: "";
     background: url("images/frog1.png") center / contain no-repeat;
-    transform: rotate(-8deg);
-    transition: transform 0.18s ease;
+    opacity: 0;
+    transform: translateY(14px) rotate(-8deg) scale(0.86);
+    transition: opacity 0.18s ease, transform 0.18s ease;
     pointer-events: none;
 }
 
@@ -1312,8 +1331,10 @@ body.has-video .video-poster {
 }
 
 .cta:hover::before,
-.cta:focus-visible::before {
-    transform: translateY(-4px) rotate(5deg);
+.cta:focus-visible::before,
+.cta.is-hovered::before {
+    opacity: 1;
+    transform: translateY(-8px) rotate(5deg) scale(1);
 }
 
 @keyframes dot-bounce {
