@@ -703,7 +703,8 @@ body.has-video .video-poster {
 
 .intro-section,
 .character-section,
-.media-section {
+.media-section,
+.news-section {
     min-height: 66vh;
 }
 
@@ -924,6 +925,199 @@ body.has-video .video-poster {
     font-weight: 900;
     line-height: 1.42;
     text-align: left;
+}
+
+.media-section,
+.news-section {
+    min-height: 88vh;
+    padding: 112px 24px 132px;
+    background:
+        radial-gradient(circle at 18% 20%, rgba(142, 220, 255, 0.28), transparent 34%),
+        linear-gradient(180deg, #ffffff 0%, #eefaff 48%, #dff4ff 100%);
+}
+
+.media-wrap,
+.news-wrap {
+    position: relative;
+    z-index: 5;
+    display: grid;
+    width: min(1280px, 88vw);
+    gap: 26px;
+}
+
+.section-kicker {
+    margin: 0;
+    color: #2f4732;
+    font-family: 'OngleipParkDahyeon', "Comic Sans MS", cursive;
+    font-size: clamp(22px, 2.1vw, 34px);
+    line-height: 1;
+    text-align: center;
+}
+
+.media-filters {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: -6px;
+}
+
+.media-chip {
+    display: inline-flex;
+    min-height: 38px;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 18px 9px;
+    border: 3px solid #2f4732;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fdff 48%, #dff4ff 100%);
+    color: #203723;
+    font-family: 'OngleipParkDahyeon', "Comic Sans MS", cursive;
+    font-size: clamp(21px, 1.8vw, 30px);
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 5px 0 #9fd2eb;
+    transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+.media-chip.is-active {
+    background: linear-gradient(180deg, #3f6845 0%, #2f4732 100%);
+    color: #f8fdff;
+    box-shadow: 0 5px 0 #14291e;
+}
+
+.media-chip:hover,
+.media-chip:focus-visible {
+    outline: 0;
+    transform: translateY(2px);
+}
+
+.media-grid {
+    display: grid;
+    gap: 18px;
+}
+
+.media-panel {
+    display: none;
+}
+
+.media-panel.is-active {
+    display: grid;
+}
+
+.media-panel[data-media-panel="video"] {
+    grid-template-columns: 1.25fr 0.85fr;
+}
+
+.media-panel[data-media-panel="image"] {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.media-card {
+    position: relative;
+    min-height: 250px;
+    overflow: hidden;
+    border: 7px solid #f8fdff;
+    border-radius: 8px;
+    background: #b8e2fb;
+    box-shadow: 0 10px 0 #9fd2eb, 0 24px 34px rgba(55, 127, 165, 0.18);
+}
+
+.media-card.featured {
+    min-height: clamp(360px, 42vw, 540px);
+    grid-row: span 2;
+}
+
+.media-panel[data-media-panel="video"] .media-card:not(.featured) {
+    min-height: calc((clamp(360px, 42vw, 540px) - 18px) / 2);
+}
+
+.media-panel[data-media-panel="image"] .media-card {
+    min-height: clamp(220px, 20vw, 320px);
+}
+
+.media-card video,
+.media-card img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    object-fit: cover;
+    filter: saturate(1.06) contrast(1.03);
+}
+
+.media-card.image-card {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(223, 244, 255, 0.72)),
+        #dff4ff;
+}
+
+.media-label {
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+    z-index: 2;
+    padding: 8px 14px 10px;
+    border: 2px solid rgba(248, 253, 255, 0.82);
+    border-radius: 999px;
+    background: rgba(7, 25, 32, 0.38);
+    color: #f8fdff;
+    font-family: 'OngleipParkDahyeon', "Comic Sans MS", cursive;
+    font-size: clamp(19px, 1.6vw, 25px);
+    line-height: 1;
+    backdrop-filter: blur(7px);
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.news-card {
+    position: relative;
+    min-height: 250px;
+    padding: 26px 22px 24px;
+    overflow: hidden;
+    border: 4px solid #f8fdff;
+    border-radius: 8px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(223, 244, 255, 0.86)),
+        #dff4ff;
+    color: #113143;
+    box-shadow: 0 8px 0 #9fd2eb, 0 22px 28px rgba(55, 127, 165, 0.14);
+}
+
+.news-card::after {
+    position: absolute;
+    right: -28px;
+    bottom: -32px;
+    width: 142px;
+    height: 110px;
+    content: "";
+    background: url("images/frog1.png") center / contain no-repeat;
+    opacity: 0.16;
+    transform: rotate(-12deg);
+}
+
+.news-card strong {
+    position: relative;
+    z-index: 2;
+    display: block;
+    font-family: 'OngleipParkDahyeon', "Comic Sans MS", cursive;
+    font-size: clamp(30px, 3vw, 48px);
+    font-weight: normal;
+    line-height: 0.98;
+}
+
+.news-card span {
+    position: relative;
+    z-index: 2;
+    display: block;
+    margin-top: 16px;
+    color: rgba(17, 49, 67, 0.78);
+    font-size: clamp(16px, 1.4vw, 21px);
+    font-weight: 900;
+    line-height: 1.45;
 }
 
 .character-section {
@@ -1485,6 +1679,34 @@ body.has-video .video-poster {
     .intro-content .section-title,
     .intro-copy {
         text-align: center;
+    }
+
+    .media-section,
+    .news-section {
+        min-height: auto;
+        padding: 96px 18px 130px;
+    }
+
+    .media-wrap,
+    .news-wrap {
+        width: min(620px, 92vw);
+    }
+
+    .media-panel[data-media-panel="video"],
+    .media-panel[data-media-panel="image"],
+    .news-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .media-card,
+    .media-card.featured,
+    .media-panel[data-media-panel="video"] .media-card:not(.featured),
+    .media-panel[data-media-panel="image"] .media-card {
+        min-height: 230px;
+    }
+
+    .news-card {
+        min-height: 210px;
     }
 
     .character-section {

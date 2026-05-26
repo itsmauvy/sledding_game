@@ -143,12 +143,65 @@
     </section>
 
     <section class="page-section media-section" id="media">
-        <h2 class="section-title">미디어</h2>
+        <div class="media-wrap">
+            <p class="section-kicker">미끄러지고, 튀고, 구르는 순간들</p>
+            <h2 class="section-title">미디어</h2>
+            <div class="media-filters" aria-label="미디어 구분">
+                <button class="media-chip is-active" type="button" data-media-tab="video" aria-pressed="true">영상</button>
+                <button class="media-chip" type="button" data-media-tab="image" aria-pressed="false">이미지</button>
+            </div>
+            <div class="media-grid media-panel is-active" data-media-panel="video">
+                <article class="media-card featured">
+                    <video autoplay muted loop playsinline>
+                        <source src="download.mp4" type="video/mp4">
+                    </video>
+                    <span class="media-label">트릭 & 레이스</span>
+                </article>
+                <article class="media-card">
+                    <video autoplay muted loop playsinline>
+                        <source src="20260516-0520-43.7799556.mp4" type="video/mp4">
+                    </video>
+                    <span class="media-label">눈길 탐험</span>
+                </article>
+                <article class="media-card">
+                    <video autoplay muted loop playsinline>
+                        <source src="제목 없는 디자인.mp4" type="video/mp4">
+                    </video>
+                    <span class="media-label">친구와 한 판</span>
+                </article>
+            </div>
+            <div class="media-grid media-panel" data-media-panel="image">
+                <article class="media-card image-card">
+                    <img src="images/Screenshot_2026-05-20_212435.webp" alt="Sledding Game 스크린샷">
+                    <span class="media-label">눈밭 스크린샷</span>
+                </article>
+                <article class="media-card image-card">
+                    <img src="snowtrack.png" alt="눈길 트랙 이미지">
+                    <span class="media-label">눈길 무드</span>
+                </article>
+                <article class="media-card image-card">
+                    <img src="images/Layer 1.png" alt="썰매 캐릭터 이미지">
+                    <span class="media-label">슬로프 위 캐릭터</span>
+                </article>
+                <article class="media-card image-card">
+                    <img src="images/soundtrack.png" alt="사운드트랙 이미지">
+                    <span class="media-label">사운드트랙</span>
+                </article>
+            </div>
+        </div>
         <div class="track-band reverse" aria-hidden="true"></div>
     </section>
 
     <section class="page-section news-section" id="news">
-        <h2 class="section-title">뉴스</h2>
+        <div class="news-wrap">
+            <p class="section-kicker">다음에 열릴 눈밭 소식</p>
+            <h2 class="section-title">뉴스</h2>
+            <div class="news-grid">
+                <article class="news-card"><strong>얼리 액세스 준비 중</strong><span>친구들과 먼저 굴러볼 수 있는 첫 오픈 소식을 이곳에서 안내할 예정이에요.</span></article>
+                <article class="news-card"><strong>새 미니게임 공개 예정</strong><span>눈싸움, 컬링, 다트처럼 쉬어 가는 놀이를 더 귀엽고 정신없이 보여줄게요.</span></article>
+                <article class="news-card"><strong>커스터마이징 확장</strong><span>캐릭터 표정과 썰매 장식으로 자기만의 겨울 친구를 만들 수 있게 준비 중이에요.</span></article>
+            </div>
+        </div>
     </section>
 
     <img class="scroll-frog" src="images/frog3.png" alt="">

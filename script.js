@@ -37,6 +37,8 @@ const introVideoSource = document.querySelector('.intro-video source');
 const introDots = document.querySelectorAll('.intro-dot');
 const introPrev = document.querySelector('.intro-prev');
 const introNext = document.querySelector('.intro-next');
+const mediaTabs = document.querySelectorAll('.media-chip');
+const mediaPanels = document.querySelectorAll('.media-panel');
 const characterTiles = document.querySelectorAll('.character-tile');
 const characterPrev = document.querySelector('.character-carousel-button.prev');
 const characterNext = document.querySelector('.character-carousel-button.next');
@@ -389,6 +391,22 @@ if (heroCta) {
     heroCta.addEventListener('focus', () => heroCta.classList.add('is-hovered'));
     heroCta.addEventListener('blur', () => heroCta.classList.remove('is-hovered'));
 }
+
+mediaTabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+        const target = tab.dataset.mediaTab;
+
+        mediaTabs.forEach((item) => {
+            const selected = item === tab;
+            item.classList.toggle('is-active', selected);
+            item.setAttribute('aria-pressed', String(selected));
+        });
+
+        mediaPanels.forEach((panel) => {
+            panel.classList.toggle('is-active', panel.dataset.mediaPanel === target);
+        });
+    });
+});
 
 languageButton.addEventListener('click', () => {
     const isOpen = languagePicker.classList.toggle('is-open');
