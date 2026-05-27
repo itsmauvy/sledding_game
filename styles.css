@@ -18,6 +18,8 @@
 }
 
 html {
+    min-height: 100%;
+    overflow-y: auto;
     scroll-behavior: smooth;
 }
 
@@ -26,6 +28,7 @@ body {
     min-height: 100dvh;
     margin: 0;
     overflow-x: hidden;
+    overflow-y: auto;
     background: #fff;
     color: var(--ink);
     font-family: Arial, Helvetica, sans-serif;
@@ -135,7 +138,7 @@ body.is-ready .loader {
     display: grid;
     width: 100%;
     min-height: 64px;
-    grid-template-columns: 158px 1fr auto;
+    grid-template-columns: 170px 1fr auto;
     align-items: center;
     gap: 24px;
     padding: 10px 24px;
@@ -171,9 +174,50 @@ body.is-ready .page-section {
     backdrop-filter: blur(10px);
 }
 
+.header-logo-link {
+    position: relative;
+    display: block;
+    width: 146px;
+    height: 58px;
+    overflow: hidden;
+    text-decoration: none;
+}
+
 .header-logo {
-    width: 126px;
-    height: auto;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.header-logo-frog {
+    opacity: 1;
+    transform: scale(1.08);
+}
+
+.header-logo-wordmark {
+    opacity: 0;
+    transform: translateY(4px) scale(0.96);
+}
+
+.header-logo-link:hover .header-logo-frog,
+.header-logo-link:focus-visible .header-logo-frog {
+    opacity: 0;
+    transform: translateY(-4px) scale(1.02);
+}
+
+.header-logo-link:hover .header-logo-wordmark,
+.header-logo-link:focus-visible .header-logo-wordmark {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.header-logo-link:focus-visible {
+    outline: 2px solid rgba(248, 253, 255, 0.8);
+    outline-offset: 4px;
+    border-radius: 8px;
 }
 
 .nav {
@@ -495,7 +539,7 @@ body.is-ready .page-section {
     display: grid;
     min-height: 68vh;
     place-items: center;
-    padding: 92px 24px 140px;
+    padding: 108px 24px 128px;
     overflow: hidden;
     background: #fff;
 }
@@ -531,12 +575,12 @@ body.is-ready .page-section {
     bottom: 0;
     left: 0;
     z-index: 4;
-    height: clamp(150px, 19vh, 260px);
+    height: clamp(120px, 16vh, 220px);
     content: "";
     background:
-        linear-gradient(174deg, transparent 0 28%, rgba(246, 252, 255, 0.72) 29% 36%, #fff 37% 58%, rgba(255, 255, 255, 0) 100%),
+        linear-gradient(174deg, transparent 0 34%, rgba(246, 252, 255, 0.62) 35% 41%, #fff 42% 62%, rgba(255, 255, 255, 0) 100%),
         linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.72) 52%, rgba(255, 255, 255, 0) 100%);
-    clip-path: polygon(0 68%, 100% 52%, 100% 100%, 0 100%);
+    clip-path: polygon(0 76%, 100% 44%, 100% 100%, 0 100%);
     pointer-events: none;
 }
 
@@ -619,11 +663,11 @@ body.has-video .video-poster {
 
 .track-band {
     position: absolute;
-    right: -22vw;
+    right: -34vw;
     bottom: -3vh;
-    left: -22vw;
+    left: -34vw;
     z-index: 3;
-    height: clamp(150px, 23vh, 270px);
+    height: clamp(180px, 25vh, 300px);
     overflow: hidden;
     border-radius: 48% 52% 42% 58% / 38% 42% 30% 32%;
     background:
@@ -636,20 +680,28 @@ body.has-video .video-poster {
         inset 0 10px 0 rgba(255, 255, 255, 0.9),
         inset 0 -24px 36px rgba(134, 203, 238, 0.16),
         0 -10px 30px rgba(129, 198, 234, 0.16);
-    transform: rotate(-8deg) translateY(16%);
+    transform: rotate(-6deg) translateY(18%);
     transform-origin: 50% 50%;
 }
 
 .track-band.reverse {
-    transform: rotate(8deg) translateY(16%);
+    transform: rotate(6deg) translateY(18%);
+}
+
+.intro-section .track-band,
+.character-section .track-band,
+.media-section .track-band {
+    bottom: -5vh;
+    z-index: 2;
+    opacity: 0.9;
 }
 
 .video-section .track-band {
-    right: -32vw;
-    bottom: -7vh;
-    left: -32vw;
+    right: -42vw;
+    bottom: -11vh;
+    left: -42vw;
     z-index: 3;
-    height: clamp(210px, 28vh, 360px);
+    height: clamp(230px, 28vh, 380px);
     border-radius: 48% 52% 28% 30% / 30% 34% 18% 20%;
     background:
         radial-gradient(circle at 14% 22%, rgba(255, 255, 255, 0.95) 0 2px, transparent 3px),
@@ -657,7 +709,7 @@ body.has-video .video-poster {
         radial-gradient(circle at 78% 32%, rgba(255, 255, 255, 0.82) 0 2px, transparent 3px),
         linear-gradient(170deg, transparent 0 30%, rgba(126, 194, 235, 0.15) 31% 39%, transparent 40%),
         linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, #fbfeff 52%, #edf9ff 100%);
-    transform: rotate(-6.5deg) translateY(18%);
+    transform: rotate(-6deg) translateY(26%);
 }
 
 .track-band::before {
@@ -689,7 +741,7 @@ body.has-video .video-poster {
 
 .scroll-frog {
     position: fixed;
-    z-index: 3;
+    z-index: 5;
     left: var(--frog-x, 14vw);
     top: var(--frog-y, 58vh);
     width: clamp(128px, 19vw, 230px);
@@ -699,6 +751,7 @@ body.has-video .video-poster {
     transform: translate(-50%, -50%) rotate(var(--frog-rotate, -10deg));
     transition: opacity 0.18s ease, filter 0.18s ease;
     pointer-events: none;
+    will-change: transform, opacity;
 }
 
 .intro-section,
@@ -712,7 +765,7 @@ body.has-video .video-poster {
     z-index: auto;
     min-height: 86vh;
     margin-top: -1px;
-    padding: clamp(150px, 17vh, 210px) 24px 132px;
+    padding: clamp(250px, 26vh, 330px) 24px 128px;
     background:
         radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.74) 0 3px, transparent 4px),
         radial-gradient(circle at 31% 38%, rgba(255, 255, 255, 0.48) 0 4px, transparent 5px),
@@ -750,7 +803,7 @@ body.has-video .video-poster {
 
 .intro-layout {
     position: relative;
-    z-index: 6;
+    z-index: 8;
     display: grid;
     width: min(1560px, 88vw);
     grid-template-columns: minmax(280px, 0.52fr) minmax(520px, 1fr);
@@ -893,44 +946,75 @@ body.has-video .video-poster {
 
 .intro-content {
     position: relative;
+    z-index: 12;
     display: grid;
     justify-items: start;
     order: 1;
+    padding: 18px 20px 20px;
+    border-radius: 18px;
+    background: rgba(248, 253, 255, 0.62);
+    backdrop-filter: blur(4px);
     text-shadow: 0 3px 12px rgba(55, 127, 165, 0.18);
 }
 
 .intro-label {
-    margin: 0 0 10px;
+    order: 2;
+    margin: 20px 0 0;
     color: #2f4732;
-    font-size: clamp(19px, 1.8vw, 27px);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(18px, 1.8vw, 27px);
     font-weight: 900;
+    line-height: 1.15;
     letter-spacing: 0;
+    text-shadow: none;
 }
 
-.intro-content .section-title {
+.intro-headline {
+    order: 3;
+    margin: 8px 0 0;
     color: #113143;
-    font-size: clamp(48px, 4.3vw, 84px);
-    text-shadow: 0 4px 0 rgba(255, 255, 255, 0.76);
+    font-family: 'OngleipParkDahyeon', "Comic Sans MS", cursive;
+    font-size: clamp(42px, 4.4vw, 82px);
+    font-weight: normal;
+    line-height: 0.98;
+    letter-spacing: 0;
+    text-shadow: 0 4px 0 rgba(255, 255, 255, 0.68);
+}
+
+.intro-section-title,
+.character-section-title {
+    position: absolute;
+    top: clamp(98px, 10vh, 126px);
+    left: max(24px, calc((100vw - min(1500px, 88vw)) / 2));
+    z-index: 6;
+    color: #113143;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(28px, 3vw, 52px);
+    font-weight: 900;
+    text-shadow: 0 3px 0 rgba(255, 255, 255, 0.52);
     text-align: left;
-    line-height: 1.02;
+    line-height: 1;
+    white-space: nowrap;
 }
 
 .intro-copy {
     position: relative;
     z-index: 4;
+    order: 4;
     width: min(560px, 100%);
-    margin: 24px 0 0;
+    margin: 16px 0 0;
     color: rgba(17, 49, 67, 0.82);
     font-size: clamp(18px, 1.5vw, 25px);
     font-weight: 900;
     line-height: 1.42;
     text-align: left;
+    white-space: pre-line;
 }
 
 .media-section,
 .news-section {
     min-height: 88vh;
-    padding: 112px 24px 132px;
+    padding: 108px 24px 128px;
     background:
         radial-gradient(circle at 18% 20%, rgba(142, 220, 255, 0.28), transparent 34%),
         linear-gradient(180deg, #ffffff 0%, #eefaff 48%, #dff4ff 100%);
@@ -1125,25 +1209,12 @@ body.has-video .video-poster {
 .character-section {
     align-content: center;
     min-height: 100vh;
-    padding: 110px 24px 230px;
+    padding: 118px 24px 250px;
     background:
         radial-gradient(circle at 16% 24%, rgba(255, 255, 255, 0.2) 0 3px, transparent 4px),
         radial-gradient(circle at 78% 18%, rgba(255, 255, 255, 0.18) 0 4px, transparent 5px),
         radial-gradient(circle at 58% 74%, rgba(255, 255, 255, 0.14) 0 6px, transparent 7px),
         linear-gradient(180deg, #8edcff 0%, #b8e2fb 44%, #f8fdff 100%);
-}
-
-.character-section-title {
-    position: absolute;
-    top: clamp(96px, 12vh, 140px);
-    left: max(24px, calc((100vw - min(1500px, 88vw)) / 2));
-    z-index: 6;
-    color: #113143;
-    font-size: clamp(58px, 7vw, 118px);
-    line-height: 0.9;
-    text-align: left;
-    text-shadow: 0 5px 0 rgba(255, 255, 255, 0.58);
-    white-space: nowrap;
 }
 
 .character-layout {
@@ -1226,8 +1297,10 @@ body.has-video .video-poster {
 .character-roster {
     position: relative;
     display: grid;
+    align-self: start;
     justify-items: start;
     order: 1;
+    padding-top: clamp(28px, 4vh, 52px);
 }
 
 .character-roster .section-title {
@@ -1243,13 +1316,9 @@ body.has-video .video-poster {
     line-height: 1.35;
 }
 
-.character-section .track-band {
-    display: none;
-}
-
 .character-carousel {
     position: absolute;
-    bottom: 24px;
+    bottom: clamp(68px, 8vh, 104px);
     left: 50%;
     z-index: 7;
     display: flex;
@@ -1540,14 +1609,15 @@ body.has-video .video-poster {
 @media (max-width: 760px) {
     .site-header {
         min-height: 62px;
-        grid-template-columns: 96px 1fr auto;
+        grid-template-columns: 104px 1fr auto;
         align-items: center;
         gap: 10px;
         padding: 10px 12px;
     }
 
-    .header-logo {
-        width: 88px;
+    .header-logo-link {
+        width: 96px;
+        height: 44px;
     }
 
     .nav {
@@ -1596,7 +1666,7 @@ body.has-video .video-poster {
 
     .page-section {
         min-height: 72vh;
-        padding-top: 84px;
+        padding: 90px 18px 118px;
     }
 
     .trailer-wrap {
@@ -1613,7 +1683,7 @@ body.has-video .video-poster {
 
     .intro-section {
         min-height: 100vh;
-        padding: 132px 18px 128px;
+        padding: 156px 18px 118px;
     }
 
     .intro-layout {
@@ -1668,15 +1738,24 @@ body.has-video .video-poster {
         order: 1;
     }
 
-    .intro-content .section-title,
+    .intro-headline,
     .intro-copy {
         text-align: center;
+    }
+
+    .intro-section-title,
+    .character-section-title {
+        top: 86px;
+        left: 50%;
+        font-size: clamp(24px, 8vw, 38px);
+        text-align: center;
+        transform: translateX(-50%);
     }
 
     .media-section,
     .news-section {
         min-height: auto;
-        padding: 96px 18px 130px;
+        padding: 96px 18px 118px;
     }
 
     .media-wrap,
@@ -1703,15 +1782,7 @@ body.has-video .video-poster {
     }
 
     .character-section {
-        padding: 126px 16px 150px;
-    }
-
-    .character-section-title {
-        top: 86px;
-        left: 50%;
-        font-size: clamp(48px, 15vw, 78px);
-        text-align: center;
-        transform: translateX(-50%);
+        padding: 126px 16px 180px;
     }
 
     .character-layout {
@@ -1731,6 +1802,7 @@ body.has-video .video-poster {
     }
 
     .character-roster {
+        padding-top: 0;
         justify-items: center;
         order: 1;
         text-align: center;
@@ -1754,7 +1826,7 @@ body.has-video .video-poster {
     }
 
     .character-carousel {
-        bottom: 14px;
+        bottom: 44px;
         gap: 14px;
     }
 

@@ -15,7 +15,10 @@
     </main>
 
     <header class="site-header">
-        <img class="header-logo" src="images/logo_whitestroke.png" alt="썰매 게임">
+        <a class="header-logo-link" href="#trailer" aria-label="썰매 게임 홈">
+            <img class="header-logo header-logo-frog" src="images/hover_frog_alt.png" alt="썰매 게임">
+            <img class="header-logo header-logo-wordmark" src="images/logo_whitestroke.png" alt="">
+        </a>
         <nav class="nav" aria-label="주요 메뉴">
             <a href="#intro">게임 소개</a>
             <a href="#characters">캐릭터</a>
@@ -68,7 +71,7 @@
     <section class="page-section video-section" id="trailer">
         <div class="trailer-wrap">
             <video class="hero-video" autoplay muted loop playsinline>
-                <source src="Sledding Game - Official Early Access Release Date Trailer _ The Triple-i Initiative Showcase 2026.mp4" type="video/mp4">
+                <source src="히어로 영상 (1).mp4" type="video/mp4">
             </video>
             <div class="video-poster" aria-hidden="true"></div>
         </div>
@@ -82,16 +85,17 @@
     </section>
 
     <section class="page-section intro-section" id="intro">
+        <h2 class="section-title intro-section-title">게임 소개</h2>
         <div class="intro-layout">
             <div class="intro-showcase" aria-label="게임 소개 영상">
                 <video class="intro-video" autoplay muted loop playsinline>
-                    <source src="20260516-0520-43.7799556.mp4" type="video/mp4">
+                    <source src="캐릭꾸미기.mp4" type="video/mp4">
                 </video>
             </div>
             <div class="intro-content">
-                <p class="intro-label">우당탕 눈길 레이스</p>
-                <h2 class="section-title">게임 소개</h2>
-                <p class="intro-copy">친구들과 썰매에 올라 눈길을 달려보세요. 방향을 틀고, 점프하고, 서로 부딪히며 끝까지 굴러가는 유쾌한 겨울 레이스가 기다립니다.</p>
+                <p class="intro-label">멋진 외관을 꾸며보세요!</p>
+                <p class="intro-headline">다양한 캐릭터 장식과 썰매 아이템</p>
+                <p class="intro-copy">포인트를 적립해 나만의 개성이 담긴 스타일을 완성해보세요.</p>
             </div>
         </div>
         <button class="intro-arrow intro-prev" type="button" aria-label="이전 소개">‹</button>
@@ -101,6 +105,7 @@
             <button class="intro-dot" type="button" aria-label="두 번째 소개" aria-pressed="false"></button>
             <button class="intro-dot" type="button" aria-label="세 번째 소개" aria-pressed="false"></button>
         </div>
+        <div class="track-band reverse" aria-hidden="true"></div>
     </section>
 
     <section class="page-section character-section" id="characters">
@@ -207,6 +212,6 @@
     <img class="scroll-frog" src="images/frog3.png" alt="">
     <audio class="soundtrack-audio" src="Sledding Game_ Alfalfa - Original Soundtrack.mp3" preload="auto" loop></audio>
 
-    <script src="script.js?v=intro-slides"></script>
+    <script src="script.js?v=intro-text-visible"></script>
 </body>
 </html>

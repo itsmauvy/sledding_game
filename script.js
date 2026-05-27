@@ -189,15 +189,35 @@ const translations = {
     }
 };
 const introVideos = [
-    '20260516-0520-43.7799556.mp4',
-    'download.mp4',
-    '제목 없는 디자인.mp4'
+    '캐릭꾸미기.mp4',
+    '미니게임.mp4',
+    'download.mp4'
+];
+const koreanIntroSlides = [
+    {
+        label: '멋진 외관을 꾸며보세요!',
+        headline: '다양한 캐릭터 장식과 썰매 아이템',
+        title: '게임 소개',
+        copy: '포인트를 적립해 나만의 개성이 담긴 스타일을 완성해보세요.'
+    },
+    {
+        label: '다양한 미니게임을 즐겨보세요!',
+        headline: '친구들과 함께 재밌는 겨울 액티비티',
+        title: '게임 소개',
+        copy: '눈싸움, 컬링, 다트 등 다양한 활동으로 친구들과 특별한 시간을 보내보세요.'
+    },
+    {
+        label: '전설의 물고기를 잡아라!',
+        headline: '함께라서 더 즐거운 낚시',
+        title: '게임 소개',
+        copy: '잡은 물고기를 친구들에게 자랑하고 최고의 낚시꾼이 되어보세요.'
+    }
 ];
 const frogRuns = [
-    { section: document.querySelector('.video-section'), fromRight: true, startFactor: 0.72, endFactor: 0.5 },
-    { section: document.querySelector('.intro-section'), fromRight: false, lowRoad: true },
-    { section: document.querySelector('.character-section'), fromRight: true },
-    { section: document.querySelector('.media-section'), fromRight: false }
+    { section: document.querySelector('.video-section'), fromRight: true, startAt: 0, endAt: 0.92, viewportLead: 0, startY: 0.7, endY: 0.88 },
+    { section: document.querySelector('.intro-section'), fromRight: false, startAt: 0.18, endAt: 0.82, viewportLead: 0.18, startY: 0.68, endY: 0.84 },
+    { section: document.querySelector('.character-section'), fromRight: true, startAt: 0.16, endAt: 0.8, viewportLead: 0.18, startY: 0.68, endY: 0.84 },
+    { section: document.querySelector('.media-section'), fromRight: false, startAt: 0.16, endAt: 0.8, viewportLead: 0.18, startY: 0.68, endY: 0.84 }
 ];
 
 window.setTimeout(() => {
@@ -213,13 +233,15 @@ musicButton.setAttribute('aria-pressed', 'false');
 musicButton.setAttribute('aria-label', '음악 켜기');
 
 function updateIntroText(copy, index = currentIntroIndex) {
-    const slide = copy.introSlides?.[index] || {
+    const introSlides = copy.htmlLang === 'ko' ? koreanIntroSlides : copy.introSlides;
+    const slide = introSlides?.[index] || {
         label: copy.introLabel,
         title: copy.introTitle,
         copy: copy.introCopy
     };
-    const introTitle = document.querySelector('.intro-section .section-title');
+    const introTitle = document.querySelector('.intro-section-title');
     const introLabel = document.querySelector('.intro-label');
+    const introHeadline = document.querySelector('.intro-headline');
     const introCopy = document.querySelector('.intro-copy');
 
     if (introLabel) {
@@ -227,6 +249,9 @@ function updateIntroText(copy, index = currentIntroIndex) {
     }
     if (introTitle) {
         introTitle.textContent = slide.title;
+    }
+    if (introHeadline) {
+        introHeadline.textContent = slide.headline || '';
     }
     if (introCopy) {
         introCopy.textContent = slide.copy;
@@ -344,6 +369,7 @@ characterNext.addEventListener('click', () => {
 });
 
 selectCharacter(currentCharacterIndex);
+updateIntroText(translations[currentLanguage] || translations.ko, currentIntroIndex);
 
 function setIntroDot(index) {
     currentIntroIndex = (index + introDots.length) % introDots.length;
@@ -474,9 +500,12 @@ function updateScrollFrog() {
     let progress = 0;
 
     frogRuns.some((run) => {
-        const trackY = run.section.offsetTop + run.section.offsetHeight;
-        const start = trackY - window.innerHeight * (run.startFactor ?? 1.45);
-        const end = trackY + window.innerHeight * (run.endFactor ?? 0.22);
+        if (!run.section) {
+            return false;
+        }
+
+        const start = run.section.offsetTop + run.section.offsetHeight * (run.startAt ?? 0.25) - window.innerHeight * (run.viewportLead ?? 0.25);
+        const end = run.section.offsetTop + run.section.offsetHeight * (run.endAt ?? 0.85);
         const runProgress = (window.scrollY - start) / (end - start);
 
         if (runProgress >= 0 && runProgress <= 1) {
@@ -493,26 +522,34 @@ function updateScrollFrog() {
         return;
     }
 
-    const eased = gentleStep(progress);
+    const eased = smoothstep(progress);
     const fadeIn = clamp(progress / 0.24, 0, 1);
     const fadeOut = clamp((1 - progress) / 0.28, 0, 1);
     const visible = fadeIn * fadeOut;
-    const wave = Math.sin(eased * Math.PI);
-    const xStart = activeRun.fromRight ? 104 : -4;
-    const xEnd = activeRun.fromRight ? -4 : 104;
+    const direction = activeRun.fromRight ? 1 : -1;
+    const xStart = activeRun.fromRight ? 108 : -8;
+    const xEnd = activeRun.fromRight ? -8 : 108;
     const x = xStart + (xEnd - xStart) * eased;
-    const y = activeRun.lowRoad ? 88 + wave * 1.5 : 35 + eased * 35 + wave * 2.5;
-    const rotate = activeRun.fromRight ? 12 + eased * 5 : -12 - eased * 5;
+    const yStart = window.innerHeight * (activeRun.startY ?? 0.34);
+    const yEnd = window.innerHeight * (activeRun.endY ?? 0.22);
+    const y = yStart + (yEnd - yStart) * eased;
+    const slopeAngle = Math.atan2(yEnd - yStart, (xEnd - xStart) * window.innerWidth / 100) * 180 / Math.PI;
+    const rotate = slopeAngle + (activeRun.fromRight ? 180 : 0);
 
     scrollFrog.style.setProperty('--frog-opacity', visible);
     scrollFrog.style.setProperty('--frog-x', `${x.toFixed(2)}vw`);
-    scrollFrog.style.setProperty('--frog-y', `${y.toFixed(2)}vh`);
+    scrollFrog.style.setProperty('--frog-y', `${y.toFixed(2)}px`);
     scrollFrog.style.setProperty('--frog-rotate', `${rotate.toFixed(2)}deg`);
 }
 
-updateScrollFrog();
-window.addEventListener('scroll', updateScrollFrog, { passive: true });
-window.addEventListener('resize', () => {
+if (scrollFrog) {
     updateScrollFrog();
+    window.addEventListener('scroll', updateScrollFrog, { passive: true });
+}
+
+window.addEventListener('resize', () => {
+    if (scrollFrog) {
+        updateScrollFrog();
+    }
     updateCharacterWindow(currentCharacterIndex);
 });
