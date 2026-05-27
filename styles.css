@@ -994,6 +994,7 @@ body.has-video .video-poster {
 .media-grid {
     display: grid;
     gap: 18px;
+    min-height: clamp(360px, 42vw, 540px);
 }
 
 .media-panel {
@@ -1014,7 +1015,7 @@ body.has-video .video-poster {
 
 .media-card {
     position: relative;
-    min-height: 250px;
+    height: 250px;
     overflow: hidden;
     border: 7px solid #f8fdff;
     border-radius: 8px;
@@ -1023,24 +1024,25 @@ body.has-video .video-poster {
 }
 
 .media-card.featured {
-    min-height: clamp(360px, 42vw, 540px);
+    height: clamp(360px, 42vw, 540px);
     grid-row: span 2;
 }
 
 .media-panel[data-media-panel="video"] .media-card:not(.featured) {
-    min-height: calc((clamp(360px, 42vw, 540px) - 18px) / 2);
+    height: calc((clamp(360px, 42vw, 540px) - 18px) / 2);
 }
 
 .media-panel[data-media-panel="image"] .media-card {
-    min-height: clamp(220px, 20vw, 320px);
+    height: clamp(220px, 20vw, 320px);
 }
 
 .media-card video,
 .media-card img {
+    position: absolute;
+    inset: 0;
     display: block;
     width: 100%;
     height: 100%;
-    min-height: inherit;
     object-fit: cover;
     filter: saturate(1.06) contrast(1.03);
 }
@@ -1168,17 +1170,7 @@ body.has-video .video-poster {
 }
 
 .character-stage::before {
-    position: absolute;
-    right: auto;
-    bottom: 3%;
-    left: 46%;
-    width: min(74%, 420px);
-    height: 18%;
-    content: "";
-    border-radius: 50%;
-    background: rgba(55, 127, 165, 0.16);
-    filter: blur(3px);
-    transform: translateX(-50%);
+    content: none;
 }
 
 .character-preview {
@@ -1204,8 +1196,8 @@ body.has-video .video-poster {
     border: 0;
     border-radius: 0;
     background-image: var(--large-character);
-    background-position: var(--large-character-position, center calc(100% - 18px));
-    background-size: var(--large-character-size, 76%);
+    background-position: var(--large-character-position, calc(50% - 24px) calc(100% - 18px));
+    background-size: var(--large-character-size, 96%);
     filter: drop-shadow(0 28px 26px rgba(22, 70, 96, 0.22));
     box-shadow: none;
 }
@@ -1696,13 +1688,14 @@ body.has-video .video-poster {
     .media-panel[data-media-panel="image"],
     .news-grid {
         grid-template-columns: 1fr;
+        min-height: 0;
     }
 
     .media-card,
     .media-card.featured,
     .media-panel[data-media-panel="video"] .media-card:not(.featured),
     .media-panel[data-media-panel="image"] .media-card {
-        min-height: 230px;
+        height: 230px;
     }
 
     .news-card {
