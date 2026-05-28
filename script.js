@@ -56,11 +56,16 @@ const characterTiles = document.querySelectorAll('.character-tile');
 const characterPrev = document.querySelector('.character-carousel-button.prev');
 const characterNext = document.querySelector('.character-carousel-button.next');
 const characterPreviewFace = document.querySelector('.character-preview .character-face');
+const characterPreview = document.querySelector('.character-preview');
 const characterName = document.querySelector('.character-name');
 const characterTag = document.querySelector('.character-tag');
+const newsSection = document.querySelector('.news-section');
+const newsCards = document.querySelectorAll('.news-card');
 let currentCharacterIndex = 0;
 let currentIntroIndex = 0;
 let currentLanguage = document.documentElement.lang || 'ko';
+let activeNewsCardIndex = 0;
+let newsFrogPlayer = null;
 const translations = {
     ko: {
         htmlLang: 'ko',
@@ -285,7 +290,7 @@ function applyMediaItems() {
             return;
         }
 
-        const image = card.querySelector('img');
+        const image = card.querySelector('img:not(.media-perched-frog)');
         const label = card.querySelector('.media-label');
         if (image) {
             image.setAttribute('src', item.src);
@@ -389,6 +394,19 @@ function updateCharacterWindow(index) {
     });
 }
 
+function triggerCharacterJump() {
+    if (!characterPreview) {
+        return;
+    }
+
+    characterPreview.classList.remove('is-jumping');
+    void characterPreview.offsetWidth;
+    characterPreview.classList.add('is-jumping');
+    window.setTimeout(() => {
+        characterPreview.classList.remove('is-jumping');
+    }, 560);
+}
+
 function selectCharacter(index) {
     currentCharacterIndex = (index + characterTiles.length) % characterTiles.length;
     const tile = characterTiles[currentCharacterIndex];
@@ -419,6 +437,7 @@ function selectCharacter(index) {
     characterName.textContent = tile.dataset.name;
     characterTag.textContent = tile.dataset.tag;
     updateCharacterWindow(currentCharacterIndex);
+    triggerCharacterJump();
 }
 
 characterTiles.forEach((tile, index) => {
@@ -560,6 +579,118 @@ function clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
 }
 
+function ensureNewsFrogPlayer() {
+    if (!newsSection || !newsCards.length) {
+        return null;
+    }
+
+    if (!newsFrogPlayer) {
+        newsFrogPlayer = document.createElement('img');
+        newsFrogPlayer.className = 'news-frog-player';
+        newsFrogPlayer.src = 'images/frog3.png';
+        newsFrogPlayer.alt = '';
+        newsSection.append(newsFrogPlayer);
+    }
+
+    return newsFrogPlayer;
+}
+
+function setNewsFrogTarget(index) {
+    newsCards.forEach((card, cardIndex) => {
+        card.classList.toggle('is-news-frog-target', cardIndex === index);
+    });
+}
+
+function placeNewsFrog(index, motion = 'hop') {
+    const frog = ensureNewsFrogPlayer();
+
+    if (!frog) {
+        return;
+    }
+
+    activeNewsCardIndex = clamp(index, 0, newsCards.length - 1);
+    const targetCard = newsCards[activeNewsCardIndex];
+    const sectionRect = newsSection.getBoundingClientRect();
+    const cardRect = targetCard.getBoundingClientRect();
+    const x = cardRect.left - sectionRect.left + cardRect.width * 0.82;
+    const y = cardRect.top - sectionRect.top + Math.min(cardRect.height * 0.34, 104);
+
+    frog.style.setProperty('--news-frog-x', `${x}px`);
+    frog.style.setProperty('--news-frog-y', `${y}px`);
+    frog.style.setProperty('--news-frog-rotate', activeNewsCardIndex % 2 ? '-7deg' : '5deg');
+    setNewsFrogTarget(activeNewsCardIndex);
+
+    if (motion) {
+        frog.classList.remove('is-hopping', 'is-falling');
+        void frog.offsetWidth;
+        frog.classList.add(motion === 'fall' ? 'is-falling' : 'is-hopping');
+    }
+}
+
+function moveNewsFrog(delta) {
+    if (!newsSection || !newsCards.length) {
+        return;
+    }
+
+    const nextIndex = clamp(activeNewsCardIndex + delta, 0, newsCards.length - 1);
+
+    if (nextIndex === activeNewsCardIndex) {
+        placeNewsFrog(activeNewsCardIndex, 'hop');
+        return;
+    }
+
+    const frog = ensureNewsFrogPlayer();
+    const currentRect = newsCards[activeNewsCardIndex].getBoundingClientRect();
+    const nextRect = newsCards[nextIndex].getBoundingClientRect();
+    const sectionRect = newsSection.getBoundingClientRect();
+    const gapX = (currentRect.left + currentRect.width / 2 + nextRect.left + nextRect.width / 2) / 2 - sectionRect.left;
+    const gapY = Math.max(currentRect.bottom, nextRect.bottom) - sectionRect.top + 18;
+
+    if (frog) {
+        frog.style.setProperty('--news-frog-x', `${gapX}px`);
+        frog.style.setProperty('--news-frog-y', `${gapY}px`);
+        frog.style.setProperty('--news-frog-rotate', delta > 0 ? '15deg' : '-15deg');
+        frog.classList.remove('is-hopping', 'is-falling');
+        void frog.offsetWidth;
+        frog.classList.add('is-falling');
+    }
+
+    window.setTimeout(() => {
+        placeNewsFrog(nextIndex, 'hop');
+    }, 230);
+}
+
+document.addEventListener('keydown', (event) => {
+    if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
+        return;
+    }
+
+    if (!newsSection) {
+        return;
+    }
+
+    const rect = newsSection.getBoundingClientRect();
+    const newsIsVisible = rect.top < window.innerHeight * 0.92 && rect.bottom > window.innerHeight * 0.08;
+
+    if (!newsIsVisible) {
+        return;
+    }
+
+    event.preventDefault();
+
+    if (event.key === 'ArrowLeft') {
+        moveNewsFrog(-1);
+    } else if (event.key === 'ArrowRight') {
+        moveNewsFrog(1);
+    } else if (event.key === 'ArrowDown') {
+        placeNewsFrog(activeNewsCardIndex, 'fall');
+    } else {
+        placeNewsFrog(activeNewsCardIndex, 'hop');
+    }
+});
+
+placeNewsFrog(activeNewsCardIndex, '');
+
 function smoothstep(value) {
     return value * value * (3 - 2 * value);
 }
@@ -625,4 +756,5 @@ window.addEventListener('resize', () => {
         updateScrollFrog();
     }
     updateCharacterWindow(currentCharacterIndex);
+    placeNewsFrog(activeNewsCardIndex, '');
 });

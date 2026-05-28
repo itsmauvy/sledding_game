@@ -1220,6 +1220,28 @@ body.has-video .video-poster {
     box-shadow: 0 10px 0 #9fd2eb, 0 24px 34px rgba(55, 127, 165, 0.18);
 }
 
+.media-perched-frog {
+    position: absolute;
+    top: -82px;
+    left: -30px;
+    z-index: 4;
+    width: clamp(86px, 9vw, 134px);
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 16px 16px rgba(22, 70, 96, 0.2));
+    pointer-events: none;
+    transform: rotate(-2deg);
+}
+
+.media-card.featured {
+    overflow: visible;
+}
+
+.media-card.featured video,
+.media-card.featured img:not(.media-perched-frog) {
+    border-radius: 1px;
+}
+
 .media-card.featured {
     height: clamp(360px, 42vw, 540px);
     grid-row: span 2;
@@ -1242,6 +1264,18 @@ body.has-video .video-poster {
     height: 100%;
     object-fit: cover;
     filter: saturate(1.06) contrast(1.03);
+}
+
+.media-card .media-perched-frog {
+    inset: auto auto auto auto;
+    top: -76px;
+    left: -26px;
+    display: block;
+    width: clamp(86px, 8.2vw, 126px);
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 14px 14px rgba(22, 70, 96, 0.22));
+    transform: rotate(-2deg);
 }
 
 .media-card.image-card {
@@ -1291,6 +1325,39 @@ body.has-video .video-poster {
     color: #113143;
     box-shadow: 0 6px 0 #9fd2eb, 0 16px 24px rgba(55, 127, 165, 0.12);
     transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+.news-card.is-news-frog-target {
+    box-shadow:
+        0 5px 0 #2f4732,
+        0 18px 30px rgba(55, 127, 165, 0.18);
+}
+
+.news-frog-player {
+    position: absolute;
+    left: var(--news-frog-x, 50%);
+    top: var(--news-frog-y, 180px);
+    z-index: 8;
+    width: clamp(70px, 7vw, 112px);
+    aspect-ratio: 1.35;
+    object-fit: contain;
+    opacity: 0.98;
+    pointer-events: none;
+    filter: drop-shadow(0 16px 14px rgba(22, 70, 96, 0.22));
+    transform: translate(-50%, -88%) rotate(var(--news-frog-rotate, 0deg));
+    transform-origin: 50% 78%;
+    transition:
+        left 0.26s ease,
+        top 0.26s ease,
+        transform 0.26s ease;
+}
+
+.news-frog-player.is-hopping {
+    animation: news-frog-hop 0.42s cubic-bezier(0.2, 1.7, 0.42, 1);
+}
+
+.news-frog-player.is-falling {
+    animation: news-frog-fall 0.48s ease-in-out;
 }
 
 .news-card:hover {
@@ -1409,6 +1476,32 @@ body.has-video .video-poster {
     display: grid;
     justify-items: center;
     width: min(560px, 92%);
+}
+
+.character-preview::after {
+    position: absolute;
+    left: 50%;
+    bottom: 7%;
+    z-index: 1;
+    width: clamp(180px, 24vw, 360px);
+    height: clamp(42px, 6vw, 88px);
+    content: "";
+    background:
+        radial-gradient(circle at 16% 56%, rgba(255, 255, 255, 0.96) 0 7px, transparent 8px),
+        radial-gradient(circle at 34% 38%, rgba(255, 255, 255, 0.84) 0 5px, transparent 6px),
+        radial-gradient(circle at 56% 62%, rgba(255, 255, 255, 0.9) 0 8px, transparent 9px),
+        radial-gradient(circle at 78% 42%, rgba(255, 255, 255, 0.78) 0 5px, transparent 6px);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-50%) scale(0.76);
+}
+
+.character-preview.is-jumping .character-face {
+    animation: character-pop 0.52s cubic-bezier(0.18, 1.65, 0.4, 1);
+}
+
+.character-preview.is-jumping::after {
+    animation: character-poof 0.52s ease-out;
 }
 
 .character-preview .character-face {
@@ -1762,6 +1855,66 @@ body.has-video .video-poster {
     40% {
         opacity: 1;
         transform: translateY(-0.18em);
+    }
+}
+
+@keyframes character-pop {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+
+    42% {
+        transform: translateY(-34px) scale(1.05, 0.95) rotate(-2deg);
+    }
+
+    68% {
+        transform: translateY(8px) scale(0.96, 1.04) rotate(1deg);
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes character-poof {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.55);
+    }
+
+    38% {
+        opacity: 0.82;
+        transform: translateX(-50%) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) scale(1.35);
+    }
+}
+
+@keyframes news-frog-hop {
+    0%,
+    100% {
+        transform: translate(-50%, -88%) rotate(var(--news-frog-rotate, 0deg));
+    }
+
+    48% {
+        transform: translate(-50%, -132%) rotate(calc(var(--news-frog-rotate, 0deg) - 5deg));
+    }
+}
+
+@keyframes news-frog-fall {
+    0% {
+        transform: translate(-50%, -88%) rotate(var(--news-frog-rotate, 0deg));
+    }
+
+    46% {
+        transform: translate(-50%, -18%) rotate(calc(var(--news-frog-rotate, 0deg) + 18deg));
+    }
+
+    100% {
+        transform: translate(-50%, -88%) rotate(var(--news-frog-rotate, 0deg));
     }
 }
 
