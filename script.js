@@ -196,7 +196,7 @@ const introVideos = [
 const koreanIntroSlides = [
     {
         label: '멋진 외관을 꾸며보세요!',
-        headline: '다양한 캐릭터 장식과 썰매 아이템',
+        headline: '캐릭터 장식과 썰매 아이템',
         title: '게임 소개',
         copy: '포인트를 적립해 나만의 개성이 담긴 스타일을 완성해보세요.'
     },
@@ -369,10 +369,20 @@ characterNext.addEventListener('click', () => {
 });
 
 selectCharacter(currentCharacterIndex);
-updateIntroText(translations[currentLanguage] || translations.ko, currentIntroIndex);
 
 function setIntroDot(index) {
+    const introSection = document.querySelector('.intro-section');
     currentIntroIndex = (index + introDots.length) % introDots.length;
+    if (introSection) {
+        introSection.dataset.introSlide = String(currentIntroIndex);
+        introSection.classList.remove('is-swapping');
+        window.requestAnimationFrame(() => {
+            introSection.classList.add('is-swapping');
+            window.setTimeout(() => {
+                introSection.classList.remove('is-swapping');
+            }, 220);
+        });
+    }
     introDots.forEach((item, itemIndex) => {
         const selected = itemIndex === currentIntroIndex;
         item.classList.toggle('is-active', selected);
@@ -405,11 +415,7 @@ introNext.addEventListener('click', () => {
     setIntroDot((activeIndex + 1) % introDots.length);
 });
 
-introDots.forEach((dot, index) => {
-    dot.addEventListener('mouseenter', () => {
-        setIntroDot(index);
-    });
-});
+setIntroDot(currentIntroIndex);
 
 if (heroCta) {
     heroCta.addEventListener('pointerenter', () => heroCta.classList.add('is-hovered'));
