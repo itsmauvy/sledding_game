@@ -39,6 +39,19 @@ const introPrev = document.querySelector('.intro-prev');
 const introNext = document.querySelector('.intro-next');
 const mediaTabs = document.querySelectorAll('.media-chip');
 const mediaPanels = document.querySelectorAll('.media-panel');
+const mediaVideoItems = [
+    { src: 'media/best sled (2).mp4', label: '최고의 썰매' },
+    { src: 'media/silly fwog disappear.mp4', label: '사라지는 개구리' },
+    { src: '20260516-0520-43.7799556.mp4', label: '파티 타임' }
+];
+const mediaImageItems = [
+    { src: 'media/media1.webp', label: '단체 사진', alt: 'Sledding Game 단체 사진 이미지' },
+    { src: 'media/media2.webp', label: '낚시 모임', alt: 'Sledding Game 낚시 모임 이미지' },
+    { src: 'media/media3.webp', label: '베스트 듀오', alt: 'Sledding Game 베스트 듀오 이미지' },
+    { src: 'media/media4.webp', label: '눈사람과 나', alt: 'Sledding Game 눈사람과 나 이미지' },
+    { src: 'media/media5.webp', label: '한잔의 여유', alt: 'Sledding Game 한잔의 여유 이미지' },
+    { src: 'media/image.webp', label: '깐지', alt: 'Sledding Game 깐지 이미지' }
+];
 const characterTiles = document.querySelectorAll('.character-tile');
 const characterPrev = document.querySelector('.character-carousel-button.prev');
 const characterNext = document.querySelector('.character-carousel-button.next');
@@ -231,6 +244,60 @@ heroVideo.addEventListener('canplay', () => {
 soundtrackAudio.volume = 0.42;
 musicButton.setAttribute('aria-pressed', 'false');
 musicButton.setAttribute('aria-label', '음악 켜기');
+
+function applyMediaItems() {
+    const videoPanel = document.querySelector('[data-media-panel="video"]');
+    const imagePanel = document.querySelector('[data-media-panel="image"]');
+    const firstVideoCard = videoPanel?.querySelector('.media-card');
+    const firstImageCard = imagePanel?.querySelector('.media-card');
+
+    while (videoPanel && firstVideoCard && videoPanel.querySelectorAll('.media-card').length < mediaVideoItems.length) {
+        videoPanel.appendChild(firstVideoCard.cloneNode(true));
+    }
+
+    while (imagePanel && firstImageCard && imagePanel.querySelectorAll('.media-card').length < mediaImageItems.length) {
+        imagePanel.appendChild(firstImageCard.cloneNode(true));
+    }
+
+    document.querySelectorAll('[data-media-panel="video"] .media-card').forEach((card, index) => {
+        const item = mediaVideoItems[index];
+        if (!item) {
+            card.remove();
+            return;
+        }
+
+        const source = card.querySelector('source');
+        const video = card.querySelector('video');
+        const label = card.querySelector('.media-label');
+        if (source && source.getAttribute('src') !== item.src) {
+            source.setAttribute('src', item.src);
+            video?.load();
+        }
+        if (label) {
+            label.textContent = item.label;
+        }
+    });
+
+    document.querySelectorAll('[data-media-panel="image"] .media-card').forEach((card, index) => {
+        const item = mediaImageItems[index];
+        if (!item) {
+            card.remove();
+            return;
+        }
+
+        const image = card.querySelector('img');
+        const label = card.querySelector('.media-label');
+        if (image) {
+            image.setAttribute('src', item.src);
+            image.setAttribute('alt', item.alt);
+        }
+        if (label) {
+            label.textContent = item.label;
+        }
+    });
+}
+
+applyMediaItems();
 
 function updateIntroText(copy, index = currentIntroIndex) {
     const introSlides = copy.htmlLang === 'ko' ? koreanIntroSlides : copy.introSlides;

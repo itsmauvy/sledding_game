@@ -928,7 +928,7 @@ body.has-video .video-poster {
 
 .intro-dots {
     position: absolute;
-    top: clamp(202px, 20vh, 236px);
+    top: clamp(232px, 23vh, 268px);
     left: 50%;
     z-index: 15;
     display: flex;
@@ -1207,7 +1207,7 @@ body.has-video .video-poster {
 }
 
 .media-panel[data-media-panel="image"] {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .media-card {
@@ -1230,7 +1230,7 @@ body.has-video .video-poster {
 }
 
 .media-panel[data-media-panel="image"] .media-card {
-    height: clamp(220px, 20vw, 320px);
+    height: clamp(260px, 25vw, 380px);
 }
 
 .media-card video,
@@ -1305,21 +1305,8 @@ body.has-video .video-poster {
     padding: clamp(28px, 3vw, 42px);
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(223, 244, 255, 0.74) 52%, rgba(248, 253, 255, 0.96) 100%),
-        url("images/hover_frog_alt.png") center 18% / min(58%, 360px) auto no-repeat,
+        url("images/frog_celebrate.png") center center / cover no-repeat,
         #dff4ff;
-}
-
-.news-card-featured::after {
-    position: absolute;
-    right: -24px;
-    bottom: -28px;
-    width: 150px;
-    height: 118px;
-    content: "";
-    background: url("images/frog1.png") center / contain no-repeat;
-    opacity: 0.14;
-    transform: rotate(-10deg);
-    pointer-events: none;
 }
 
 .news-meta {
