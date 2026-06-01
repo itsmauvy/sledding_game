@@ -42,6 +42,9 @@ const introPrev = document.querySelector('.intro-prev');
 const introNext = document.querySelector('.intro-next');
 const mediaTabs = document.querySelectorAll('.media-chip');
 const mediaPanels = document.querySelectorAll('.media-panel');
+const mediaWrap = document.querySelector('.media-wrap');
+const mediaImagePanel = document.querySelector('[data-media-panel="image"]');
+const mediaSledScroll = document.querySelector('.media-sled-scroll');
 const mediaVideoItems = [
     { src: 'media/best sled (2).mp4', label: '최고의 썰매' },
     { src: 'media/silly fwog disappear.mp4', label: '사라지는 개구리' },
@@ -68,6 +71,8 @@ let currentIntroIndex = 0;
 let currentLanguage = document.documentElement.lang || 'ko';
 let activeNewsCardIndex = 0;
 let newsFrogPlayer = null;
+let mediaSledTargetScroll = 0;
+let mediaSledAnimationFrame = null;
 const translations = {
     ko: {
         htmlLang: 'ko',
@@ -259,6 +264,63 @@ function applyMediaItems() {
 
 applyMediaItems();
 
+function updateMediaSledScroll() {
+    if (!mediaWrap || !mediaImagePanel) {
+        return;
+    }
+
+    const maxScroll = mediaImagePanel.scrollWidth - mediaImagePanel.clientWidth;
+    const progress = maxScroll > 0 ? mediaImagePanel.scrollLeft / maxScroll : 0;
+    mediaWrap.style.setProperty('--media-sled-progress', clamp(progress, 0, 1).toFixed(4));
+}
+
+function stopMediaSledAnimation() {
+    if (mediaSledAnimationFrame !== null) {
+        window.cancelAnimationFrame(mediaSledAnimationFrame);
+        mediaSledAnimationFrame = null;
+    }
+}
+
+function animateMediaImageScroll() {
+    if (!mediaImagePanel) {
+        return;
+    }
+
+    const delta = mediaSledTargetScroll - mediaImagePanel.scrollLeft;
+    if (Math.abs(delta) < 0.7) {
+        mediaImagePanel.scrollLeft = mediaSledTargetScroll;
+        updateMediaSledScroll();
+        mediaSledAnimationFrame = null;
+        return;
+    }
+
+    mediaImagePanel.scrollLeft += delta * 0.22;
+    updateMediaSledScroll();
+    mediaSledAnimationFrame = window.requestAnimationFrame(animateMediaImageScroll);
+}
+
+function glideMediaImageScroll(targetScroll) {
+    if (!mediaImagePanel) {
+        return;
+    }
+
+    const maxScroll = mediaImagePanel.scrollWidth - mediaImagePanel.clientWidth;
+    mediaSledTargetScroll = clamp(targetScroll, 0, maxScroll);
+    if (mediaSledAnimationFrame === null) {
+        mediaSledAnimationFrame = window.requestAnimationFrame(animateMediaImageScroll);
+    }
+}
+
+function setMediaImageScrollFromPoint(clientX) {
+    if (!mediaSledScroll || !mediaImagePanel) {
+        return;
+    }
+
+    const rect = mediaSledScroll.getBoundingClientRect();
+    const progress = clamp((clientX - rect.left) / rect.width, 0, 1);
+    glideMediaImageScroll(progress * (mediaImagePanel.scrollWidth - mediaImagePanel.clientWidth));
+}
+
 function setupMediaPanelDrag() {
     const draggablePanels = document.querySelectorAll('[data-media-panel="image"]');
 
@@ -287,7 +349,9 @@ function setupMediaPanelDrag() {
             }
 
             event.preventDefault();
+            stopMediaSledAnimation();
             panel.scrollLeft = startScrollLeft - (event.clientX - startX);
+            updateMediaSledScroll();
         });
 
         function endDrag() {
@@ -306,10 +370,60 @@ function setupMediaPanelDrag() {
         panel.addEventListener('pointerup', endDrag);
         panel.addEventListener('pointercancel', endDrag);
         panel.addEventListener('pointerleave', endDrag);
+        panel.addEventListener('scroll', updateMediaSledScroll, { passive: true });
     });
 }
 
 setupMediaPanelDrag();
+
+function setupMediaSledScrollbar() {
+    if (!mediaSledScroll || !mediaImagePanel) {
+        return;
+    }
+
+    let isDragging = false;
+    let pointerId = null;
+
+    mediaSledScroll.addEventListener('pointerdown', (event) => {
+        if (event.button !== 0) {
+            return;
+        }
+
+        isDragging = true;
+        pointerId = event.pointerId;
+        mediaSledScroll.classList.add('is-dragging');
+        mediaSledScroll.setPointerCapture(pointerId);
+        setMediaImageScrollFromPoint(event.clientX);
+    });
+
+    mediaSledScroll.addEventListener('pointermove', (event) => {
+        if (!isDragging) {
+            return;
+        }
+
+        setMediaImageScrollFromPoint(event.clientX);
+    });
+
+    function endSledDrag() {
+        if (!isDragging) {
+            return;
+        }
+
+        isDragging = false;
+        mediaSledScroll.classList.remove('is-dragging');
+        if (pointerId !== null && mediaSledScroll.hasPointerCapture(pointerId)) {
+            mediaSledScroll.releasePointerCapture(pointerId);
+        }
+        pointerId = null;
+    }
+
+    mediaSledScroll.addEventListener('pointerup', endSledDrag);
+    mediaSledScroll.addEventListener('pointercancel', endSledDrag);
+    mediaSledScroll.addEventListener('pointerleave', endSledDrag);
+}
+
+setupMediaSledScrollbar();
+updateMediaSledScroll();
 
 function updateIntroText(copy, index = currentIntroIndex) {
     const introSlides = copy.htmlLang === 'ko' ? koreanIntroSlides : copy.introSlides;
@@ -577,6 +691,7 @@ mediaTabs.forEach((tab) => {
         mediaPanels.forEach((panel) => {
             panel.classList.toggle('is-active', panel.dataset.mediaPanel === target);
         });
+        window.requestAnimationFrame(updateMediaSledScroll);
     });
 });
 

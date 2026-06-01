@@ -1233,6 +1233,71 @@ body.is-ready .page-section.video-section {
     pointer-events: none;
 }
 
+.media-sled-scroll {
+    position: relative;
+    z-index: 8;
+    display: none;
+    width: min(620px, 58vw);
+    height: 72px;
+    margin: -4px auto 0;
+    cursor: pointer;
+    pointer-events: auto;
+    touch-action: none;
+}
+
+.media-wrap:has(.media-panel[data-media-panel="image"].is-active) .media-sled-scroll {
+    display: block;
+}
+
+.media-sled-track {
+    position: absolute;
+    right: 0;
+    bottom: 16px;
+    left: 0;
+    height: 14px;
+    border-radius: 999px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(223, 244, 255, 0.92)),
+        #f8fdff;
+    box-shadow:
+        inset 0 2px 0 rgba(255, 255, 255, 0.86),
+        0 5px 0 rgba(159, 210, 235, 0.72),
+        0 14px 24px rgba(55, 127, 165, 0.15);
+}
+
+.media-sled-track::before {
+    position: absolute;
+    inset: -8px 0 auto;
+    height: 12px;
+    content: "";
+    border-radius: 999px;
+    background:
+        radial-gradient(circle at 18% 50%, rgba(255, 255, 255, 0.96) 0 2px, transparent 3px),
+        radial-gradient(circle at 48% 50%, rgba(255, 255, 255, 0.8) 0 2px, transparent 3px),
+        radial-gradient(circle at 79% 50%, rgba(255, 255, 255, 0.88) 0 2px, transparent 3px);
+    opacity: 0.72;
+}
+
+.media-sled-thumb {
+    position: absolute;
+    left: calc(var(--media-sled-progress, 0) * (100% - clamp(84px, 7.4vw, 108px)));
+    bottom: 0;
+    width: clamp(84px, 7.4vw, 108px);
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 13px 10px rgba(22, 70, 96, 0.28));
+    transform: translateY(-25px) rotate(calc(-5deg + (var(--media-sled-progress, 0) * 10deg)));
+    transform-origin: 50% 86%;
+    transition: transform 0.16s ease, filter 0.16s ease;
+    pointer-events: none;
+}
+
+.media-panel[data-media-panel="image"].is-dragging ~ .media-sled-scroll .media-sled-thumb,
+.media-sled-scroll.is-dragging .media-sled-thumb {
+    filter: drop-shadow(0 17px 12px rgba(22, 70, 96, 0.32));
+    transform: translateY(-30px) rotate(calc(-7deg + (var(--media-sled-progress, 0) * 14deg))) scale(1.05);
+}
+
 .media-card {
     position: relative;
     height: 250px;
