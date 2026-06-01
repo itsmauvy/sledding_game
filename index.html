@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>썰매 게임</title>
-    <link rel="stylesheet" href="styles.css?v=remove-tree-frog-character">
+    <link rel="preload" as="image" href="images/sledding_hero.jpg">
+    <link rel="stylesheet" href="styles.css?v=game-loader-dissolve">
 </head>
 <body>
     <main class="loader-screen" aria-label="게임 로딩 중">
@@ -68,9 +69,7 @@
     </header>
 
     <section class="page-section video-section" id="trailer">
-        <div class="trailer-wrap">
-            <img class="hero-image" src="images/sledding_hero.jpg" alt="">
-        </div>
+        <div class="trailer-wrap" role="img" aria-label="Sledding Game hero image"></div>
         <div class="hero-content">
             <p class="hero-kicker">같이 굴러야 더 재밌다</p>
             <h1 class="hero-title">친구들과 썰매 타고 놀자</h1>
@@ -233,6 +232,6 @@
     </div>
     <audio class="soundtrack-audio" src="Sledding Game_ Alfalfa - Original Soundtrack.mp3" preload="auto" loop></audio>
 
-    <script src="script.js?v=remove-tree-frog-character"></script>
+    <script src="script.js?v=game-loader-dissolve"></script>
 </body>
 </html>

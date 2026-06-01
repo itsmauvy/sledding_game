@@ -260,7 +260,7 @@ function applyMediaItems() {
 applyMediaItems();
 
 function setupMediaPanelDrag() {
-    const draggablePanels = document.querySelectorAll('.media-panel');
+    const draggablePanels = document.querySelectorAll('[data-media-panel="image"]');
 
     draggablePanels.forEach((panel) => {
         let isDragging = false;

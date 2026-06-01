@@ -20,6 +20,7 @@
 html {
     min-height: 100%;
     overflow-y: auto;
+    scrollbar-gutter: stable;
     scroll-behavior: smooth;
 }
 
@@ -45,46 +46,34 @@ body.has-trailer-modal {
     display: grid;
     place-items: center;
     overflow: hidden;
-    background: transparent;
+    background:
+        radial-gradient(circle at 50% 45%, rgba(18, 47, 54, 0.34), transparent 34%),
+        #000;
     color: #fff;
     transition:
-        opacity 0.95s cubic-bezier(0.22, 1, 0.36, 1),
-        visibility 0.95s;
-}
-
-.loader-screen::before,
-.loader-screen::after {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 52%;
-    content: "";
-    background: #000;
-    transition: transform 1.05s cubic-bezier(0.76, 0, 0.24, 1);
+        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+        filter 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0.85s;
 }
 
 .loader-screen::before {
-    left: 0;
-    transform-origin: left center;
-}
-
-.loader-screen::after {
-    right: 0;
-    transform-origin: right center;
-}
-
-body.is-ready .loader-screen {
-    opacity: 0;
-    visibility: hidden;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    content: "";
+    background:
+        radial-gradient(circle at 22% 24%, rgba(255, 255, 255, 0.14) 0 2px, transparent 3px),
+        radial-gradient(circle at 68% 38%, rgba(255, 255, 255, 0.12) 0 3px, transparent 4px),
+        radial-gradient(circle at 42% 72%, rgba(142, 220, 255, 0.16) 0 2px, transparent 3px);
+    opacity: 0.78;
     pointer-events: none;
 }
 
-body.is-ready .loader-screen::before {
-    transform: translateX(-102%) skewX(-4deg);
-}
-
-body.is-ready .loader-screen::after {
-    transform: translateX(102%) skewX(-4deg);
+body.is-ready .loader-screen {
+    opacity: 0 !important;
+    filter: blur(10px) saturate(1.08);
+    visibility: hidden !important;
+    pointer-events: none !important;
 }
 
 .loader {
@@ -166,12 +155,21 @@ body.is-ready .page-section {
         transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.18s;
 }
 
+body:not(.is-ready) .page-section.video-section,
+body.is-ready .page-section.video-section {
+    opacity: 1;
+    transform: none;
+}
+
+body.is-ready .page-section.video-section {
+    transition: none;
+}
+
 .site-header::before {
     position: absolute;
     inset: 0;
     z-index: -1;
     content: "";
-    border-bottom: 1px solid rgba(255, 255, 255, 0.28);
     border-radius: 0;
     background: rgba(13, 39, 45, 0.42);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 10px 28px rgba(13, 39, 45, 0.18);
@@ -533,7 +531,7 @@ body.is-ready .page-section {
     z-index: 4;
     margin: 0;
     font-family: 'OngleipParkDahyeon', "Comic Sans MS", cursive;
-    font-size: clamp(52px, 8vw, 104px);
+    font-size: clamp(48px, 7vw, 92px);
     font-weight: normal;
     letter-spacing: 0;
     text-align: center;
@@ -570,13 +568,20 @@ body.is-ready .page-section {
 
 .trailer-wrap {
     position: absolute;
-    inset: 0;
+    top: 0;
+    bottom: 0;
+    left: 50%;
     z-index: 2;
-    width: 100%;
+    width: 100vw;
     height: 100%;
     aspect-ratio: auto;
     overflow: hidden;
+    background: url("images/sledding_hero.jpg") center top / cover no-repeat;
     opacity: 1;
+    transform: translate3d(-50%, 0, 0);
+    transition: none;
+    will-change: auto;
+    contain: layout paint size;
 }
 
 .trailer-wrap::after {
@@ -635,14 +640,6 @@ body.is-ready .page-section {
 .hero-content .cta {
     min-width: min(42vw, 300px);
     margin-top: 0;
-}
-
-.hero-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center top;
-    filter: none;
 }
 
 .track-band {
@@ -749,7 +746,7 @@ body.is-ready .page-section {
     z-index: 2;
     min-height: 86vh;
     margin-top: -1px;
-    padding: clamp(310px, 31vh, 390px) 24px 128px;
+    padding: clamp(282px, 28vh, 350px) 24px 128px;
     background:
         radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.74) 0 3px, transparent 4px),
         radial-gradient(circle at 31% 38%, rgba(255, 255, 255, 0.48) 0 4px, transparent 5px),
@@ -793,7 +790,7 @@ body.is-ready .page-section {
     grid-template-columns: minmax(420px, 0.62fr) minmax(520px, 1fr);
     align-items: center;
     gap: clamp(44px, 7vw, 112px);
-    margin-top: clamp(84px, 10vh, 132px);
+    margin-top: clamp(72px, 8vh, 112px);
 }
 
 .intro-showcase {
@@ -912,7 +909,7 @@ body.is-ready .page-section {
 
 .intro-dots {
     position: absolute;
-    top: clamp(278px, 27vh, 326px);
+    top: clamp(248px, 24vh, 292px);
     left: 50%;
     z-index: 15;
     display: flex;
@@ -1013,7 +1010,7 @@ body.is-ready .page-section {
     z-index: 14;
     color: #113143;
     font-family: 'OngleipParkDahyeon', "Comic Sans MS", cursive;
-    font-size: clamp(52px, 8vw, 104px);
+    font-size: clamp(48px, 7vw, 92px);
     font-weight: normal;
     text-shadow: 0 4px 0 rgba(255, 255, 255, 0.68);
     text-align: center;
@@ -1023,7 +1020,7 @@ body.is-ready .page-section {
 }
 
 .intro-section-title {
-    top: clamp(130px, 13vh, 156px);
+    top: clamp(118px, 12vh, 140px);
 }
 
 .intro-section.is-swapping .intro-showcase {
@@ -1110,7 +1107,7 @@ body.is-ready .page-section {
 
 .media-section,
 .news-section {
-    min-height: 88vh;
+    min-height: 90vh;
     padding: 108px 24px 128px;
     background:
         radial-gradient(circle at 18% 20%, rgba(142, 220, 255, 0.28), transparent 34%),
@@ -1122,8 +1119,16 @@ body.is-ready .page-section {
     position: relative;
     z-index: 5;
     display: grid;
-    width: min(1280px, 88vw);
-    gap: 26px;
+    width: min(1480px, 88vw);
+    gap: clamp(28px, 3vw, 44px);
+}
+
+.media-wrap {
+    --media-card-gap: 22px;
+    --media-track-width: min(1640px, 88vw);
+    --media-card-height: clamp(360px, 26vw, 450px);
+    --media-card-width: calc((var(--media-track-width) - (var(--media-card-gap) * 2)) / 3);
+    width: var(--media-track-width);
 }
 
 .section-kicker {
@@ -1176,8 +1181,9 @@ body.is-ready .page-section {
 
 .media-grid {
     display: grid;
-    gap: 18px;
-    min-height: clamp(360px, 42vw, 540px);
+    gap: var(--media-card-gap);
+    min-height: var(--media-card-height);
+    overflow: visible;
 }
 
 .media-panel {
@@ -1189,25 +1195,24 @@ body.is-ready .page-section {
 }
 
 .media-panel[data-media-panel="video"] {
-    grid-template-columns: 1.25fr 0.85fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .media-panel[data-media-panel="image"] {
     grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.media-panel[data-media-panel="video"].is-active,
 .media-panel[data-media-panel="image"].is-active {
     position: relative;
     z-index: 5;
     display: flex;
-    gap: 22px;
+    gap: var(--media-card-gap);
     align-items: stretch;
-    padding: 82px max(24px, calc((100vw - min(1280px, 88vw)) / 2)) 22px;
-    margin: 0 calc(-1 * max(24px, calc((100vw - min(1280px, 88vw)) / 2))) -22px;
+    padding: 78px max(24px, calc((100vw - var(--media-track-width)) / 2)) 22px;
+    margin: -78px calc(-1 * max(24px, calc((100vw - var(--media-track-width)) / 2))) -22px;
     overflow-x: auto;
     overflow-y: visible;
-    scroll-padding-inline: max(24px, calc((100vw - min(1280px, 88vw)) / 2));
+    scroll-padding-inline: max(24px, calc((100vw - var(--media-track-width)) / 2));
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
     cursor: grab;
@@ -1219,13 +1224,11 @@ body.is-ready .page-section {
     display: none;
 }
 
-.media-panel[data-media-panel="video"].is-active.is-dragging,
 .media-panel[data-media-panel="image"].is-active.is-dragging {
     cursor: grabbing;
     scroll-snap-type: none;
 }
 
-.media-panel[data-media-panel="video"].is-active.is-dragging .media-card,
 .media-panel[data-media-panel="image"].is-active.is-dragging .media-card {
     pointer-events: none;
 }
@@ -1267,19 +1270,22 @@ body.is-ready .page-section {
 }
 
 .media-card.featured {
-    height: clamp(420px, 45vw, 620px);
+    height: var(--media-card-height);
     grid-row: auto;
 }
 
 .media-panel[data-media-panel="video"] .media-card:not(.featured) {
-    height: clamp(420px, 45vw, 620px);
+    height: var(--media-card-height);
 }
 
-.media-panel[data-media-panel="video"] .media-card,
 .media-panel[data-media-panel="image"] .media-card {
-    flex: 0 0 min(760px, 78vw);
-    height: clamp(420px, 45vw, 620px);
+    flex: 0 0 var(--media-card-width);
+    height: var(--media-card-height);
     scroll-snap-align: center;
+}
+
+.media-panel[data-media-panel="video"] .media-card {
+    height: var(--media-card-height);
 }
 
 .media-card video,
@@ -1295,8 +1301,8 @@ body.is-ready .page-section {
 
 .media-card .media-perched-frog {
     inset: auto auto auto auto;
-    top: -76px;
-    left: -26px;
+    top: -74px;
+    left: -22px;
     display: block;
     width: clamp(86px, 8.2vw, 126px);
     height: auto;
@@ -1329,20 +1335,21 @@ body.is-ready .page-section {
 
 .news-grid {
     display: grid;
-    grid-template-columns: minmax(360px, 0.95fr) minmax(460px, 1.05fr);
+    grid-template-columns: minmax(460px, 1fr) minmax(560px, 1.12fr);
     align-items: stretch;
-    gap: 18px;
+    gap: clamp(20px, 2vw, 30px);
 }
 
 .news-list {
     display: grid;
-    gap: 14px;
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    gap: clamp(16px, 1.6vw, 22px);
 }
 
 .news-card {
     position: relative;
     min-height: 0;
-    padding: 22px 24px;
+    padding: clamp(26px, 2.4vw, 36px);
     overflow: hidden;
     border: 3px solid rgba(248, 253, 255, 0.94);
     border-radius: 8px;
@@ -1395,8 +1402,8 @@ body.is-ready .page-section {
 .news-card-featured {
     display: grid;
     align-content: end;
-    min-height: clamp(360px, 38vw, 500px);
-    padding: clamp(28px, 3vw, 42px);
+    min-height: clamp(460px, 34vw, 600px);
+    padding: clamp(34px, 3.2vw, 52px);
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(223, 244, 255, 0.74) 52%, rgba(248, 253, 255, 0.96) 100%),
         url("images/frog_celebrate.png") center center / cover no-repeat,
@@ -1423,7 +1430,7 @@ body.is-ready .page-section {
     z-index: 2;
     display: block;
     font-family: 'OngleipParkDahyeon', "Comic Sans MS", cursive;
-    font-size: clamp(28px, 2.5vw, 44px);
+    font-size: clamp(32px, 2.7vw, 50px);
     font-weight: normal;
     line-height: 1;
     word-break: keep-all;
@@ -1434,7 +1441,7 @@ body.is-ready .page-section {
     z-index: 2;
     margin: 12px 0 0;
     color: rgba(17, 49, 67, 0.68);
-    font-size: clamp(14px, 1.12vw, 17px);
+    font-size: clamp(14px, 1.06vw, 18px);
     font-weight: 600;
     line-height: 1.55;
     word-break: keep-all;
@@ -1460,8 +1467,8 @@ body.is-ready .page-section {
 
 .character-section {
     align-content: start;
-    min-height: 100vh;
-    padding: clamp(132px, 14vh, 172px) 24px 220px;
+    min-height: 94vh;
+    padding: clamp(118px, 12vh, 148px) 24px clamp(148px, 15vh, 204px);
     background:
         radial-gradient(circle at 16% 24%, rgba(255, 255, 255, 0.2) 0 3px, transparent 4px),
         radial-gradient(circle at 78% 18%, rgba(255, 255, 255, 0.18) 0 4px, transparent 5px),
@@ -1478,14 +1485,14 @@ body.is-ready .page-section {
     align-items: center;
     justify-items: center;
     gap: 0;
-    margin: clamp(56px, 6.5vh, 96px) auto 0;
+    margin: clamp(44px, 5.2vh, 78px) auto 0;
 }
 
 .character-stage {
     position: relative;
     display: grid;
     width: 100%;
-    min-height: clamp(340px, 42vh, 560px);
+    min-height: clamp(360px, 42vh, 560px);
     place-items: center;
     order: 1;
     overflow: visible;
@@ -1505,6 +1512,7 @@ body.is-ready .page-section {
     display: grid;
     justify-items: center;
     width: min(700px, 96%);
+    transform: translateY(clamp(-34px, -3vh, -18px));
 }
 
 .character-preview::after {
@@ -1543,8 +1551,8 @@ body.is-ready .page-section {
 }
 
 .character-preview .character-face.has-large {
-    width: clamp(360px, 42vw, 660px);
-    height: clamp(390px, 46vw, 720px);
+    width: clamp(330px, 38vw, 600px);
+    height: clamp(360px, 42vw, 660px);
     border: 0;
     border-radius: 0;
     background-image: var(--large-character);
@@ -1558,9 +1566,9 @@ body.is-ready .page-section {
     margin: 0;
     color: #113143;
     font-family: 'OngleipParkDahyeon', "Comic Sans MS", cursive;
-    font-size: clamp(64px, 8vw, 128px);
+    font-size: clamp(56px, 6.6vw, 104px);
     font-weight: normal;
-    line-height: 0.82;
+    line-height: 0.96;
     text-align: center;
     text-transform: none;
     text-shadow: 0 5px 0 rgba(255, 255, 255, 0.58);
@@ -1601,7 +1609,7 @@ body.is-ready .page-section {
 
 .character-carousel {
     position: absolute;
-    bottom: clamp(24px, 4vh, 56px);
+    bottom: clamp(18px, 2.8vh, 38px);
     left: 50%;
     z-index: 7;
     display: flex;
@@ -2011,6 +2019,17 @@ body.is-ready .page-section {
     }
 }
 
+@media (max-width: 1440px) and (min-width: 761px) {
+    .media-wrap {
+        --media-track-width: min(1280px, 90vw);
+        --media-card-height: clamp(300px, 25vw, 360px);
+    }
+
+    .media-label {
+        font-size: clamp(18px, 1.45vw, 23px);
+    }
+}
+
 @media (max-width: 760px) {
     .site-header {
         min-height: 62px;
@@ -2197,6 +2216,11 @@ body.is-ready .page-section {
         width: min(620px, 92vw);
     }
 
+    .media-wrap {
+        --media-track-width: min(620px, 92vw);
+        --media-card-height: 300px;
+    }
+
     .media-panel[data-media-panel="video"],
     .media-panel[data-media-panel="image"],
     .news-grid {
@@ -2204,10 +2228,13 @@ body.is-ready .page-section {
         min-height: 0;
     }
 
-    .media-panel[data-media-panel="video"].is-active,
+    .news-list {
+        grid-template-rows: none;
+    }
+
     .media-panel[data-media-panel="image"].is-active {
-        padding-top: 74px;
-        margin-top: 0;
+        padding-top: 58px;
+        margin-top: -58px;
     }
 
     .news-card-featured {
@@ -2223,12 +2250,17 @@ body.is-ready .page-section {
         height: 300px;
     }
 
+    .media-panel[data-media-panel="video"] {
+        grid-template-columns: 1fr;
+    }
+
     .news-card {
         padding: 20px 18px;
     }
 
     .character-section {
-        padding: 126px 16px 176px;
+        min-height: auto;
+        padding: 126px 16px 168px;
     }
 
     .character-layout {
@@ -2239,8 +2271,12 @@ body.is-ready .page-section {
     }
 
     .character-stage {
-        min-height: 280px;
+        min-height: 300px;
         order: 1;
+    }
+
+    .character-preview {
+        transform: translateY(-12px);
     }
 
     .character-preview .character-face {
@@ -2257,7 +2293,8 @@ body.is-ready .page-section {
     }
 
     .character-name {
-        font-size: clamp(70px, 22vw, 118px);
+        font-size: clamp(54px, 17vw, 86px);
+        line-height: 1;
         text-align: center;
     }
 
@@ -2274,7 +2311,7 @@ body.is-ready .page-section {
     }
 
     .character-carousel {
-        bottom: 28px;
+        bottom: 34px;
         gap: 14px;
     }
 
