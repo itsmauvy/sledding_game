@@ -410,11 +410,14 @@ function triggerCharacterJump() {
     }
 
     characterPreview.classList.remove('is-jumping');
+    characterPreviewFace.classList.remove('is-bouncing');
     void characterPreview.offsetWidth;
     characterPreview.classList.add('is-jumping');
+    characterPreviewFace.classList.add('is-bouncing');
     window.setTimeout(() => {
         characterPreview.classList.remove('is-jumping');
-    }, 560);
+        characterPreviewFace.classList.remove('is-bouncing');
+    }, 860);
 }
 
 function selectCharacter(index) {
@@ -461,6 +464,17 @@ characterPrev.addEventListener('click', () => {
 
 characterNext.addEventListener('click', () => {
     selectCharacter(currentCharacterIndex + 1);
+});
+
+characterPreviewFace.setAttribute('role', 'button');
+characterPreviewFace.setAttribute('tabindex', '0');
+characterPreviewFace.setAttribute('aria-label', '캐릭터 모션 보기');
+characterPreviewFace.addEventListener('click', triggerCharacterJump);
+characterPreviewFace.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        triggerCharacterJump();
+    }
 });
 
 selectCharacter(currentCharacterIndex);

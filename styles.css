@@ -1534,11 +1534,11 @@ body.is-ready .page-section.video-section {
 }
 
 .character-preview.is-jumping .character-face {
-    animation: character-pop 0.52s cubic-bezier(0.18, 1.65, 0.4, 1);
+    animation: character-pop 0.82s cubic-bezier(0.16, 1.55, 0.35, 1);
 }
 
 .character-preview.is-jumping::after {
-    animation: character-poof 0.52s ease-out;
+    animation: character-poof 0.72s ease-out;
 }
 
 .character-preview .character-face {
@@ -1560,6 +1560,17 @@ body.is-ready .page-section.video-section {
     background-size: var(--large-character-size, 96%);
     filter: drop-shadow(0 28px 26px rgba(22, 70, 96, 0.22));
     box-shadow: none;
+}
+
+.character-preview .character-face.has-large {
+    cursor: pointer;
+    transform-origin: 50% 88%;
+}
+
+.character-preview .character-face.has-large:hover,
+.character-preview .character-face.has-large:focus-visible {
+    outline: 0;
+    filter: drop-shadow(0 34px 28px rgba(22, 70, 96, 0.26)) saturate(1.04);
 }
 
 .character-name {
@@ -1961,15 +1972,23 @@ body.is-ready .page-section.video-section {
 
 @keyframes character-pop {
     0% {
-        transform: translateY(0) scale(1);
+        transform: translateY(0) scale(0.98, 1.02) rotate(0deg);
     }
 
-    42% {
-        transform: translateY(-34px) scale(1.05, 0.95) rotate(-2deg);
+    18% {
+        transform: translateY(12px) scale(1.08, 0.88) rotate(1deg);
     }
 
-    68% {
-        transform: translateY(8px) scale(0.96, 1.04) rotate(1deg);
+    48% {
+        transform: translateY(-72px) scale(0.94, 1.08) rotate(-4deg);
+    }
+
+    70% {
+        transform: translateY(10px) scale(1.07, 0.9) rotate(2deg);
+    }
+
+    84% {
+        transform: translateY(-18px) scale(0.98, 1.03) rotate(-1deg);
     }
 
     100% {
@@ -1991,6 +2010,24 @@ body.is-ready .page-section.video-section {
     100% {
         opacity: 0;
         transform: translateX(-50%) scale(1.35);
+    }
+}
+
+@keyframes profile-tile-nod {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+
+    42% {
+        transform: translateY(-8px) scale(1.08) rotate(-4deg);
+    }
+
+    72% {
+        transform: translateY(3px) scale(0.96, 1.04) rotate(2deg);
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
     }
 }
 
@@ -2017,6 +2054,10 @@ body.is-ready .page-section.video-section {
     100% {
         transform: translate(-50%, -88%) rotate(var(--news-frog-rotate, 0deg));
     }
+}
+
+.character-tile.is-selected .character-face {
+    animation: profile-tile-nod 0.68s cubic-bezier(0.2, 1.45, 0.42, 1);
 }
 
 @media (max-width: 1440px) and (min-width: 761px) {
