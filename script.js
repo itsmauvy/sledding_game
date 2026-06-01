@@ -24,14 +24,17 @@ if (isPageReload) {
 }
 
 const body = document.body;
-const heroVideo = document.querySelector('.hero-video');
+const trailerOpenButton = document.querySelector('.trailer-open-button');
+const trailerModal = document.querySelector('.trailer-modal');
+const trailerModalVideo = document.querySelector('.trailer-modal-video');
+const trailerCloseButtons = document.querySelectorAll('.trailer-close-button, .trailer-modal-backdrop');
 const scrollFrog = document.querySelector('.scroll-frog');
 const soundtrackAudio = document.querySelector('.soundtrack-audio');
 const languagePicker = document.querySelector('.language-picker');
 const languageButton = document.querySelector('.language-button');
 const languageOptions = document.querySelectorAll('.language-option');
 const musicButton = document.querySelector('.music-button');
-const heroCta = document.querySelector('.hero-content .cta');
+const heroCtaButtons = document.querySelectorAll('.hero-content .cta');
 const introVideo = document.querySelector('.intro-video');
 const introVideoSource = document.querySelector('.intro-video source');
 const introDots = document.querySelectorAll('.intro-dot');
@@ -50,7 +53,7 @@ const mediaImageItems = [
     { src: 'media/media3.webp', label: '베스트 듀오', alt: 'Sledding Game 베스트 듀오 이미지' },
     { src: 'media/media4.webp', label: '눈사람과 나', alt: 'Sledding Game 눈사람과 나 이미지' },
     { src: 'media/media5.webp', label: '한잔의 여유', alt: 'Sledding Game 한잔의 여유 이미지' },
-    { src: 'media/image.webp', label: '깐지', alt: 'Sledding Game 깐지 이미지' }
+    { src: 'media/image.webp', label: '간지난다', alt: 'Sledding Game 간지난다 이미지' }
 ];
 const characterTiles = document.querySelectorAll('.character-tile');
 const characterPrev = document.querySelector('.character-carousel-button.prev');
@@ -58,7 +61,6 @@ const characterNext = document.querySelector('.character-carousel-button.next');
 const characterPreviewFace = document.querySelector('.character-preview .character-face');
 const characterPreview = document.querySelector('.character-preview');
 const characterName = document.querySelector('.character-name');
-const characterTag = document.querySelector('.character-tag');
 const newsSection = document.querySelector('.news-section');
 const newsCards = document.querySelectorAll('.news-card');
 let currentCharacterIndex = 0;
@@ -79,6 +81,7 @@ const translations = {
         loadingLabel: '게임 로딩 중',
         nav: ['게임 소개', '캐릭터', '미디어', '뉴스'],
         play: '플레이 하기',
+        trailer: '게임 영상 보기',
         kicker: '같이 굴러야 더 재밌다',
         heroTitle: '친구들과 썰매 타고 놀자',
         heroCopy: '썰매 타고, 눈싸움하고, 부딪히며 노는<br>가장 유쾌한 겨울 놀이터',
@@ -125,6 +128,7 @@ const translations = {
         loadingLabel: 'Game loading',
         nav: ['About', 'Characters', 'Media', 'News'],
         play: 'Play Now',
+        trailer: 'Watch Trailer',
         kicker: 'Rolling together is better',
         heroTitle: 'Go Sledding With Friends',
         heroCopy: 'Sled, throw snowballs, bump around,<br>and enjoy the happiest winter playground',
@@ -158,52 +162,6 @@ const translations = {
         characterGridLabel: 'Choose character',
         media: 'Media',
         news: 'News'
-    },
-    ja: {
-        htmlLang: 'ja',
-        title: 'そりすべりゲーム',
-        logoAlt: 'そりすべりゲーム',
-        navLabel: 'メインメニュー',
-        settingsLabel: 'ヘッダー設定',
-        languageLabel: '言語を選択',
-        musicOn: '音楽をオン',
-        musicOff: '音楽をオフ',
-        loadingLabel: 'ゲームを読み込み中',
-        nav: ['ゲーム紹介', 'キャラクター', 'メディア', 'ニュース'],
-        play: 'プレイする',
-        kicker: '一緒に転がるほど楽しい',
-        heroTitle: '友だちとそりで遊ぼう',
-        heroCopy: 'そりに乗って、雪玉を投げて、ぶつかって遊ぶ<br>最高に楽しい冬の遊び場',
-        introVideoLabel: 'ゲーム紹介映像',
-        introDotsLabel: '紹介を選択',
-        prevIntro: '前の紹介',
-        nextIntro: '次の紹介',
-        introDotLabels: ['1つ目の紹介', '2つ目の紹介', '3つ目の紹介'],
-        introLabel: 'どたばた雪道レース',
-        introTitle: 'ゲーム紹介',
-        introCopy: '友だちとそりに乗って雪道を走りましょう。曲がって、跳んで、ぶつかって、最後まで転がる楽しい冬のレースが待っています。',
-        introSlides: [
-            {
-                label: 'どたばた雪道レース',
-                title: 'ゲーム紹介',
-                copy: '友だちとそりに乗って雪道を走りましょう。曲がって、跳んで、ぶつかって、最後まで転がる楽しい冬のレースが待っています。'
-            },
-            {
-                label: '冬のたまり場',
-                title: '友だちと準備しよう',
-                copy: 'あたたかい部屋で仲間と集まり、お気に入りのキャラクターを選んで、雪の世界へ出かける準備をしましょう。'
-            },
-            {
-                label: '雪原のラストスパート',
-                title: 'ゴールまで滑ろう',
-                copy: '広い雪原では小さなミスも楽しい思い出に。スピードに乗って、最後まで元気に滑り抜けましょう。'
-            }
-        ],
-        characters: 'キャラクター紹介',
-        characterCopy: '好きな仲間を選んで雪道を滑りましょう。どのキャラクターも同じコースを少し違う表情で走ります。',
-        characterGridLabel: 'キャラクターを選択',
-        media: 'メディア',
-        news: 'ニュース'
     }
 };
 const introVideos = [
@@ -214,7 +172,7 @@ const introVideos = [
 const koreanIntroSlides = [
     {
         label: '멋진 외관을 꾸며보세요!',
-        headline: '캐릭터 장식과 썰매 아이템',
+        headline: '다양한 캐릭터 장식과<br>썰매 아이템',
         title: '게임 소개',
         copy: '포인트를 적립해 나만의 개성이 담긴 스타일을 완성해보세요.'
     },
@@ -232,19 +190,12 @@ const koreanIntroSlides = [
     }
 ];
 const frogRuns = [
-    { section: document.querySelector('.video-section'), fromRight: true, startAt: 0, endAt: 0.92, viewportLead: 0, startY: 0.7, endY: 0.88 },
-    { section: document.querySelector('.intro-section'), fromRight: false, startAt: 0.18, endAt: 0.82, viewportLead: 0.18, startY: 0.68, endY: 0.84 },
-    { section: document.querySelector('.character-section'), fromRight: true, startAt: 0.16, endAt: 0.8, viewportLead: 0.18, startY: 0.68, endY: 0.84 },
-    { section: document.querySelector('.media-section'), fromRight: false, startAt: 0.16, endAt: 0.8, viewportLead: 0.18, startY: 0.68, endY: 0.84 }
+    { section: document.querySelector('.video-section'), fromRight: true, startAt: 0, endAt: 0.92, viewportLead: 0, startY: 0.7, endY: 0.88 }
 ];
 
 window.setTimeout(() => {
     body.classList.add('is-ready');
 }, 2400);
-
-heroVideo.addEventListener('canplay', () => {
-    body.classList.add('has-video');
-});
 
 soundtrackAudio.volume = 0.42;
 musicButton.setAttribute('aria-pressed', 'false');
@@ -290,6 +241,10 @@ function applyMediaItems() {
             return;
         }
 
+        if (index > 0) {
+            card.querySelector('.media-perched-frog')?.remove();
+        }
+
         const image = card.querySelector('img:not(.media-perched-frog)');
         const label = card.querySelector('.media-label');
         if (image) {
@@ -303,6 +258,58 @@ function applyMediaItems() {
 }
 
 applyMediaItems();
+
+function setupMediaPanelDrag() {
+    const draggablePanels = document.querySelectorAll('.media-panel');
+
+    draggablePanels.forEach((panel) => {
+        let isDragging = false;
+        let startX = 0;
+        let startScrollLeft = 0;
+        let pointerId = null;
+
+        panel.addEventListener('pointerdown', (event) => {
+            if (event.button !== 0) {
+                return;
+            }
+
+            isDragging = true;
+            pointerId = event.pointerId;
+            startX = event.clientX;
+            startScrollLeft = panel.scrollLeft;
+            panel.classList.add('is-dragging');
+            panel.setPointerCapture(pointerId);
+        });
+
+        panel.addEventListener('pointermove', (event) => {
+            if (!isDragging) {
+                return;
+            }
+
+            event.preventDefault();
+            panel.scrollLeft = startScrollLeft - (event.clientX - startX);
+        });
+
+        function endDrag() {
+            if (!isDragging) {
+                return;
+            }
+
+            isDragging = false;
+            panel.classList.remove('is-dragging');
+            if (pointerId !== null && panel.hasPointerCapture(pointerId)) {
+                panel.releasePointerCapture(pointerId);
+            }
+            pointerId = null;
+        }
+
+        panel.addEventListener('pointerup', endDrag);
+        panel.addEventListener('pointercancel', endDrag);
+        panel.addEventListener('pointerleave', endDrag);
+    });
+}
+
+setupMediaPanelDrag();
 
 function updateIntroText(copy, index = currentIntroIndex) {
     const introSlides = copy.htmlLang === 'ko' ? koreanIntroSlides : copy.introSlides;
@@ -323,7 +330,7 @@ function updateIntroText(copy, index = currentIntroIndex) {
         introTitle.textContent = slide.title;
     }
     if (introHeadline) {
-        introHeadline.textContent = slide.headline || '';
+        introHeadline.innerHTML = slide.headline || '';
     }
     if (introCopy) {
         introCopy.textContent = slide.copy;
@@ -334,9 +341,9 @@ function setLanguage(lang) {
     const copy = translations[lang] || translations.ko;
     currentLanguage = copy.htmlLang;
     const navLinks = document.querySelectorAll('.nav a');
-    const ctaButtons = document.querySelectorAll('.play-link, .cta');
+    const playButtons = document.querySelectorAll('.play-link, .hero-play-link');
+    const trailerButtons = document.querySelectorAll('.trailer-open-button');
     const characterTitle = document.querySelector('.character-section-title');
-    const characterCopy = document.querySelector('.character-copy');
     const characterGrid = document.querySelector('.character-grid');
     const mediaTitle = document.querySelector('.media-section .section-title');
     const newsTitle = document.querySelector('.news-section .section-title');
@@ -360,8 +367,12 @@ function setLanguage(lang) {
         link.textContent = copy.nav[index];
     });
 
-    ctaButtons.forEach((button) => {
+    playButtons.forEach((button) => {
         button.textContent = copy.play;
+    });
+
+    trailerButtons.forEach((button) => {
+        button.textContent = copy.trailer;
     });
 
     document.querySelector('.hero-kicker').textContent = copy.kicker;
@@ -376,7 +387,6 @@ function setLanguage(lang) {
     });
     updateIntroText(copy);
     characterTitle.textContent = copy.characters;
-    characterCopy.textContent = copy.characterCopy;
     characterGrid.setAttribute('aria-label', copy.characterGridLabel);
     mediaTitle.textContent = copy.media;
     newsTitle.textContent = copy.news;
@@ -435,7 +445,6 @@ function selectCharacter(index) {
         }
     }
     characterName.textContent = tile.dataset.name;
-    characterTag.textContent = tile.dataset.tag;
     updateCharacterWindow(currentCharacterIndex);
     triggerCharacterJump();
 }
@@ -503,12 +512,43 @@ introNext.addEventListener('click', () => {
 
 setIntroDot(currentIntroIndex);
 
-if (heroCta) {
-    heroCta.addEventListener('pointerenter', () => heroCta.classList.add('is-hovered'));
-    heroCta.addEventListener('pointerleave', () => heroCta.classList.remove('is-hovered'));
-    heroCta.addEventListener('focus', () => heroCta.classList.add('is-hovered'));
-    heroCta.addEventListener('blur', () => heroCta.classList.remove('is-hovered'));
+heroCtaButtons.forEach((button) => {
+    button.addEventListener('pointerenter', () => button.classList.add('is-hovered'));
+    button.addEventListener('pointerleave', () => button.classList.remove('is-hovered'));
+    button.addEventListener('focus', () => button.classList.add('is-hovered'));
+    button.addEventListener('blur', () => button.classList.remove('is-hovered'));
+});
+
+function closeTrailerModal() {
+    if (!trailerModal) {
+        return;
+    }
+
+    trailerModal.hidden = true;
+    body.classList.remove('has-trailer-modal');
+    trailerModalVideo?.pause();
 }
+
+trailerOpenButton?.addEventListener('click', async () => {
+    if (!trailerModal) {
+        return;
+    }
+
+    trailerModal.hidden = false;
+    body.classList.add('has-trailer-modal');
+    if (trailerModalVideo) {
+        trailerModalVideo.currentTime = 0;
+        try {
+            await trailerModalVideo.play();
+        } catch (error) {
+            trailerModalVideo.controls = true;
+        }
+    }
+});
+
+trailerCloseButtons.forEach((button) => {
+    button.addEventListener('click', closeTrailerModal);
+});
 
 mediaTabs.forEach((tab) => {
     tab.addEventListener('click', () => {
@@ -548,6 +588,11 @@ document.addEventListener('click', (event) => {
 });
 
 document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && trailerModal && !trailerModal.hidden) {
+        closeTrailerModal();
+        return;
+    }
+
     if (event.key === 'Escape') {
         languagePicker.classList.remove('is-open');
         languageButton.setAttribute('aria-expanded', 'false');

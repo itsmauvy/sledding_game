@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>썰매 게임</title>
-    <link rel="stylesheet" href="styles.css?v=media-perched-both-tabs">
+    <link rel="stylesheet" href="styles.css?v=remove-tree-frog-character">
 </head>
 <body>
     <main class="loader-screen" aria-label="게임 로딩 중">
@@ -38,7 +38,6 @@
                 <div class="language-menu" role="menu" aria-label="언어 선택">
                     <button class="language-option is-selected" type="button" role="menuitemradio" aria-checked="true" data-lang="ko">한국어</button>
                     <button class="language-option" type="button" role="menuitemradio" aria-checked="false" data-lang="en">English</button>
-                    <button class="language-option" type="button" role="menuitemradio" aria-checked="false" data-lang="ja">日本語</button>
                 </div>
             </div>
             <button class="header-icon-button music-button" type="button" aria-label="음악 켜기/끄기">
@@ -70,16 +69,16 @@
 
     <section class="page-section video-section" id="trailer">
         <div class="trailer-wrap">
-            <video class="hero-video" autoplay muted loop playsinline>
-                <source src="히어로 영상 (1).mp4" type="video/mp4">
-            </video>
-            <div class="video-poster" aria-hidden="true"></div>
+            <img class="hero-image" src="images/sledding_hero.jpg" alt="">
         </div>
         <div class="hero-content">
             <p class="hero-kicker">같이 굴러야 더 재밌다</p>
             <h1 class="hero-title">친구들과 썰매 타고 놀자</h1>
             <p class="hero-copy">썰매 타고, 눈싸움하고, 부딪히며 노는<br>가장 유쾌한 겨울 놀이터</p>
-            <a class="cta" href="https://store.steampowered.com/app/3438850/Sledding_Game/" target="_blank" rel="noopener">플레이 하기</a>
+            <div class="hero-actions">
+                <button class="cta trailer-open-button" type="button">게임 영상 보기</button>
+                <a class="cta hero-play-link" href="https://store.steampowered.com/app/3438850/Sledding_Game/" target="_blank" rel="noopener">플레이 하기</a>
+            </div>
         </div>
         <div class="track-band" aria-hidden="true"></div>
     </section>
@@ -94,7 +93,7 @@
             </div>
             <div class="intro-content">
                 <p class="intro-label">멋진 외관을 꾸며보세요!</p>
-                <p class="intro-headline">다양한 캐릭터 장식과 썰매 아이템</p>
+                <p class="intro-headline">다양한 캐릭터 장식과<br>썰매 아이템</p>
                 <p class="intro-copy">포인트를 적립해 나만의 개성이 담긴 스타일을 완성해보세요.</p>
             </div>
         </div>
@@ -117,30 +116,25 @@
                 </div>
             </div>
             <div class="character-roster">
-                <p class="character-name">개구리</p>
-                <p class="character-tag">기본 썰매 친구</p>
-                <p class="character-copy">좋아하는 친구를 골라 눈길을 내려가세요. 각 캐릭터는 같은 코스를 조금 다른 표정으로 미끄러집니다.</p>
+                <p class="character-name">개굴이</p>
             </div>
         </div>
         <div class="character-carousel" aria-label="캐릭터 선택 캐러셀">
             <button class="character-carousel-button prev" type="button" aria-label="이전 캐릭터"></button>
                 <div class="character-grid" aria-label="캐릭터 선택">
-                    <button class="character-tile is-selected" type="button" aria-label="초록 개구리 선택" data-name="초록 개구리" data-tag="처음 만나는 썰매 친구" data-face="frog" data-large="images/frpg 1.png"><span class="character-face frog" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="꼬마 펭귄 선택" data-name="꼬마 펭귄" data-tag="빙판 위 균형왕" data-face="penguin" data-large="images/penguin 1.png"><span class="character-face penguin" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="동글 물범 선택" data-name="동글 물범" data-tag="둥글둥글 스피드" data-face="seal" data-large="images/light seal 1.png"><span class="character-face seal" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="초코 수달 선택" data-name="초코 수달" data-tag="장난꾸러기 레이서" data-face="otter" data-large="images/bear 1.png"><span class="character-face otter" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="눈곰 선택" data-name="눈곰" data-tag="묵직한 눈길 돌파" data-face="bear" data-large="images/polar bear 1.png"><span class="character-face bear" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="밤곰 선택" data-name="밤곰" data-tag="밤눈길 질주자" data-face="blackbear" data-large="images/blackbear.png"><span class="character-face blackbear" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="점박 물범 선택" data-name="점박 물범" data-tag="차분한 코너링" data-face="seal" data-large="images/ringed seal 1.png"><span class="character-face seal" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="까만 물범 선택" data-name="까만 물범" data-tag="느긋한 미끄럼" data-face="blackbear" data-large="images/dark seal 1.png"><span class="character-face blackbear" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="주황 개구리 선택" data-name="주황 개구리" data-tag="통통 튀는 스타트" data-face="orange" data-large="images/orange frog 1.png"><span class="character-face orange" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="나무 개구리 선택" data-name="나무 개구리" data-tag="깡충깡충 점프" data-face="lime" data-large="images/tree frog 1.png"><span class="character-face lime" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="노란 두꺼비 선택" data-name="노란 두꺼비" data-tag="묵직한 응원단" data-face="duck" data-large="images/orange toad 1.png"><span class="character-face duck" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="밤두꺼비 선택" data-name="밤두꺼비" data-tag="짧고 단단한 질주" data-face="dog" data-large="images/dark toad 1.png"><span class="character-face dog" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="붉은 여우 선택" data-name="붉은 여우" data-tag="가벼운 코너 탈출" data-face="fox" data-large="images/fox 1.png"><span class="character-face fox" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="눈여우 선택" data-name="눈여우" data-tag="가장 높은 점프" data-face="rabbit" data-large="images/arctic fox 1.png"><span class="character-face rabbit" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="느긋 판다 선택" data-name="느긋 판다" data-tag="느긋하지만 단단하게" data-face="panda" data-large="images/panda 1.png"><span class="character-face panda" aria-hidden="true"><span></span></span></button>
-                    <button class="character-tile" type="button" aria-label="금빛 개구리 선택" data-name="금빛 개구리" data-tag="햇살 같은 응원단" data-face="yellow" data-large="images/gold frog 1.png"><span class="character-face yellow" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile is-selected" type="button" aria-label="개굴이 선택" data-name="개굴이" data-face="frog" data-large="images/frpg 1.png"><span class="character-face frog" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="펭귄 선택" data-name="펭귄" data-face="penguin" data-large="images/penguin 1.png"><span class="character-face penguin" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="바다표범 선택" data-name="바다표범" data-face="seal" data-large="images/light seal 1.png"><span class="character-face seal" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="불곰 선택" data-name="불곰" data-face="otter" data-large="images/bear 1.png"><span class="character-face otter" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="북극곰 선택" data-name="북극곰" data-face="bear" data-large="images/polar bear 1.png"><span class="character-face bear" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="흑곰 선택" data-name="흑곰" data-face="blackbear" data-large="images/blackbear.png"><span class="character-face blackbear" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="점박물범 선택" data-name="점박물범" data-face="seal" data-large="images/ringed seal 1.png"><span class="character-face seal" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="검은물범 선택" data-name="검은물범" data-face="blackbear" data-large="images/dark seal 1.png"><span class="character-face blackbear" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="독개구리 선택" data-name="독개구리" data-face="orange" data-large="images/orange frog 1.png"><span class="character-face orange" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="붉은 여우 선택" data-name="붉은 여우" data-face="fox" data-large="images/fox 1.png"><span class="character-face fox" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="북극 여우 선택" data-name="북극 여우" data-face="rabbit" data-large="images/arctic fox 1.png"><span class="character-face rabbit" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="판다 선택" data-name="판다" data-face="panda" data-large="images/panda 1.png"><span class="character-face panda" aria-hidden="true"><span></span></span></button>
+                    <button class="character-tile" type="button" aria-label="황금개굴 선택" data-name="황금개굴" data-face="yellow" data-large="images/gold frog 1.png"><span class="character-face yellow" aria-hidden="true"><span></span></span></button>
                 </div>
             <button class="character-carousel-button next" type="button" aria-label="다음 캐릭터"></button>
         </div>
@@ -205,24 +199,20 @@
             <h2 class="section-title">뉴스</h2>
             <div class="news-grid">
                 <article class="news-card news-card-featured">
-                    <span class="news-meta">NEWS · MAY 5, 2026</span>
                     <strong>5일 만에 100,000장 판매!</strong>
                     <p>출시 5일만에 100,000장 판매를 달성했습니다. 첫 스팀 게임으로 이만큼 큰 사랑을 받게 되어 정말 꿈만 같고 이 게임을 만들 수 있게 해준 모든 플레이어에게 감사드립니다.</p>
-                    <a href="https://store.steampowered.com/app/3438850/Sledding_Game/" target="_blank" rel="noopener">Steam 페이지 보기</a>
+                    <a href="https://store.steampowered.com/news/app/3438850" target="_blank" rel="noopener">뉴스 페이지 보기</a>
                 </article>
                 <div class="news-list" aria-label="최근 소식">
                     <article class="news-card">
-                        <span class="news-meta">NEWS · APR 30, 2026</span>
                         <strong>얼리 액세스 출시</strong>
                         <p>스팀과 Xbox에서 얼리 액세스로 출시 되었습니다. 친구들과 함께 눈밭을 달리고 미니게임과 재밌는 요소를 즐겨보세요.</p>
                     </article>
                     <article class="news-card">
-                        <span class="news-meta">NEWS · APR 10, 2026</span>
                         <strong>얼리 액세스 출시일 공개</strong>
                         <p>4월30일 얼리 액세스로 출시될 예정입니다. Triple-i 쇼케이스에서 공개한 새로운 발표 트레일러와 함께 가장 큰 소식을 전합니다.</p>
                     </article>
                     <article class="news-card">
-                        <span class="news-meta">NEWS · OCT 29, 2025</span>
                         <strong>새 트레일러 공개</strong>
                         <p>게임 트레일러 공개되었습니다. 디스코드에 참여하고 인스타그램, 유튜브에서 매일 올라오는 개발 소식도 확인해보세요.</p>
                     </article>
@@ -232,8 +222,17 @@
     </section>
 
     <img class="scroll-frog" src="images/frog3.png" alt="">
+    <div class="trailer-modal" role="dialog" aria-modal="true" aria-label="트레일러 영상" hidden>
+        <button class="trailer-modal-backdrop" type="button" aria-label="트레일러 닫기"></button>
+        <div class="trailer-dialog">
+            <button class="trailer-close-button" type="button" aria-label="트레일러 닫기">×</button>
+            <video class="trailer-modal-video" controls playsinline preload="metadata">
+                <source src="히어로 영상 (1).mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
     <audio class="soundtrack-audio" src="Sledding Game_ Alfalfa - Original Soundtrack.mp3" preload="auto" loop></audio>
 
-    <script src="script.js?v=media-perched-both-tabs"></script>
+    <script src="script.js?v=remove-tree-frog-character"></script>
 </body>
 </html>
