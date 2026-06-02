@@ -884,7 +884,6 @@ function initGsapSectionReveals() {
     }
 
     const revealGroups = [
-        '.intro-arrow, .intro-dots',
         '.character-section .section-title, .character-stage, .character-grid, .character-carousel',
         '.media-section .section-title, .media-tabs, .media-card, .media-sled-scroll',
         '.news-section .section-title, .news-feature, .news-card'
@@ -943,21 +942,64 @@ function initGsapIntroMotion() {
 
     const introSection = document.querySelector('.intro-section');
     const introShowcase = document.querySelector('.intro-showcase');
-    const textTargets = document.querySelectorAll('.intro-section-title, .intro-label, .intro-headline, .intro-copy');
+    const introTitle = document.querySelector('.intro-section-title');
+    const introDots = document.querySelectorAll('.intro-dot');
+    const introText = document.querySelectorAll('.intro-label, .intro-headline, .intro-copy');
+    const introArrows = document.querySelectorAll('.intro-arrow');
 
-    if (textTargets.length) {
-        gsap.from(textTargets, {
+    const introTimeline = gsap.timeline({
+        defaults: { ease: 'power3.out' },
+        scrollTrigger: canUseScrollTrigger ? {
+            trigger: introSection,
+            start: 'top 42%',
+            once: true
+        } : undefined
+    });
+
+    if (introTitle) {
+        introTimeline.from(introTitle, {
             opacity: 0,
-            y: 64,
-            duration: 0.78,
-            stagger: 0.085,
-            ease: 'power3.out',
-            scrollTrigger: canUseScrollTrigger ? {
-                trigger: introSection,
-                start: 'top 42%',
-                once: true
-            } : undefined
-        });
+            y: 58,
+            duration: 0.72
+        }, 0);
+    }
+
+    if (introDots.length) {
+        introTimeline.from(introDots, {
+            opacity: 0,
+            y: 28,
+            scale: 0.94,
+            duration: 0.46,
+            stagger: 0.07
+        }, 0.18);
+    }
+
+    if (introText.length) {
+        introTimeline.from(introText, {
+            opacity: 0,
+            y: 44,
+            duration: 0.62,
+            stagger: 0.08
+        }, 0.32);
+    }
+
+    if (introShowcase) {
+        introTimeline.from(introShowcase, {
+            opacity: 0,
+            y: 42,
+            rotateZ: -7,
+            scale: 0.96,
+            duration: 0.72
+        }, 0.4);
+    }
+
+    if (introArrows.length) {
+        introTimeline.from(introArrows, {
+            opacity: 0,
+            scale: 0.86,
+            duration: 0.38,
+            stagger: 0.06
+        }, 0.58);
     }
 
     if (introShowcase) {
