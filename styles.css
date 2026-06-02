@@ -85,6 +85,13 @@ body.is-ready .loader-screen {
     pointer-events: none !important;
 }
 
+body.has-gsap .loader-screen,
+body.has-gsap .site-header,
+body.has-gsap .page-section,
+body.has-gsap .loader {
+    transition: none;
+}
+
 .loader {
     position: relative;
     z-index: 2;
@@ -731,13 +738,13 @@ body.is-ready .page-section.video-section {
 
 .scroll-frog {
     position: fixed;
-    z-index: 5;
+    z-index: 4;
     left: var(--frog-x, 14vw);
     top: var(--frog-y, 58vh);
-    width: clamp(128px, 19vw, 230px);
+    width: clamp(104px, 14vw, 172px);
     height: auto;
     opacity: var(--frog-opacity, 0);
-    filter: drop-shadow(0 16px 16px rgba(63, 128, 164, 0.18));
+    filter: drop-shadow(0 18px 18px rgba(22, 70, 96, 0.28)) saturate(1.04);
     transform: translate(-50%, -50%) rotate(var(--frog-rotate, -10deg));
     transition: opacity 0.18s ease, filter 0.18s ease;
     pointer-events: none;
@@ -816,6 +823,12 @@ body.is-ready .page-section.video-section {
         0 26px 44px rgba(55, 127, 165, 0.24);
     transform: rotate(-4deg);
     transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+body.has-gsap .intro-showcase {
+    transition: box-shadow 0.28s ease, border-color 0.28s ease;
 }
 
 .intro-showcase::before {
@@ -841,6 +854,10 @@ body.is-ready .page-section.video-section {
     box-shadow:
         0 12px 0 #9fd2eb,
         0 32px 54px rgba(55, 127, 165, 0.28);
+}
+
+body.has-gsap .intro-showcase:hover {
+    transform: none;
 }
 
 .intro-showcase:hover::before,
@@ -979,6 +996,7 @@ body.is-ready .page-section.video-section {
     order: 1;
     text-shadow: 0 3px 12px rgba(55, 127, 165, 0.18);
     transition: transform 0.28s ease;
+    will-change: transform, opacity;
 }
 
 .intro-content::before {
@@ -995,6 +1013,7 @@ body.is-ready .page-section.video-section {
     line-height: 1.15;
     letter-spacing: 0;
     text-shadow: none;
+    will-change: transform, opacity;
 }
 
 .intro-headline {
@@ -1009,6 +1028,7 @@ body.is-ready .page-section.video-section {
     text-shadow: 0 4px 0 rgba(255, 255, 255, 0.68);
     word-break: keep-all;
     overflow-wrap: normal;
+    will-change: transform, opacity;
 }
 
 .intro-section-title,
@@ -1030,6 +1050,7 @@ body.is-ready .page-section.video-section {
 
 .intro-section-title {
     top: clamp(118px, 12vh, 140px);
+    will-change: transform, opacity;
 }
 
 .intro-section.is-swapping .intro-showcase {
@@ -1290,12 +1311,12 @@ body.is-ready .page-section.video-section {
 .media-sled-thumb {
     position: absolute;
     left: calc(var(--media-sled-progress, 0) * (100% - clamp(84px, 7.4vw, 108px)));
-    bottom: 0;
+    bottom: -9px;
     width: clamp(84px, 7.4vw, 108px);
     height: auto;
     object-fit: contain;
     filter: drop-shadow(0 13px 10px rgba(22, 70, 96, 0.28));
-    transform: translateY(-25px) rotate(calc(-5deg + (var(--media-sled-progress, 0) * 10deg)));
+    transform: translateY(-12px) rotate(calc(-5deg + (var(--media-sled-progress, 0) * 10deg)));
     transform-origin: 50% 86%;
     transition: transform 0.16s ease, filter 0.16s ease;
     pointer-events: none;
@@ -1304,7 +1325,7 @@ body.is-ready .page-section.video-section {
 .media-panel[data-media-panel="image"].is-dragging ~ .media-sled-scroll .media-sled-thumb,
 .media-sled-scroll.is-dragging .media-sled-thumb {
     filter: drop-shadow(0 17px 12px rgba(22, 70, 96, 0.32));
-    transform: translateY(-30px) rotate(calc(-7deg + (var(--media-sled-progress, 0) * 14deg))) scale(1.05);
+    transform: translateY(-17px) rotate(calc(-7deg + (var(--media-sled-progress, 0) * 14deg))) scale(1.05);
 }
 
 .media-card {

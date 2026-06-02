@@ -24,6 +24,11 @@ if (isPageReload) {
 }
 
 const body = document.body;
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let gsap = window.gsap;
+let ScrollTrigger = window.ScrollTrigger;
+let canUseGsap = Boolean(gsap) && !prefersReducedMotion;
+let canUseScrollTrigger = canUseGsap && Boolean(ScrollTrigger);
 const trailerOpenButton = document.querySelector('.trailer-open-button');
 const trailerModal = document.querySelector('.trailer-modal');
 const trailerModalVideo = document.querySelector('.trailer-modal-video');
@@ -73,6 +78,25 @@ let activeNewsCardIndex = 0;
 let newsFrogPlayer = null;
 let mediaSledTargetScroll = 0;
 let mediaSledAnimationFrame = null;
+let mediaSledTween = null;
+let gsapMotionInitialized = false;
+
+function refreshGsapAvailability() {
+    gsap = window.gsap;
+    ScrollTrigger = window.ScrollTrigger;
+    canUseGsap = Boolean(gsap) && !prefersReducedMotion;
+    canUseScrollTrigger = canUseGsap && Boolean(ScrollTrigger);
+
+    if (canUseGsap) {
+        body.classList.add('has-gsap');
+    }
+
+    if (canUseScrollTrigger) {
+        gsap.registerPlugin(ScrollTrigger);
+    }
+}
+
+refreshGsapAvailability();
 const translations = {
     ko: {
         htmlLang: 'ko',
@@ -195,12 +219,56 @@ const koreanIntroSlides = [
     }
 ];
 const frogRuns = [
-    { section: document.querySelector('.video-section'), fromRight: true, startAt: 0, endAt: 0.92, viewportLead: 0, startY: 0.7, endY: 0.88 }
+    { section: document.querySelector('.video-section'), fromRight: true, startAt: 0.05, endAt: 0.58, viewportLead: 0, startX: 104, endX: -4, startY: 0.68, endY: 0.78, rotate: -6 }
 ];
 
-window.setTimeout(() => {
+function revealSite() {
+    if (body.classList.contains('is-ready')) {
+        return;
+    }
+
+    if (!canUseGsap) {
+        body.classList.add('is-ready');
+        return;
+    }
+
+    const loaderScreen = document.querySelector('.loader-screen');
+    const loader = document.querySelector('.loader');
+    const heroContent = document.querySelector('.hero-content');
+    const trailerWrap = document.querySelector('.trailer-wrap');
+    const trackBand = document.querySelector('.video-section .track-band');
+    const headerItems = document.querySelectorAll('.site-header > *');
+    const heroItems = document.querySelectorAll('.hero-kicker, .hero-title, .hero-copy, .hero-actions');
+
+    gsap.set('.site-header', { opacity: 1, y: 0 });
+    gsap.set(headerItems, { opacity: 0, y: -16 });
+    gsap.set('.page-section', { opacity: 1, y: 0 });
+    gsap.set(heroContent, { opacity: 1 });
+    gsap.set(heroItems, { opacity: 0, y: 28 });
+    gsap.set(trailerWrap, { scale: 1.035, filter: 'saturate(0.92) brightness(0.9)' });
+    gsap.set(trackBand, { opacity: 0, yPercent: 10, rotate: -8 });
+
     body.classList.add('is-ready');
-}, 2400);
+
+    gsap.timeline({ defaults: { ease: 'power3.out' } })
+        .to(loader, { opacity: 0, y: -24, scale: 0.94, duration: 0.45 }, 0)
+        .to(loaderScreen, {
+            opacity: 0,
+            filter: 'blur(12px) saturate(1.1)',
+            visibility: 'hidden',
+            duration: 0.78,
+            onComplete: () => {
+                gsap.set(loaderScreen, { pointerEvents: 'none' });
+                ScrollTrigger?.refresh();
+            }
+        }, 0.08)
+        .to(trailerWrap, { scale: 1, filter: 'saturate(1) brightness(1)', duration: 1.25 }, 0.16)
+        .to(headerItems, { opacity: 1, y: 0, duration: 0.58, stagger: 0.055 }, 0.34)
+        .to(heroItems, { opacity: 1, y: 0, duration: 0.78, stagger: 0.09 }, 0.42)
+        .to(trackBand, { opacity: 1, yPercent: 0, rotate: -6, duration: 0.9 }, 0.48);
+}
+
+window.setTimeout(revealSite, 2400);
 
 soundtrackAudio.volume = 0.42;
 musicButton.setAttribute('aria-pressed', 'false');
@@ -250,7 +318,7 @@ function applyMediaItems() {
             card.querySelector('.media-perched-frog')?.remove();
         }
 
-        const image = card.querySelector('img:not(.media-perched-frog)');
+        const image = card.querySelector('img');
         const label = card.querySelector('.media-label');
         if (image) {
             image.setAttribute('src', item.src);
@@ -279,6 +347,10 @@ function stopMediaSledAnimation() {
         window.cancelAnimationFrame(mediaSledAnimationFrame);
         mediaSledAnimationFrame = null;
     }
+    if (mediaSledTween) {
+        mediaSledTween.kill();
+        mediaSledTween = null;
+    }
 }
 
 function animateMediaImageScroll() {
@@ -306,6 +378,22 @@ function glideMediaImageScroll(targetScroll) {
 
     const maxScroll = mediaImagePanel.scrollWidth - mediaImagePanel.clientWidth;
     mediaSledTargetScroll = clamp(targetScroll, 0, maxScroll);
+
+    if (canUseGsap) {
+        stopMediaSledAnimation();
+        mediaSledTween = gsap.to(mediaImagePanel, {
+            scrollLeft: mediaSledTargetScroll,
+            duration: 0.58,
+            ease: 'power3.out',
+            onUpdate: updateMediaSledScroll,
+            onComplete: () => {
+                mediaSledTween = null;
+                updateMediaSledScroll();
+            }
+        });
+        return;
+    }
+
     if (mediaSledAnimationFrame === null) {
         mediaSledAnimationFrame = window.requestAnimationFrame(animateMediaImageScroll);
     }
@@ -523,6 +611,15 @@ function triggerCharacterJump() {
         return;
     }
 
+    if (canUseGsap) {
+        gsap.killTweensOf([characterPreview, characterPreviewFace]);
+        gsap.timeline({ defaults: { ease: 'power2.out' } })
+            .to(characterPreview, { y: -22, rotation: -3, duration: 0.18 })
+            .to(characterPreview, { y: 0, rotation: 0, duration: 0.48, ease: 'bounce.out' })
+            .fromTo(characterPreviewFace, { scale: 0.96 }, { scale: 1.04, duration: 0.18, yoyo: true, repeat: 1 }, 0.08);
+        return;
+    }
+
     characterPreview.classList.remove('is-jumping');
     characterPreviewFace.classList.remove('is-bouncing');
     void characterPreview.offsetWidth;
@@ -652,6 +749,23 @@ function closeTrailerModal() {
         return;
     }
 
+    if (canUseGsap && !trailerModal.hidden) {
+        const dialog = trailerModal.querySelector('.trailer-dialog');
+        gsap.timeline({
+            defaults: { ease: 'power2.inOut' },
+            onComplete: () => {
+                trailerModal.hidden = true;
+                body.classList.remove('has-trailer-modal');
+                trailerModalVideo?.pause();
+                gsap.set(trailerModal, { clearProps: 'opacity,visibility' });
+                gsap.set(dialog, { clearProps: 'transform,opacity' });
+            }
+        })
+            .to(dialog, { opacity: 0, y: 18, scale: 0.97, duration: 0.18 }, 0)
+            .to(trailerModal, { opacity: 0, duration: 0.22 }, 0);
+        return;
+    }
+
     trailerModal.hidden = true;
     body.classList.remove('has-trailer-modal');
     trailerModalVideo?.pause();
@@ -664,6 +778,12 @@ trailerOpenButton?.addEventListener('click', async () => {
 
     trailerModal.hidden = false;
     body.classList.add('has-trailer-modal');
+    if (canUseGsap) {
+        const dialog = trailerModal.querySelector('.trailer-dialog');
+        gsap.killTweensOf([trailerModal, dialog]);
+        gsap.fromTo(trailerModal, { opacity: 0 }, { opacity: 1, duration: 0.24, ease: 'power2.out' });
+        gsap.fromTo(dialog, { opacity: 0, y: 28, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.38, ease: 'back.out(1.35)' });
+    }
     if (trailerModalVideo) {
         trailerModalVideo.currentTime = 0;
         try {
@@ -691,6 +811,11 @@ mediaTabs.forEach((tab) => {
         mediaPanels.forEach((panel) => {
             panel.classList.toggle('is-active', panel.dataset.mediaPanel === target);
         });
+        if (canUseGsap) {
+            const activePanel = document.querySelector(`.media-panel[data-media-panel="${target}"]`);
+            const activeCards = activePanel?.querySelectorAll('.media-card');
+            gsap.fromTo(activeCards, { opacity: 0, y: 24, scale: 0.98 }, { opacity: 1, y: 0, scale: 1, duration: 0.48, stagger: 0.055, ease: 'power3.out' });
+        }
         window.requestAnimationFrame(updateMediaSledScroll);
     });
 });
@@ -752,6 +877,191 @@ musicButton.addEventListener('click', async () => {
 function clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
 }
+
+function initGsapSectionReveals() {
+    if (!canUseScrollTrigger) {
+        return;
+    }
+
+    const revealGroups = [
+        '.intro-arrow, .intro-dots',
+        '.character-section .section-title, .character-stage, .character-grid, .character-carousel',
+        '.media-section .section-title, .media-tabs, .media-card, .media-sled-scroll',
+        '.news-section .section-title, .news-feature, .news-card'
+    ];
+
+    revealGroups.forEach((selector) => {
+        const elements = document.querySelectorAll(selector);
+        if (!elements.length) {
+            return;
+        }
+
+        gsap.from(elements, {
+            opacity: 0,
+            y: 46,
+            duration: 0.76,
+            stagger: 0.075,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: elements[0].closest('.page-section') || elements[0],
+                start: 'top 72%',
+                once: true
+            }
+        });
+    });
+}
+
+function initGsapHoverMotion() {
+    if (!canUseGsap) {
+        return;
+    }
+
+    const liftTargets = document.querySelectorAll('.media-card, .news-card, .character-tile');
+    liftTargets.forEach((target) => {
+        target.addEventListener('pointerenter', () => {
+            gsap.to(target, { y: -7, scale: 1.015, duration: 0.24, ease: 'power2.out', overwrite: 'auto' });
+        });
+        target.addEventListener('pointerleave', () => {
+            gsap.to(target, { y: 0, scale: 1, duration: 0.28, ease: 'power2.out', overwrite: 'auto' });
+        });
+    });
+
+    heroCtaButtons.forEach((button) => {
+        button.addEventListener('pointerenter', () => {
+            gsap.to(button, { y: 4, scale: 1.025, duration: 0.2, ease: 'power2.out', overwrite: 'auto' });
+        });
+        button.addEventListener('pointerleave', () => {
+            gsap.to(button, { y: 0, scale: 1, duration: 0.24, ease: 'power2.out', overwrite: 'auto' });
+        });
+    });
+}
+
+function initGsapIntroMotion() {
+    if (!canUseGsap) {
+        return;
+    }
+
+    const introSection = document.querySelector('.intro-section');
+    const introShowcase = document.querySelector('.intro-showcase');
+    const textTargets = document.querySelectorAll('.intro-section-title, .intro-label, .intro-headline, .intro-copy');
+
+    if (textTargets.length) {
+        gsap.from(textTargets, {
+            opacity: 0,
+            y: 64,
+            duration: 0.78,
+            stagger: 0.085,
+            ease: 'power3.out',
+            scrollTrigger: canUseScrollTrigger ? {
+                trigger: introSection,
+                start: 'top 42%',
+                once: true
+            } : undefined
+        });
+    }
+
+    if (introShowcase) {
+        gsap.set(introShowcase, { transformPerspective: 1000, transformOrigin: '50% 50%' });
+        introShowcase.addEventListener('pointermove', (event) => {
+            const rect = introShowcase.getBoundingClientRect();
+            const xRatio = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+            const yRatio = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+            const cornerPull = Math.max(Math.abs(xRatio), Math.abs(yRatio));
+
+            gsap.to(introShowcase, {
+                x: xRatio * 18,
+                y: yRatio * 12,
+                rotateX: yRatio * -8,
+                rotateY: xRatio * 11,
+                rotateZ: -4 + xRatio * 1.8,
+                scale: 1.01 + cornerPull * 0.012,
+                duration: 0.34,
+                ease: 'power3.out',
+                overwrite: 'auto'
+            });
+        });
+
+        introShowcase.addEventListener('pointerleave', () => {
+            gsap.to(introShowcase, {
+                x: 0,
+                y: 0,
+                rotateX: 0,
+                rotateY: 0,
+                rotateZ: -4,
+                scale: 1,
+                duration: 0.58,
+                ease: 'elastic.out(1, 0.65)',
+                overwrite: 'auto'
+            });
+        });
+    }
+}
+
+function initGsapScrollFrog() {
+    if (!canUseScrollTrigger || !scrollFrog) {
+        return;
+    }
+
+    window.removeEventListener('scroll', updateScrollFrog);
+    gsap.set(scrollFrog, { left: 0, top: 0, xPercent: -50, yPercent: -50 });
+
+    frogRuns.forEach((run) => {
+        if (!run.section) {
+            return;
+        }
+
+        const xStart = `${run.startX ?? (run.fromRight ? 108 : -8)}vw`;
+        const xEnd = `${run.endX ?? (run.fromRight ? -8 : 108)}vw`;
+        const yStart = () => window.innerHeight * (run.startY ?? 0.34);
+        const yEnd = () => window.innerHeight * (run.endY ?? 0.22);
+        const rotation = run.rotate ?? -8;
+
+        gsap.timeline({
+            scrollTrigger: {
+                trigger: run.section,
+                start: 'top top',
+                end: '58% top',
+                scrub: 0.35
+            }
+        })
+            .fromTo(scrollFrog, {
+                autoAlpha: 0,
+            }, {
+                autoAlpha: 1,
+                duration: 0.12,
+                ease: 'power1.out'
+            }, 0)
+            .fromTo(scrollFrog, {
+                x: xStart,
+                y: yStart,
+                rotation
+            }, {
+                x: xEnd,
+                y: yEnd,
+                rotation: rotation + 4,
+                duration: 0.78,
+                ease: 'none'
+            }, 0)
+            .to(scrollFrog, { autoAlpha: 0, duration: 0.14, ease: 'none' }, 0.8);
+    });
+}
+
+function initGsapMotion() {
+    refreshGsapAvailability();
+    if (!canUseGsap || gsapMotionInitialized) {
+        return;
+    }
+
+    gsapMotionInitialized = true;
+    initGsapSectionReveals();
+    initGsapHoverMotion();
+    initGsapIntroMotion();
+    initGsapScrollFrog();
+    ScrollTrigger?.refresh();
+}
+
+window.initGsapEnhancements = initGsapMotion;
+globalThis.initGsapEnhancements = initGsapMotion;
 
 function ensureNewsFrogPlayer() {
     if (!newsSection || !newsCards.length) {
@@ -864,6 +1174,7 @@ document.addEventListener('keydown', (event) => {
 });
 
 placeNewsFrog(activeNewsCardIndex, '');
+initGsapMotion();
 
 function smoothstep(value) {
     return value * value * (3 - 2 * value);
@@ -901,18 +1212,17 @@ function updateScrollFrog() {
     }
 
     const eased = smoothstep(progress);
-    const fadeIn = clamp(progress / 0.24, 0, 1);
-    const fadeOut = clamp((1 - progress) / 0.28, 0, 1);
+    const fadeIn = clamp(progress / 0.12, 0, 1);
+    const fadeOut = clamp((1 - progress) / 0.18, 0, 1);
     const visible = fadeIn * fadeOut;
-    const direction = activeRun.fromRight ? 1 : -1;
-    const xStart = activeRun.fromRight ? 108 : -8;
-    const xEnd = activeRun.fromRight ? -8 : 108;
+    const xStart = activeRun.startX ?? (activeRun.fromRight ? 108 : -8);
+    const xEnd = activeRun.endX ?? (activeRun.fromRight ? -8 : 108);
     const x = xStart + (xEnd - xStart) * eased;
     const yStart = window.innerHeight * (activeRun.startY ?? 0.34);
     const yEnd = window.innerHeight * (activeRun.endY ?? 0.22);
     const y = yStart + (yEnd - yStart) * eased;
     const slopeAngle = Math.atan2(yEnd - yStart, (xEnd - xStart) * window.innerWidth / 100) * 180 / Math.PI;
-    const rotate = slopeAngle + (activeRun.fromRight ? 180 : 0);
+    const rotate = activeRun.rotate ?? slopeAngle;
 
     scrollFrog.style.setProperty('--frog-opacity', visible);
     scrollFrog.style.setProperty('--frog-x', `${x.toFixed(2)}vw`);
@@ -920,7 +1230,7 @@ function updateScrollFrog() {
     scrollFrog.style.setProperty('--frog-rotate', `${rotate.toFixed(2)}deg`);
 }
 
-if (scrollFrog) {
+if (scrollFrog && !canUseScrollTrigger) {
     updateScrollFrog();
     window.addEventListener('scroll', updateScrollFrog, { passive: true });
 }
