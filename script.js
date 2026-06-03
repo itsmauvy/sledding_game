@@ -160,7 +160,9 @@ const translations = {
             { title: '얼리 액세스 출시일 공개', body: '4월30일 얼리 액세스로 출시될 예정입니다. Triple-i 쇼케이스에서 공개한 새로운 발표 트레일러와 함께 가장 큰 소식을 전합니다.' },
             { title: '새 트레일러 공개', body: '게임 트레일러 공개되었습니다. 디스코드에 참여하고 인스타그램, 유튜브에서 매일 올라오는 개발 소식도 확인해보세요.' }
         ],
-        trailerModalLabel: '트레일러 영상'
+        trailerModalLabel: '트레일러 영상',
+        characterDragHint: '🖱️ 클릭하고 끌어보세요',
+        newsKeyHint: '방향키로 탐색'
     },
     en: {
         htmlLang: 'en',
@@ -224,7 +226,9 @@ const translations = {
             { title: 'Early Access Date Revealed', body: 'Launching on April 30th in Early Access. Catch the latest announcement trailer from the Triple-i showcase for the biggest news yet.' },
             { title: 'New Trailer Released', body: 'The game trailer is out! Join our Discord and follow us on Instagram and YouTube for daily dev updates.' }
         ],
-        trailerModalLabel: 'Trailer video'
+        trailerModalLabel: 'Trailer video',
+        characterDragHint: '🖱️ Click and drag',
+        newsKeyHint: 'Navigate with arrow keys'
     }
 };
 const introVideos = [
@@ -664,6 +668,14 @@ function setLanguage(lang) {
         if (strong) strong.textContent = copy.newsCards[i].title;
         if (p) p.textContent = copy.newsCards[i].body;
     });
+
+    // character drag hint
+    const dragHint = document.querySelector('.character-drag-hint');
+    if (dragHint) dragHint.textContent = copy.characterDragHint;
+
+    // news key hint
+    const newsKeyHintEl = document.querySelector('.key-hint-label');
+    if (newsKeyHintEl) newsKeyHintEl.textContent = copy.newsKeyHint;
 
     // trailer modal
     if (trailerModal) trailerModal.setAttribute('aria-label', copy.trailerModalLabel);
