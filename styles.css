@@ -883,6 +883,22 @@ body.has-gsap .intro-showcase:hover {
     transform: none;
 }
 
+.intro-showcase.js-mole::before {
+    display: none;
+}
+
+.intro-mole-frog {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: clamp(90px, 11vw, 144px);
+    height: auto;
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0;
+    filter: drop-shadow(0 10px 10px rgba(22, 70, 96, 0.2));
+}
+
 .intro-showcase:hover::before,
 .intro-showcase:has(.intro-video:hover)::before,
 .intro-showcase:focus-within::before {
@@ -1365,15 +1381,6 @@ body.has-gsap .intro-showcase:hover {
     will-change: transform;
 }
 
-.card-mole-frog {
-    position: absolute;
-    width: clamp(60px, 7vw, 90px);
-    height: auto;
-    pointer-events: none;
-    z-index: 10;
-    opacity: 0;
-    filter: drop-shadow(0 4px 8px rgba(22, 70, 96, 0.25));
-}
 
 .media-perched-frog {
     position: absolute;
