@@ -849,7 +849,15 @@ mediaTabs.forEach((tab) => {
         if (canUseGsap) {
             const activePanel = document.querySelector(`.media-panel[data-media-panel="${target}"]`);
             const activeCards = activePanel?.querySelectorAll('.media-card');
-            gsap.fromTo(activeCards, { opacity: 0, y: 24, scale: 0.98 }, { opacity: 1, y: 0, scale: 1, duration: 0.48, stagger: 0.055, ease: 'power3.out' });
+            activeCards?.forEach((card, i) => {
+                const tiltX = (Math.random() - 0.5) * 6;
+                const tiltY = (Math.random() - 0.5) * 6;
+                gsap.fromTo(card,
+                    { opacity: 0, y: 24, scale: 0.96, rotateX: tiltX * 2, rotateY: tiltY * 2 },
+                    { opacity: 1, y: 0, scale: 1, rotateX: tiltX, rotateY: tiltY,
+                      duration: 0.48, delay: i * 0.055, ease: 'power3.out' }
+                );
+            });
         }
         window.requestAnimationFrame(updateMediaSledScroll);
     });
