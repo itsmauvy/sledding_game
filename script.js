@@ -219,7 +219,7 @@ const koreanIntroSlides = [
     }
 ];
 const frogRuns = [
-    { section: document.querySelector('.video-section'), fromRight: true, startAt: 0.05, endAt: 0.58, viewportLead: 0, startX: 108, endX: -4, startY: 0.86, endY: 0.24, rotate: -6 }
+    { section: document.querySelector('.video-section'), fromRight: true, startAt: 0.05, endAt: 0.58, viewportLead: 0, startX: 108, endX: -4, sectionY: 0.92, rotate: -6 }
 ];
 
 function revealSite() {
@@ -1045,7 +1045,6 @@ function initGsapScrollFrog() {
     }
 
     window.removeEventListener('scroll', updateScrollFrog);
-    gsap.set(scrollFrog, { left: 0, top: 0, xPercent: -50, yPercent: -50 });
 
     frogRuns.forEach((run) => {
         if (!run.section) {
@@ -1054,16 +1053,26 @@ function initGsapScrollFrog() {
 
         const xStart = `${run.startX ?? (run.fromRight ? 108 : -8)}vw`;
         const xEnd = `${run.endX ?? (run.fromRight ? -8 : 108)}vw`;
-        const yStart = () => window.innerHeight * (run.startY ?? 0.34);
-        const yEnd = () => window.innerHeight * (run.endY ?? 0.22);
-        const rotation = run.rotate ?? -8;
+        const rotation = run.rotate ?? -6;
+        const travelHalf = (Math.abs((run.startX ?? 108) - (run.endX ?? -4))) / 2;
+
+        // Slope delta: frog goes from high (right) to low (left) along -6deg slope
+        const getSlopeDelta = () => Math.tan(Math.abs(rotation) * Math.PI / 180) * travelHalf * window.innerWidth / 100;
+
+        const baseY = run.section.offsetHeight * (run.sectionY ?? 0.92);
+        gsap.set(scrollFrog, { left: 0, top: baseY, xPercent: -50, yPercent: -50 });
+
+        const scrollStart = run.section.offsetTop;
+        const scrollEnd = run.section.offsetTop + run.section.offsetHeight * (run.endAt ?? 0.58);
 
         gsap.timeline({
             scrollTrigger: {
+                scroller: document.body.scrollHeight > window.innerHeight ? undefined : document.body,
                 trigger: run.section,
-                start: 'top top',
-                end: '58% top',
-                scrub: 0.35
+                start: scrollStart,
+                end: scrollEnd,
+                scrub: 0.35,
+                invalidateOnRefresh: true
             }
         })
             .fromTo(scrollFrog, {
@@ -1075,11 +1084,11 @@ function initGsapScrollFrog() {
             }, 0)
             .fromTo(scrollFrog, {
                 x: xStart,
-                y: yStart,
+                y: () => -getSlopeDelta(),
                 rotation
             }, {
                 x: xEnd,
-                y: yEnd,
+                y: () => getSlopeDelta(),
                 rotation: rotation + 4,
                 duration: 0.78,
                 ease: 'none'
@@ -1260,11 +1269,11 @@ function updateScrollFrog() {
     const xStart = activeRun.startX ?? (activeRun.fromRight ? 108 : -8);
     const xEnd = activeRun.endX ?? (activeRun.fromRight ? -8 : 108);
     const x = xStart + (xEnd - xStart) * eased;
-    const yStart = window.innerHeight * (activeRun.startY ?? 0.34);
-    const yEnd = window.innerHeight * (activeRun.endY ?? 0.22);
-    const y = yStart + (yEnd - yStart) * eased;
-    const slopeAngle = Math.atan2(yEnd - yStart, (xEnd - xStart) * window.innerWidth / 100) * 180 / Math.PI;
-    const rotate = activeRun.rotate ?? slopeAngle;
+    const rotate = activeRun.rotate ?? -6;
+    const travelHalf = Math.abs(xStart - xEnd) / 2;
+    const slopeDelta = Math.tan(Math.abs(rotate) * Math.PI / 180) * travelHalf * window.innerWidth / 100;
+    const baseY = activeRun.section.offsetHeight * (activeRun.sectionY ?? 0.92);
+    const y = baseY + (eased * 2 - 1) * slopeDelta;
 
     scrollFrog.style.setProperty('--frog-opacity', visible);
     scrollFrog.style.setProperty('--frog-x', `${x.toFixed(2)}vw`);

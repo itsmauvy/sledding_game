@@ -737,15 +737,15 @@ body.is-ready .page-section.video-section {
 }
 
 .scroll-frog {
-    position: fixed;
+    position: absolute;
     z-index: 5;
     left: var(--frog-x, 14vw);
-    top: var(--frog-y, 58vh);
+    top: var(--frog-y, 92vh);
     width: clamp(104px, 14vw, 172px);
     height: auto;
     opacity: var(--frog-opacity, 0);
     filter: drop-shadow(0 18px 18px rgba(22, 70, 96, 0.28)) saturate(1.04);
-    transform: translate(-50%, -50%) rotate(var(--frog-rotate, -10deg));
+    transform: translate(-50%, -50%) rotate(var(--frog-rotate, -6deg));
     transition: opacity 0.18s ease, filter 0.18s ease;
     pointer-events: none;
     will-change: transform, opacity;
