@@ -738,7 +738,7 @@ body.is-ready .page-section.video-section {
 
 .scroll-frog {
     position: fixed;
-    z-index: 4;
+    z-index: 5;
     left: var(--frog-x, 14vw);
     top: var(--frog-y, 58vh);
     width: clamp(104px, 14vw, 172px);

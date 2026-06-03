@@ -219,7 +219,7 @@ const koreanIntroSlides = [
     }
 ];
 const frogRuns = [
-    { section: document.querySelector('.video-section'), fromRight: true, startAt: 0.05, endAt: 0.58, viewportLead: 0, startX: 104, endX: -4, startY: 0.68, endY: 0.78, rotate: -6 }
+    { section: document.querySelector('.video-section'), fromRight: true, startAt: 0.05, endAt: 0.58, viewportLead: 0, startX: 108, endX: -4, startY: 0.86, endY: 0.24, rotate: -6 }
 ];
 
 function revealSite() {
