@@ -634,9 +634,12 @@ function triggerSnowAttack(x, y) {
     }
 }
 
-document.addEventListener('click', (e) => {
-    triggerSnowAttack(e.clientX, e.clientY);
-});
+const characterSection = document.querySelector('.character-section');
+if (characterSection) {
+    characterSection.addEventListener('click', (e) => {
+        triggerSnowAttack(e.clientX, e.clientY);
+    });
+}
 
 function triggerCharacterJump() {
     if (!characterPreview) {
