@@ -1349,91 +1349,68 @@ function initSnow() {
     tick();
 }
 
-// ── Character drag & drop ─────────────────────────────
+// ── Character drag & fall ─────────────────────────────
 function initCharacterDragDrop() {
     if (!canUseGsap || prefersReducedMotion) return;
 
-    const stage = document.querySelector('.character-stage');
-    if (!stage) return;
+    const preview = document.querySelector('.character-preview');
+    if (!preview) return;
 
-    characterTiles.forEach((tile, index) => {
-        let ghost = null;
-        let dragActive = false;
-        let startX = 0, startY = 0;
+    let dragging = false;
+    let originX = 0, originY = 0;
+    let curX = 0, curY = 0;
 
-        tile.addEventListener('pointerdown', (e) => {
-            startX = e.clientX;
-            startY = e.clientY;
-        });
+    preview.style.cursor = 'grab';
 
-        tile.addEventListener('pointermove', (e) => {
-            if (dragActive && ghost) {
-                gsap.set(ghost, { left: e.clientX, top: e.clientY });
-                const sr = stage.getBoundingClientRect();
-                const over = e.clientX >= sr.left && e.clientX <= sr.right &&
-                             e.clientY >= sr.top && e.clientY <= sr.bottom;
-                stage.classList.toggle('is-drop-target', over);
-                return;
-            }
+    preview.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        preview.setPointerCapture(e.pointerId);
+        dragging = true;
+        originX = e.clientX - curX;
+        originY = e.clientY - curY;
+        preview.style.cursor = 'grabbing';
+        gsap.killTweensOf(preview);
+        gsap.to(preview, { scale: 1.08, duration: 0.12, ease: 'power2.out' });
+    });
 
-            if (e.buttons === 0) return;
-            if (Math.abs(e.clientX - startX) < 8 && Math.abs(e.clientY - startY) < 8) return;
+    preview.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        curX = e.clientX - originX;
+        curY = e.clientY - originY;
+        gsap.set(preview, { x: curX, y: curY });
+    });
 
-            // Threshold passed — start drag
-            dragActive = true;
-            tile.setPointerCapture(e.pointerId);
-            e.preventDefault();
+    preview.addEventListener('pointerup', () => {
+        if (!dragging) return;
+        dragging = false;
+        preview.style.cursor = 'grab';
 
-            ghost = document.createElement('div');
-            ghost.className = 'drag-ghost';
-            const srcFace = tile.querySelector('.character-face');
-            if (srcFace) {
-                const clone = srcFace.cloneNode(true);
-                clone.style.cssText = srcFace.style.cssText;
-                ghost.appendChild(clone);
-            }
-            document.body.appendChild(ghost);
+        const fallDist = Math.max(80, Math.abs(curY) * 0.6 + 80);
+        const tiltDir = curX > 0 ? 1 : -1;
 
-            gsap.set(ghost, { left: e.clientX, top: e.clientY, scale: 0.7, opacity: 0 });
-            gsap.to(ghost, { scale: 1.18, opacity: 0.96, duration: 0.18, ease: 'back.out(2)' });
-            gsap.to(tile, { opacity: 0.4, scale: 0.88, duration: 0.12 });
-        });
+        gsap.timeline()
+            .to(preview, {
+                y: curY + fallDist,
+                rotation: tiltDir * 14,
+                scale: 0.92,
+                duration: 0.22,
+                ease: 'power2.in'
+            })
+            .to(preview, {
+                x: 0, y: 0, rotation: 0, scale: 1,
+                duration: 0.72,
+                ease: 'bounce.out'
+            });
 
-        tile.addEventListener('pointerup', (e) => {
-            if (!dragActive) return;
-            dragActive = false;
-            stage.classList.remove('is-drop-target');
-            gsap.to(tile, { opacity: 1, scale: 1, duration: 0.22 });
+        curX = 0;
+        curY = 0;
+    });
 
-            const sr = stage.getBoundingClientRect();
-            const onStage = e.clientX >= sr.left && e.clientX <= sr.right &&
-                            e.clientY >= sr.top && e.clientY <= sr.bottom;
-
-            if (onStage) {
-                const cx = sr.left + sr.width / 2;
-                const cy = sr.top + sr.height / 2;
-                gsap.to(ghost, {
-                    left: cx, top: cy, scale: 1.6, opacity: 0,
-                    duration: 0.2, ease: 'power2.in',
-                    onComplete: () => { ghost?.remove(); ghost = null; selectCharacter(index); }
-                });
-            } else {
-                const tr = tile.getBoundingClientRect();
-                gsap.to(ghost, {
-                    left: tr.left + tr.width / 2, top: tr.top + tr.height / 2,
-                    scale: 0.7, opacity: 0,
-                    duration: 0.3, ease: 'power3.in',
-                    onComplete: () => { ghost?.remove(); ghost = null; }
-                });
-            }
-        });
-
-        tile.addEventListener('pointercancel', () => {
-            dragActive = false;
-            ghost?.remove(); ghost = null;
-            gsap.to(tile, { opacity: 1, scale: 1, duration: 0.2 });
-            stage.classList.remove('is-drop-target');
-        });
+    preview.addEventListener('pointercancel', () => {
+        dragging = false;
+        preview.style.cursor = 'grab';
+        gsap.to(preview, { x: 0, y: 0, rotation: 0, scale: 1, duration: 0.5, ease: 'bounce.out' });
+        curX = 0; curY = 0;
     });
 }
 
