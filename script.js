@@ -915,7 +915,7 @@ function initGsapHoverMotion() {
         return;
     }
 
-    const liftTargets = document.querySelectorAll('.media-card, .character-tile');
+    const liftTargets = document.querySelectorAll('.media-card, .news-card, .character-tile');
     liftTargets.forEach((target) => {
         target.addEventListener('pointerenter', () => {
             gsap.to(target, { y: -7, scale: 1.015, duration: 0.24, ease: 'power2.out', overwrite: 'auto' });
