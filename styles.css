@@ -1015,17 +1015,9 @@ body.has-gsap .intro-showcase:hover {
 }
 
 .intro-dot::before {
-    content: "꾸미기";
+    content: attr(data-label);
     font-size: clamp(18px, 1.25vw, 22px);
     line-height: 1;
-}
-
-.intro-dot:nth-child(2)::before {
-    content: "미니게임";
-}
-
-.intro-dot:nth-child(3)::before {
-    content: "낚시";
 }
 
 .intro-dot:hover,

@@ -119,6 +119,7 @@ const translations = {
         prevIntro: '이전 소개',
         nextIntro: '다음 소개',
         introDotLabels: ['첫 번째 소개', '두 번째 소개', '세 번째 소개'],
+        introDotChips: ['꾸미기', '미니게임', '낚시'],
         introLabel: '우당탕 눈길 레이스',
         introTitle: '게임 소개',
         introCopy: '친구들과 썰매에 올라 눈길을 달려보세요. 방향을 틀고, 점프하고, 서로 부딪히며 끝까지 굴러가는 유쾌한 겨울 레이스가 기다립니다.',
@@ -142,8 +143,24 @@ const translations = {
         characters: '캐릭터 소개',
         characterCopy: '좋아하는 친구를 골라 눈길을 내려가세요. 각 캐릭터는 같은 코스를 조금 다른 표정으로 미끄러집니다.',
         characterGridLabel: '캐릭터 선택',
+        mediaKicker: '미끄러지고, 튀고, 구르는 순간들',
         media: '미디어',
-        news: '뉴스'
+        mediaFiltersLabel: '미디어 구분',
+        mediaTabVideo: '영상',
+        mediaTabImage: '이미지',
+        mediaLabels: ['공식 트레일러', '캐릭터 꾸미기', '미니게임', '개구리 로고', '개구리 친구', '미니 프로필', '게임 로고'],
+        newsKicker: '다음에 열릴 눈밭 소식',
+        news: '뉴스',
+        newsListLabel: '최근 소식',
+        newsFeaturedTitle: '5일 만에 100,000장 판매!',
+        newsFeaturedBody: '출시 5일만에 100,000장 판매를 달성했습니다. 첫 스팀 게임으로 이만큼 큰 사랑을 받게 되어 정말 꿈만 같고 이 게임을 만들 수 있게 해준 모든 플레이어에게 감사드립니다.',
+        newsFeaturedLink: '뉴스 페이지 보기',
+        newsCards: [
+            { title: '얼리 액세스 출시', body: '스팀과 Xbox에서 얼리 액세스로 출시 되었습니다. 친구들과 함께 눈밭을 달리고 미니게임과 재밌는 요소를 즐겨보세요.' },
+            { title: '얼리 액세스 출시일 공개', body: '4월30일 얼리 액세스로 출시될 예정입니다. Triple-i 쇼케이스에서 공개한 새로운 발표 트레일러와 함께 가장 큰 소식을 전합니다.' },
+            { title: '새 트레일러 공개', body: '게임 트레일러 공개되었습니다. 디스코드에 참여하고 인스타그램, 유튜브에서 매일 올라오는 개발 소식도 확인해보세요.' }
+        ],
+        trailerModalLabel: '트레일러 영상'
     },
     en: {
         htmlLang: 'en',
@@ -166,6 +183,7 @@ const translations = {
         prevIntro: 'Previous intro',
         nextIntro: 'Next intro',
         introDotLabels: ['First intro', 'Second intro', 'Third intro'],
+        introDotChips: ['Customize', 'Mini Games', 'Fishing'],
         introLabel: 'A Bumpy Snowfield Race',
         introTitle: 'About',
         introCopy: 'Hop on a sled with friends and race across the snow. Turn, jump, bump into each other, and keep rolling toward the finish in a cheerful winter dash.',
@@ -189,8 +207,24 @@ const translations = {
         characters: 'Meet the Characters',
         characterCopy: 'Pick your favorite buddy and slide down the snow. Every character brings a different mood to the same wild course.',
         characterGridLabel: 'Choose character',
+        mediaKicker: 'Slide, bounce, and tumble — every moment captured',
         media: 'Media',
-        news: 'News'
+        mediaFiltersLabel: 'Media type',
+        mediaTabVideo: 'Video',
+        mediaTabImage: 'Images',
+        mediaLabels: ['Official Trailer', 'Character Customization', 'Mini Games', 'Frog Logo', 'Frog Character', 'Mini Profile', 'Game Logo'],
+        newsKicker: 'The latest from the snow hill',
+        news: 'News',
+        newsListLabel: 'Latest news',
+        newsFeaturedTitle: '100,000 Copies in 5 Days!',
+        newsFeaturedBody: 'We hit 100,000 copies sold in just five days. As our first Steam game, we are truly overwhelmed by your support. Thank you to every player who made this dream possible.',
+        newsFeaturedLink: 'View News Page',
+        newsCards: [
+            { title: 'Early Access Launch', body: 'Now available on Steam and Xbox in Early Access. Sled down snowy slopes with friends, enjoy mini games, and have a blast.' },
+            { title: 'Early Access Date Revealed', body: 'Launching on April 30th in Early Access. Catch the latest announcement trailer from the Triple-i showcase for the biggest news yet.' },
+            { title: 'New Trailer Released', body: 'The game trailer is out! Join our Discord and follow us on Instagram and YouTube for daily dev updates.' }
+        ],
+        trailerModalLabel: 'Trailer video'
     }
 };
 const introVideos = [
@@ -586,12 +620,58 @@ function setLanguage(lang) {
     introNext.setAttribute('aria-label', copy.nextIntro);
     introDots.forEach((dot, index) => {
         dot.setAttribute('aria-label', copy.introDotLabels[index]);
+        if (copy.introDotChips?.[index]) dot.setAttribute('data-label', copy.introDotChips[index]);
     });
     updateIntroText(copy);
+
+    // intro section title
+    const introSectionTitle = document.querySelector('.intro-section-title');
+    if (introSectionTitle) introSectionTitle.textContent = copy.introTitle;
+
     characterTitle.textContent = copy.characters;
+    const characterCopyEl = document.querySelector('.character-copy');
+    if (characterCopyEl) characterCopyEl.textContent = copy.characterCopy;
     characterGrid.setAttribute('aria-label', copy.characterGridLabel);
+
+    // media
+    const mediaKickerEl = document.querySelector('.media-section .section-kicker');
+    if (mediaKickerEl) mediaKickerEl.textContent = copy.mediaKicker;
     mediaTitle.textContent = copy.media;
+    const mediaFilters = document.querySelector('.media-filters');
+    if (mediaFilters) mediaFilters.setAttribute('aria-label', copy.mediaFiltersLabel);
+    const mediaChips = document.querySelectorAll('.media-chip');
+    if (mediaChips[0]) mediaChips[0].textContent = copy.mediaTabVideo;
+    if (mediaChips[1]) mediaChips[1].textContent = copy.mediaTabImage;
+    const mediaLabels = document.querySelectorAll('.media-label');
+    mediaLabels.forEach((el, i) => { if (copy.mediaLabels[i]) el.textContent = copy.mediaLabels[i]; });
+
+    // news
+    const newsKickerEl = document.querySelector('.news-section .section-kicker');
+    if (newsKickerEl) newsKickerEl.textContent = copy.newsKicker;
     newsTitle.textContent = copy.news;
+    const newsListEl = document.querySelector('.news-list');
+    if (newsListEl) newsListEl.setAttribute('aria-label', copy.newsListLabel);
+    const newsFeatured = document.querySelector('.news-card-featured');
+    if (newsFeatured) {
+        const strong = newsFeatured.querySelector('strong');
+        const p = newsFeatured.querySelector('p');
+        const a = newsFeatured.querySelector('a');
+        if (strong) strong.textContent = copy.newsFeaturedTitle;
+        if (p) p.textContent = copy.newsFeaturedBody;
+        if (a) a.textContent = copy.newsFeaturedLink;
+    }
+    const newsCards = document.querySelectorAll('.news-card:not(.news-card-featured)');
+    newsCards.forEach((card, i) => {
+        if (!copy.newsCards[i]) return;
+        const strong = card.querySelector('strong');
+        const p = card.querySelector('p');
+        if (strong) strong.textContent = copy.newsCards[i].title;
+        if (p) p.textContent = copy.newsCards[i].body;
+    });
+
+    // trailer modal
+    if (trailerModal) trailerModal.setAttribute('aria-label', copy.trailerModalLabel);
+
     musicButton.setAttribute('aria-label', soundtrackAudio.paused ? copy.musicOn : copy.musicOff);
 }
 
