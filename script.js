@@ -1404,4 +1404,111 @@ function initCharacterDragDrop() {
     });
 }
 
+// ── Cursor trail + snowball click ─────────────────────
+function initCursorEffects() {
+    if (prefersReducedMotion) return;
+
+    const canvas = document.createElement('canvas');
+    canvas.className = 'cursor-canvas';
+    canvas.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+
+    let trail = [];
+    let splats = [];
+    let lastTrailX = -999, lastTrailY = -999;
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    document.addEventListener('mousemove', (e) => {
+        const dx = e.clientX - lastTrailX;
+        const dy = e.clientY - lastTrailY;
+        if (dx * dx + dy * dy < 100) return; // throttle by distance
+        lastTrailX = e.clientX;
+        lastTrailY = e.clientY;
+
+        const count = Math.floor(Math.random() * 2) + 1;
+        for (let i = 0; i < count; i++) {
+            trail.push({
+                x: e.clientX + (Math.random() - 0.5) * 8,
+                y: e.clientY + (Math.random() - 0.5) * 8,
+                r: Math.random() * 2.2 + 0.6,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: Math.random() * 0.6 + 0.1,
+                life: 1
+            });
+        }
+    }, { passive: true });
+
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('button, a, input, select, .character-preview, .character-tile')) return;
+
+        // Burst ring
+        const count = 14;
+        for (let i = 0; i < count; i++) {
+            const angle = (i / count) * Math.PI * 2;
+            const speed = Math.random() * 4 + 2;
+            splats.push({
+                x: e.clientX,
+                y: e.clientY,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed - 1.5,
+                r: Math.random() * 4.5 + 1.5,
+                life: 1,
+                type: 'burst'
+            });
+        }
+        // Central splat blob
+        splats.push({ x: e.clientX, y: e.clientY, vx: 0, vy: 0, r: 10, life: 1, type: 'blob' });
+    });
+
+    function tick() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Trail
+        trail = trail.filter(p => p.life > 0.03);
+        for (const p of trail) {
+            p.x += p.vx; p.y += p.vy;
+            p.life -= 0.055;
+            ctx.globalAlpha = p.life * 0.55;
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        // Splat
+        splats = splats.filter(s => s.life > 0.02);
+        for (const s of splats) {
+            if (s.type === 'burst') {
+                s.x += s.vx; s.y += s.vy;
+                s.vy += 0.15;
+                s.vx *= 0.97;
+                s.life -= 0.028;
+                ctx.globalAlpha = s.life * 0.85;
+                ctx.fillStyle = '#dff3ff';
+            } else {
+                s.life -= 0.04;
+                s.r += 0.4;
+                ctx.globalAlpha = s.life * 0.35;
+                ctx.fillStyle = '#fff';
+            }
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(tick);
+    }
+
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+    tick();
+}
+
 initSnow();
+initCursorEffects();

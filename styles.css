@@ -736,6 +736,13 @@ body.is-ready .page-section.video-section {
     filter: blur(0.3px);
 }
 
+.cursor-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 9997;
+    pointer-events: none;
+}
+
 .snow-canvas {
     position: fixed;
     inset: 0;
