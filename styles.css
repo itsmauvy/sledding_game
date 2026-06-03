@@ -1360,6 +1360,9 @@ body.has-gsap .intro-showcase:hover {
     border-radius: 8px;
     background: #b8e2fb;
     box-shadow: 0 10px 0 #9fd2eb, 0 24px 34px rgba(55, 127, 165, 0.18);
+    transform-style: preserve-3d;
+    transition: box-shadow 0.2s ease;
+    will-change: transform;
 }
 
 .media-perched-frog {

@@ -1132,6 +1132,39 @@ function initGsapScrollFrog() {
     });
 }
 
+function initMediaCardTilt() {
+    const cards = document.querySelectorAll('.media-card');
+    cards.forEach((card) => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const cx = rect.left + rect.width / 2;
+            const cy = rect.top + rect.height / 2;
+            const dx = (e.clientX - cx) / (rect.width / 2);
+            const dy = (e.clientY - cy) / (rect.height / 2);
+            const rotY = dx * 10;
+            const rotX = -dy * 8;
+            gsap.to(card, {
+                rotateX: rotX,
+                rotateY: rotY,
+                scale: 1.03,
+                boxShadow: `${-dx * 8}px ${-dy * 8 + 10}px 0 #9fd2eb, 0 28px 40px rgba(55,127,165,0.28)`,
+                duration: 0.2,
+                ease: 'power2.out'
+            });
+        });
+        card.addEventListener('mouseleave', () => {
+            gsap.to(card, {
+                rotateX: 0,
+                rotateY: 0,
+                scale: 1,
+                boxShadow: '0 10px 0 #9fd2eb, 0 24px 34px rgba(55,127,165,0.18)',
+                duration: 0.45,
+                ease: 'power3.out'
+            });
+        });
+    });
+}
+
 function initGsapMotion() {
     refreshGsapAvailability();
     if (!canUseGsap || gsapMotionInitialized) {
@@ -1144,6 +1177,7 @@ function initGsapMotion() {
     initGsapIntroMotion();
     initGsapScrollFrog();
     initCharacterDragDrop();
+    initMediaCardTilt();
     ScrollTrigger?.refresh();
 }
 
