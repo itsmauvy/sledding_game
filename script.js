@@ -606,18 +606,12 @@ function updateCharacterWindow(index) {
     });
 }
 
-function triggerSnowAttack() {
-    if (!characterPreview) return;
-
-    const rect = characterPreviewFace.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2 + window.scrollX;
-    const cy = rect.top + rect.height / 2 + window.scrollY;
-
+function triggerSnowAttack(x, y) {
     const splat = document.createElement('img');
     splat.src = 'images/snow attack.png';
     splat.className = 'snow-attack-splat';
-    splat.style.left = cx + 'px';
-    splat.style.top = cy + 'px';
+    splat.style.left = (x + window.scrollX) + 'px';
+    splat.style.top = (y + window.scrollY) + 'px';
     document.body.appendChild(splat);
 
     if (canUseGsap) {
@@ -625,10 +619,10 @@ function triggerSnowAttack() {
             { scale: 0.2, opacity: 0, rotate: Math.random() * 60 - 30 },
             {
                 scale: 1.1, opacity: 1, rotate: Math.random() * 20 - 10,
-                duration: 0.18, ease: 'back.out(2)',
+                duration: 0.16, ease: 'back.out(2)',
                 onComplete: () => {
                     gsap.to(splat, {
-                        opacity: 0, scale: 1.3, duration: 0.4, delay: 0.35, ease: 'power2.in',
+                        opacity: 0, scale: 1.3, duration: 0.35, delay: 0.3, ease: 'power2.in',
                         onComplete: () => splat.remove()
                     });
                 }
@@ -640,12 +634,17 @@ function triggerSnowAttack() {
     }
 }
 
+const characterSection = document.querySelector('.character-section');
+if (characterSection) {
+    characterSection.addEventListener('click', (e) => {
+        triggerSnowAttack(e.clientX, e.clientY);
+    });
+}
+
 function triggerCharacterJump() {
     if (!characterPreview) {
         return;
     }
-
-    triggerSnowAttack();
 
     if (canUseGsap) {
         gsap.killTweensOf([characterPreview, characterPreviewFace]);

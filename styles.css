@@ -1705,7 +1705,7 @@ body.has-gsap .intro-showcase:hover {
 .snow-attack-splat {
     position: absolute;
     transform: translate(-50%, -50%);
-    width: clamp(160px, 22vw, 260px);
+    width: clamp(80px, 10vw, 130px);
     pointer-events: none;
     z-index: 9999;
     opacity: 0;
