@@ -592,7 +592,7 @@ body.is-ready .page-section.video-section {
     height: 100%;
     aspect-ratio: auto;
     overflow: hidden;
-    background: url("images/sledding_hero.jpg") center top / cover no-repeat;
+    background: url("images/sledding_hero.jpg") center top / cover no-repeat fixed;
     opacity: 1;
     transform: translate3d(-50%, 0, 0);
     transition: none;
