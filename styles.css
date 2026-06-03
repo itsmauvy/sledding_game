@@ -1167,6 +1167,30 @@ body.has-gsap .intro-showcase:hover {
         linear-gradient(180deg, #ffffff 0%, #eefaff 48%, #dff4ff 100%);
 }
 
+.news-key-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin: 0;
+    font-size: 12px;
+    color: rgba(80, 140, 170, 0.55);
+    letter-spacing: 0.02em;
+}
+
+.key-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border: 1.5px solid rgba(80, 140, 170, 0.35);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 2px 0 rgba(80, 140, 170, 0.2);
+    font-size: 11px;
+    line-height: 1;
+}
+
 .media-wrap,
 .news-wrap {
     position: relative;
