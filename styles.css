@@ -253,17 +253,18 @@ body.is-ready .page-section.video-section {
     display: inline-flex;
     min-height: 36px;
     align-items: center;
+    padding: 0 12px;
     color: inherit;
     text-decoration: none;
-    text-shadow: 0 3px 8px rgba(0, 0, 0, 0.48);
-    transition: color 0.18s ease, transform 0.18s ease;
+    border-radius: 20px;
+    transition: color 0.18s ease, background 0.18s ease;
 }
 
 .nav a:hover,
 .nav a:focus-visible {
-    color: #8fcf68;
+    color: #3a7a5a;
+    background: rgba(255, 255, 255, 0.88);
     outline: 0;
-    transform: translateY(-2px);
 }
 
 .play-link,
