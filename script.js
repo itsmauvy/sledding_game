@@ -213,7 +213,7 @@ const translations = {
         mediaTabVideo: 'Video',
         mediaTabImage: 'Images',
         mediaLabels: ['Fav Sled', 'Gold Frog Not Found', 'Party Time', 'Squad Goals', 'Fishing Gang', 'Caught In Action', 'Me and My Snowman', 'Hot Chocolate Fan Club', 'Slayed'],
-        newsKicker: 'The latest from the snow hill',
+        newsKicker: 'The latest news from the snow hill',
         news: 'News',
         newsListLabel: 'Latest news',
         newsFeaturedTitle: '100,000 Copies in 5 Days!',
