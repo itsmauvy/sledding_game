@@ -629,6 +629,10 @@ function setLanguage(lang) {
     if (introSectionTitle) introSectionTitle.textContent = copy.introTitle;
 
     characterTitle.textContent = copy.characters;
+    const activeTile = document.querySelector('.character-tile.is-selected');
+    if (activeTile && characterName) {
+        characterName.textContent = copy.htmlLang === 'en' && activeTile.dataset.nameEn ? activeTile.dataset.nameEn : activeTile.dataset.name;
+    }
     const characterCopyEl = document.querySelector('.character-copy');
     if (characterCopyEl) characterCopyEl.textContent = copy.characterCopy;
     characterGrid.setAttribute('aria-label', copy.characterGridLabel);
@@ -781,7 +785,7 @@ function selectCharacter(index) {
             characterPreviewFace.style.setProperty('--large-character-position', tile.dataset.largePosition);
         }
     }
-    characterName.textContent = tile.dataset.name;
+    characterName.textContent = currentLanguage === 'en' && tile.dataset.nameEn ? tile.dataset.nameEn : tile.dataset.name;
     updateCharacterWindow(currentCharacterIndex);
     triggerCharacterJump();
 }
