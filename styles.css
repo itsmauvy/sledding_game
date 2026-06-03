@@ -1536,7 +1536,7 @@ body.has-gsap .intro-showcase:hover {
     animation: news-frog-fall 0.48s ease-in-out;
 }
 
-.news-card:hover {
+.news-list .news-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 4px 0 #9fd2eb, 0 20px 30px rgba(55, 127, 165, 0.16);
 }
