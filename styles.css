@@ -1466,6 +1466,7 @@ body.has-gsap .intro-showcase:hover {
 
 .news-key-hint {
     display: flex;
+    justify-content: flex-end;
     align-items: center;
     gap: 10px;
     margin-bottom: 12px;
