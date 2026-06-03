@@ -1201,6 +1201,8 @@ document.addEventListener('keydown', (event) => {
         return;
     }
 
+    event.preventDefault();
+
     if (!newsSection) {
         return;
     }
@@ -1211,8 +1213,6 @@ document.addEventListener('keydown', (event) => {
     if (!newsIsVisible) {
         return;
     }
-
-    event.preventDefault();
 
     if (event.key === 'ArrowLeft') {
         moveNewsFrog(-1);
