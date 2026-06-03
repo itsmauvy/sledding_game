@@ -606,10 +606,46 @@ function updateCharacterWindow(index) {
     });
 }
 
+function triggerSnowAttack() {
+    if (!characterPreview) return;
+
+    const rect = characterPreviewFace.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2 + window.scrollX;
+    const cy = rect.top + rect.height / 2 + window.scrollY;
+
+    const splat = document.createElement('img');
+    splat.src = 'images/snow attack.png';
+    splat.className = 'snow-attack-splat';
+    splat.style.left = cx + 'px';
+    splat.style.top = cy + 'px';
+    document.body.appendChild(splat);
+
+    if (canUseGsap) {
+        gsap.fromTo(splat,
+            { scale: 0.2, opacity: 0, rotate: Math.random() * 60 - 30 },
+            {
+                scale: 1.1, opacity: 1, rotate: Math.random() * 20 - 10,
+                duration: 0.18, ease: 'back.out(2)',
+                onComplete: () => {
+                    gsap.to(splat, {
+                        opacity: 0, scale: 1.3, duration: 0.4, delay: 0.35, ease: 'power2.in',
+                        onComplete: () => splat.remove()
+                    });
+                }
+            }
+        );
+    } else {
+        splat.classList.add('is-visible');
+        window.setTimeout(() => splat.remove(), 900);
+    }
+}
+
 function triggerCharacterJump() {
     if (!characterPreview) {
         return;
     }
+
+    triggerSnowAttack();
 
     if (canUseGsap) {
         gsap.killTweensOf([characterPreview, characterPreviewFace]);
