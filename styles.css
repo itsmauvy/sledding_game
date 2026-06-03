@@ -153,7 +153,11 @@ body.is-ready .loader {
     padding: 10px 24px;
     color: #fff;
     mix-blend-mode: normal;
-    filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.32));
+    transition: color 0.22s ease;
+}
+
+.site-header:hover {
+    color: #1a4a5c;
 }
 
 body:not(.is-ready) .site-header,
@@ -186,10 +190,13 @@ body.is-ready .page-section.video-section {
     inset: 0;
     z-index: -1;
     content: "";
-    border-radius: 0;
-    background: rgba(255, 255, 255, 0.72);
-    box-shadow: 0 2px 16px rgba(55, 127, 165, 0.1);
+    background: rgba(255, 255, 255, 0);
     backdrop-filter: blur(12px);
+    transition: background 0.22s ease;
+}
+
+.site-header:hover::before {
+    background: #fff;
 }
 
 .header-logo-link {
@@ -261,9 +268,14 @@ body.is-ready .page-section.video-section {
 
 .nav a:hover,
 .nav a:focus-visible {
-    color: #8fcf68;
+    color: #4aaa6e;
     outline: 0;
     transform: translateY(-2px);
+    text-shadow: none;
+}
+
+.site-header:hover .nav a {
+    text-shadow: none;
 }
 
 .play-link,
