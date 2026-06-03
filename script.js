@@ -660,6 +660,7 @@ function selectCharacter(index) {
     }
     characterName.textContent = tile.dataset.name;
     updateCharacterWindow(currentCharacterIndex);
+    spawnSparkles(tile);
     triggerCharacterJump();
 }
 
@@ -1292,4 +1293,151 @@ window.addEventListener('resize', () => {
     }
     updateCharacterWindow(currentCharacterIndex);
     placeNewsFrog(activeNewsCardIndex, '');
+});
+
+// ── Snow particles ────────────────────────────────────
+function initSnow() {
+    if (prefersReducedMotion) return;
+
+    const canvas = document.createElement('canvas');
+    canvas.className = 'snow-canvas';
+    canvas.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(canvas);
+
+    const ctx = canvas.getContext('2d');
+    const COUNT = 55;
+    const flakes = [];
+
+    function makeFlake(ry) {
+        return {
+            x: Math.random() * window.innerWidth,
+            y: ry ?? -6,
+            r: Math.random() * 2.2 + 0.7,
+            vy: Math.random() * 0.9 + 0.3,
+            vx: (Math.random() - 0.5) * 0.3,
+            wobble: Math.random() * Math.PI * 2,
+            ws: Math.random() * 0.016 + 0.004,
+            alpha: Math.random() * 0.42 + 0.16
+        };
+    }
+
+    for (let i = 0; i < COUNT; i++) flakes.push(makeFlake(Math.random() * window.innerHeight));
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function tick() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#fff';
+        for (const f of flakes) {
+            f.wobble += f.ws;
+            f.x += f.vx + Math.sin(f.wobble) * 0.25;
+            f.y += f.vy;
+            if (f.y > canvas.height + 8) Object.assign(f, makeFlake());
+            ctx.globalAlpha = f.alpha;
+            ctx.beginPath();
+            ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(tick);
+    }
+
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+    tick();
+}
+
+// ── Hero mouse parallax ───────────────────────────────
+function initHeroParallax() {
+    if (!canUseGsap || prefersReducedMotion) return;
+
+    const section = document.querySelector('.video-section');
+    const bg = document.querySelector('.trailer-wrap');
+    if (!section || !bg) return;
+
+    // Extra scale gives headroom for parallax movement without showing edges
+    gsap.set(bg, { scale: 1.06 });
+
+    const moveX = gsap.quickTo(bg, 'x', { duration: 0.9, ease: 'power2.out' });
+    const moveY = gsap.quickTo(bg, 'y', { duration: 0.9, ease: 'power2.out' });
+
+    section.addEventListener('mousemove', (e) => {
+        const r = section.getBoundingClientRect();
+        const nx = (e.clientX - r.left - r.width / 2) / (r.width / 2);
+        const ny = (e.clientY - r.top - r.height / 2) / (r.height / 2);
+        moveX(nx * 18);
+        moveY(ny * 11);
+    }, { passive: true });
+
+    section.addEventListener('mouseleave', () => {
+        moveX(0);
+        moveY(0);
+    });
+}
+
+// ── Counter animation ─────────────────────────────────
+function initCounterAnimation() {
+    const el = document.querySelector('.news-card-featured strong');
+    if (!el) return;
+
+    const raw = el.textContent;
+    const m = raw.match(/([\d,]+)/);
+    if (!m) return;
+
+    const target = parseInt(m[1].replace(/,/g, ''), 10);
+    const before = raw.slice(0, raw.indexOf(m[1]));
+    const after = raw.slice(raw.indexOf(m[1]) + m[1].length);
+    let done = false;
+
+    new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && !done) {
+            done = true;
+            const dur = 1800;
+            const t0 = performance.now();
+            (function tick(now) {
+                const p = Math.min((now - t0) / dur, 1);
+                const eased = 1 - Math.pow(1 - p, 3);
+                el.textContent = before + Math.round(eased * target).toLocaleString() + after;
+                if (p < 1) requestAnimationFrame(tick);
+            })(t0);
+        }
+    }, { threshold: 0.6 }).observe(el);
+}
+
+// ── Character sparkle burst ───────────────────────────
+function spawnSparkles(tile) {
+    if (prefersReducedMotion || !canUseGsap) return;
+
+    const r = tile.getBoundingClientRect();
+    const cx = r.left + r.width / 2;
+    const cy = r.top + r.height / 2;
+    const palette = ['#ffffff', '#a8e4ff', '#ffe082', '#b2f5c8', '#ffabd2'];
+
+    for (let i = 0; i < 9; i++) {
+        const dot = document.createElement('span');
+        dot.style.cssText = `position:fixed;width:7px;height:7px;border-radius:50%;
+            background:${palette[i % palette.length]};pointer-events:none;
+            z-index:9999;left:${cx}px;top:${cy}px;transform:translate(-50%,-50%);`;
+        document.body.appendChild(dot);
+        const angle = (i / 9) * Math.PI * 2 - Math.PI / 2;
+        const dist = 26 + Math.random() * 26;
+        gsap.to(dot, {
+            x: Math.cos(angle) * dist,
+            y: Math.sin(angle) * dist - 10,
+            opacity: 0,
+            scale: 0.2,
+            duration: 0.48 + Math.random() * 0.14,
+            ease: 'power2.out',
+            onComplete: () => dot.remove()
+        });
+    }
+}
+
+initSnow();
+initCounterAnimation();
+window.addEventListener('load', () => {
+    window.setTimeout(initHeroParallax, 2600);
 });
