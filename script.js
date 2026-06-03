@@ -1108,6 +1108,7 @@ function initGsapMotion() {
     initGsapHoverMotion();
     initGsapIntroMotion();
     initGsapScrollFrog();
+    initCharacterDragDrop();
     ScrollTrigger?.refresh();
 }
 
@@ -1357,62 +1358,50 @@ function initCharacterDragDrop() {
     if (!preview) return;
 
     let dragging = false;
-    let originX = 0, originY = 0;
-    let curX = 0, curY = 0;
+    let startX = 0, startY = 0;
 
-    preview.style.cursor = 'grab';
-
-    preview.addEventListener('pointerdown', (e) => {
+    preview.addEventListener('mousedown', (e) => {
         e.preventDefault();
-        preview.setPointerCapture(e.pointerId);
         dragging = true;
-        originX = e.clientX - curX;
-        originY = e.clientY - curY;
-        preview.style.cursor = 'grabbing';
+        startX = e.clientX;
+        startY = e.clientY;
         gsap.killTweensOf(preview);
-        gsap.to(preview, { scale: 1.08, duration: 0.12, ease: 'power2.out' });
+        preview.style.cursor = 'grabbing';
+        document.body.style.userSelect = 'none';
     });
 
-    preview.addEventListener('pointermove', (e) => {
+    document.addEventListener('mousemove', (e) => {
         if (!dragging) return;
-        curX = e.clientX - originX;
-        curY = e.clientY - originY;
-        gsap.set(preview, { x: curX, y: curY });
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        gsap.set(preview, { x: dx, y: dy });
     });
 
-    preview.addEventListener('pointerup', () => {
+    document.addEventListener('mouseup', (e) => {
         if (!dragging) return;
         dragging = false;
         preview.style.cursor = 'grab';
+        document.body.style.userSelect = '';
 
-        const fallDist = Math.max(80, Math.abs(curY) * 0.6 + 80);
-        const tiltDir = curX > 0 ? 1 : -1;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        const fallDist = Math.max(80, Math.abs(dy) * 0.5 + 80);
+        const tilt = dx > 0 ? 12 : -12;
 
         gsap.timeline()
             .to(preview, {
-                y: curY + fallDist,
-                rotation: tiltDir * 14,
-                scale: 0.92,
+                y: dy + fallDist,
+                rotation: tilt,
+                scale: 0.94,
                 duration: 0.22,
                 ease: 'power2.in'
             })
             .to(preview, {
                 x: 0, y: 0, rotation: 0, scale: 1,
-                duration: 0.72,
+                duration: 0.68,
                 ease: 'bounce.out'
             });
-
-        curX = 0;
-        curY = 0;
-    });
-
-    preview.addEventListener('pointercancel', () => {
-        dragging = false;
-        preview.style.cursor = 'grab';
-        gsap.to(preview, { x: 0, y: 0, rotation: 0, scale: 1, duration: 0.5, ease: 'bounce.out' });
-        curX = 0; curY = 0;
     });
 }
 
 initSnow();
-initCharacterDragDrop();
