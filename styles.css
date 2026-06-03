@@ -1464,16 +1464,24 @@ body.has-gsap .intro-showcase:hover {
     flex-direction: column;
 }
 
-.news-key-hint {
+.news-title-row {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
+    justify-content: center;
+}
+
+.news-key-hint {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .news-keys-group {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 4px;
 }
 
@@ -1499,12 +1507,6 @@ body.has-gsap .intro-showcase:hover {
     font-size: 11px;
     color: rgba(60, 120, 160, 0.7);
     line-height: 1;
-}
-
-.key-hint-label {
-    font-size: 12px;
-    color: rgba(80, 140, 170, 0.55);
-    letter-spacing: 0.01em;
 }
 
 .news-list {
