@@ -1464,18 +1464,11 @@ body.has-gsap .intro-showcase:hover {
     flex-direction: column;
 }
 
-.news-title-row {
-    position: relative;
+.news-key-hint {
     display: flex;
     align-items: center;
-    justify-content: center;
-}
-
-.news-key-hint {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    gap: 10px;
+    margin-bottom: 12px;
 }
 
 .news-keys-group {
