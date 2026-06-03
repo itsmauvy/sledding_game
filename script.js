@@ -1142,32 +1142,110 @@ function initGsapScrollFrog() {
 
 function initMediaCardTilt() {
     const cards = document.querySelectorAll('.media-card');
+
     cards.forEach((card) => {
+        // 두더지 개구리 생성
+        const frog = document.createElement('img');
+        frog.src = 'images/hover_frog.png';
+        frog.className = 'card-mole-frog';
+        frog.setAttribute('aria-hidden', 'true');
+        card.appendChild(frog);
+
+        let frogVisible = false;
+
+        function getEntryDir(e, rect) {
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const w = rect.width;
+            const h = rect.height;
+            const fromLeft = x;
+            const fromRight = w - x;
+            const fromTop = y;
+            const fromBottom = h - y;
+            const min = Math.min(fromLeft, fromRight, fromTop, fromBottom);
+            if (min === fromBottom) return 'bottom';
+            if (min === fromTop) return 'top';
+            if (min === fromLeft) return 'left';
+            return 'right';
+        }
+
+        function showFrog(dir, e, rect) {
+            const frogSize = frog.offsetWidth || 80;
+            let x = 0, y = 0;
+            const px = e.clientX - rect.left;
+            const py = e.clientY - rect.top;
+
+            gsap.killTweensOf(frog);
+
+            if (dir === 'bottom') {
+                x = Math.max(frogSize / 2, Math.min(rect.width - frogSize / 2, px)) - frogSize / 2;
+                gsap.set(frog, { x, y: rect.height, rotation: 0, opacity: 1 });
+                gsap.to(frog, { y: rect.height - frogSize * 0.7, duration: 0.28, ease: 'back.out(2)' });
+            } else if (dir === 'top') {
+                x = Math.max(frogSize / 2, Math.min(rect.width - frogSize / 2, px)) - frogSize / 2;
+                gsap.set(frog, { x, y: -frogSize, rotation: 180, opacity: 1 });
+                gsap.to(frog, { y: frogSize * -0.3, duration: 0.28, ease: 'back.out(2)' });
+            } else if (dir === 'left') {
+                y = Math.max(frogSize / 2, Math.min(rect.height - frogSize / 2, py)) - frogSize / 2;
+                gsap.set(frog, { x: -frogSize, y, rotation: 90, opacity: 1 });
+                gsap.to(frog, { x: frogSize * -0.3, duration: 0.28, ease: 'back.out(2)' });
+            } else {
+                y = Math.max(frogSize / 2, Math.min(rect.height - frogSize / 2, py)) - frogSize / 2;
+                gsap.set(frog, { x: rect.width, y, rotation: -90, opacity: 1 });
+                gsap.to(frog, { x: rect.width - frogSize * 0.7, duration: 0.28, ease: 'back.out(2)' });
+            }
+            frogVisible = true;
+        }
+
+        function hideFrog(dir) {
+            gsap.killTweensOf(frog);
+            const frogSize = frog.offsetWidth || 80;
+            const card_h = card.getBoundingClientRect().height;
+            const card_w = card.getBoundingClientRect().width;
+
+            if (dir === 'bottom') gsap.to(frog, { y: card_h + frogSize, duration: 0.22, ease: 'power2.in', onComplete: () => gsap.set(frog, { opacity: 0 }) });
+            else if (dir === 'top') gsap.to(frog, { y: -frogSize * 1.5, duration: 0.22, ease: 'power2.in', onComplete: () => gsap.set(frog, { opacity: 0 }) });
+            else if (dir === 'left') gsap.to(frog, { x: -frogSize * 1.5, duration: 0.22, ease: 'power2.in', onComplete: () => gsap.set(frog, { opacity: 0 }) });
+            else gsap.to(frog, { x: card_w + frogSize, duration: 0.22, ease: 'power2.in', onComplete: () => gsap.set(frog, { opacity: 0 }) });
+
+            frogVisible = false;
+        }
+
+        card.addEventListener('mouseenter', (e) => {
+            const rect = card.getBoundingClientRect();
+            const dir = getEntryDir(e, rect);
+            card._entryDir = dir;
+            showFrog(dir, e, rect);
+        });
+
+        card.addEventListener('mouseleave', (e) => {
+            const rect = card.getBoundingClientRect();
+            const dir = getEntryDir(e, rect);
+            hideFrog(dir);
+        });
+
+        // 틸트
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
             const cx = rect.left + rect.width / 2;
             const cy = rect.top + rect.height / 2;
             const dx = (e.clientX - cx) / (rect.width / 2);
             const dy = (e.clientY - cy) / (rect.height / 2);
-            const rotY = dx * 10;
-            const rotX = -dy * 8;
             gsap.to(card, {
-                rotateX: rotX,
-                rotateY: rotY,
+                rotateX: -dy * 8,
+                rotateY: dx * 10,
                 scale: 1.03,
                 boxShadow: `${-dx * 8}px ${-dy * 8 + 10}px 0 #9fd2eb, 0 28px 40px rgba(55,127,165,0.28)`,
                 duration: 0.2,
                 ease: 'power2.out'
             });
         });
+
         card.addEventListener('mouseleave', () => {
             gsap.to(card, {
-                rotateX: 0,
-                rotateY: 0,
-                scale: 1,
+                rotateX: 0, rotateY: 0, scale: 1,
                 boxShadow: '0 10px 0 #9fd2eb, 0 24px 34px rgba(55,127,165,0.18)',
-                duration: 0.45,
-                ease: 'power3.out'
+                duration: 0.45, ease: 'power3.out'
             });
         });
     });

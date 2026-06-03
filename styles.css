@@ -1365,6 +1365,16 @@ body.has-gsap .intro-showcase:hover {
     will-change: transform;
 }
 
+.card-mole-frog {
+    position: absolute;
+    width: clamp(60px, 7vw, 90px);
+    height: auto;
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0;
+    filter: drop-shadow(0 4px 8px rgba(22, 70, 96, 0.25));
+}
+
 .media-perched-frog {
     position: absolute;
     top: -82px;
