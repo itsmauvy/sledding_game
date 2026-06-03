@@ -660,7 +660,6 @@ function selectCharacter(index) {
     }
     characterName.textContent = tile.dataset.name;
     updateCharacterWindow(currentCharacterIndex);
-    spawnSparkles(tile);
     triggerCharacterJump();
 }
 
@@ -1350,94 +1349,93 @@ function initSnow() {
     tick();
 }
 
-// ── Hero mouse parallax ───────────────────────────────
-function initHeroParallax() {
+// ── Character drag & drop ─────────────────────────────
+function initCharacterDragDrop() {
     if (!canUseGsap || prefersReducedMotion) return;
 
-    const section = document.querySelector('.video-section');
-    const bg = document.querySelector('.trailer-wrap');
-    if (!section || !bg) return;
+    const stage = document.querySelector('.character-stage');
+    if (!stage) return;
 
-    // Extra scale gives headroom for parallax movement without showing edges
-    gsap.set(bg, { scale: 1.06 });
+    characterTiles.forEach((tile, index) => {
+        let ghost = null;
+        let dragActive = false;
+        let startX = 0, startY = 0;
 
-    const moveX = gsap.quickTo(bg, 'x', { duration: 0.9, ease: 'power2.out' });
-    const moveY = gsap.quickTo(bg, 'y', { duration: 0.9, ease: 'power2.out' });
+        tile.addEventListener('pointerdown', (e) => {
+            startX = e.clientX;
+            startY = e.clientY;
+        });
 
-    section.addEventListener('mousemove', (e) => {
-        const r = section.getBoundingClientRect();
-        const nx = (e.clientX - r.left - r.width / 2) / (r.width / 2);
-        const ny = (e.clientY - r.top - r.height / 2) / (r.height / 2);
-        moveX(nx * 18);
-        moveY(ny * 11);
-    }, { passive: true });
+        tile.addEventListener('pointermove', (e) => {
+            if (dragActive && ghost) {
+                gsap.set(ghost, { left: e.clientX, top: e.clientY });
+                const sr = stage.getBoundingClientRect();
+                const over = e.clientX >= sr.left && e.clientX <= sr.right &&
+                             e.clientY >= sr.top && e.clientY <= sr.bottom;
+                stage.classList.toggle('is-drop-target', over);
+                return;
+            }
 
-    section.addEventListener('mouseleave', () => {
-        moveX(0);
-        moveY(0);
+            if (e.buttons === 0) return;
+            if (Math.abs(e.clientX - startX) < 8 && Math.abs(e.clientY - startY) < 8) return;
+
+            // Threshold passed — start drag
+            dragActive = true;
+            tile.setPointerCapture(e.pointerId);
+            e.preventDefault();
+
+            ghost = document.createElement('div');
+            ghost.className = 'drag-ghost';
+            const srcFace = tile.querySelector('.character-face');
+            if (srcFace) {
+                const clone = srcFace.cloneNode(true);
+                clone.style.cssText = srcFace.style.cssText;
+                ghost.appendChild(clone);
+            }
+            document.body.appendChild(ghost);
+
+            gsap.set(ghost, { left: e.clientX, top: e.clientY, scale: 0.7, opacity: 0 });
+            gsap.to(ghost, { scale: 1.18, opacity: 0.96, duration: 0.18, ease: 'back.out(2)' });
+            gsap.to(tile, { opacity: 0.4, scale: 0.88, duration: 0.12 });
+        });
+
+        tile.addEventListener('pointerup', (e) => {
+            if (!dragActive) return;
+            dragActive = false;
+            stage.classList.remove('is-drop-target');
+            gsap.to(tile, { opacity: 1, scale: 1, duration: 0.22 });
+
+            const sr = stage.getBoundingClientRect();
+            const onStage = e.clientX >= sr.left && e.clientX <= sr.right &&
+                            e.clientY >= sr.top && e.clientY <= sr.bottom;
+
+            if (onStage) {
+                const cx = sr.left + sr.width / 2;
+                const cy = sr.top + sr.height / 2;
+                gsap.to(ghost, {
+                    left: cx, top: cy, scale: 1.6, opacity: 0,
+                    duration: 0.2, ease: 'power2.in',
+                    onComplete: () => { ghost?.remove(); ghost = null; selectCharacter(index); }
+                });
+            } else {
+                const tr = tile.getBoundingClientRect();
+                gsap.to(ghost, {
+                    left: tr.left + tr.width / 2, top: tr.top + tr.height / 2,
+                    scale: 0.7, opacity: 0,
+                    duration: 0.3, ease: 'power3.in',
+                    onComplete: () => { ghost?.remove(); ghost = null; }
+                });
+            }
+        });
+
+        tile.addEventListener('pointercancel', () => {
+            dragActive = false;
+            ghost?.remove(); ghost = null;
+            gsap.to(tile, { opacity: 1, scale: 1, duration: 0.2 });
+            stage.classList.remove('is-drop-target');
+        });
     });
 }
 
-// ── Counter animation ─────────────────────────────────
-function initCounterAnimation() {
-    const el = document.querySelector('.news-card-featured strong');
-    if (!el) return;
-
-    const raw = el.textContent;
-    const m = raw.match(/([\d,]+)/);
-    if (!m) return;
-
-    const target = parseInt(m[1].replace(/,/g, ''), 10);
-    const before = raw.slice(0, raw.indexOf(m[1]));
-    const after = raw.slice(raw.indexOf(m[1]) + m[1].length);
-    let done = false;
-
-    new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && !done) {
-            done = true;
-            const dur = 1800;
-            const t0 = performance.now();
-            (function tick(now) {
-                const p = Math.min((now - t0) / dur, 1);
-                const eased = 1 - Math.pow(1 - p, 3);
-                el.textContent = before + Math.round(eased * target).toLocaleString() + after;
-                if (p < 1) requestAnimationFrame(tick);
-            })(t0);
-        }
-    }, { threshold: 0.6 }).observe(el);
-}
-
-// ── Character sparkle burst ───────────────────────────
-function spawnSparkles(tile) {
-    if (prefersReducedMotion || !canUseGsap) return;
-
-    const r = tile.getBoundingClientRect();
-    const cx = r.left + r.width / 2;
-    const cy = r.top + r.height / 2;
-    const palette = ['#ffffff', '#a8e4ff', '#ffe082', '#b2f5c8', '#ffabd2'];
-
-    for (let i = 0; i < 9; i++) {
-        const dot = document.createElement('span');
-        dot.style.cssText = `position:fixed;width:7px;height:7px;border-radius:50%;
-            background:${palette[i % palette.length]};pointer-events:none;
-            z-index:9999;left:${cx}px;top:${cy}px;transform:translate(-50%,-50%);`;
-        document.body.appendChild(dot);
-        const angle = (i / 9) * Math.PI * 2 - Math.PI / 2;
-        const dist = 26 + Math.random() * 26;
-        gsap.to(dot, {
-            x: Math.cos(angle) * dist,
-            y: Math.sin(angle) * dist - 10,
-            opacity: 0,
-            scale: 0.2,
-            duration: 0.48 + Math.random() * 0.14,
-            ease: 'power2.out',
-            onComplete: () => dot.remove()
-        });
-    }
-}
-
 initSnow();
-initCounterAnimation();
-window.addEventListener('load', () => {
-    window.setTimeout(initHeroParallax, 2600);
-});
+initCharacterDragDrop();

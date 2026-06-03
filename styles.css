@@ -744,6 +744,41 @@ body.is-ready .page-section.video-section {
     opacity: 0.7;
 }
 
+.character-tile {
+    cursor: grab;
+}
+
+.character-tile:active {
+    cursor: grabbing;
+}
+
+.drag-ghost {
+    position: fixed;
+    width: 68px;
+    height: 68px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.92);
+    display: grid;
+    place-items: center;
+    box-shadow: 0 14px 36px rgba(0, 60, 90, 0.24), 0 4px 10px rgba(0, 60, 90, 0.14);
+    pointer-events: none;
+    z-index: 9998;
+    overflow: hidden;
+    transform: translate(-50%, -50%);
+}
+
+.drag-ghost .character-face {
+    transform: scale(1.15);
+}
+
+.character-stage.is-drop-target {
+    outline: 3px dashed rgba(100, 190, 240, 0.7);
+    outline-offset: -6px;
+    border-radius: 24px;
+    background: rgba(168, 228, 255, 0.18);
+    transition: background 0.15s ease, outline 0.15s ease;
+}
+
 .scroll-frog {
     position: absolute;
     z-index: 10;
@@ -1800,7 +1835,7 @@ body.has-gsap .intro-showcase:hover {
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(184, 226, 251, 0.78)),
         #2fb2ee;
-    cursor: pointer;
+    cursor: grab;
     box-shadow: 0 6px 0 rgba(159, 210, 235, 0.86), 0 14px 18px rgba(55, 127, 165, 0.15);
     transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
 }
