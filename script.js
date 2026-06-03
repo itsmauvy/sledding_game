@@ -752,6 +752,18 @@ function setIntroDot(index) {
         introVideo.load();
         introVideo.play().catch(() => {});
     }
+
+    if (canUseGsap && introVideo) {
+        const tiltX = (Math.random() - 0.5) * 5;
+        const tiltZ = (Math.random() - 0.5) * 4;
+        const showcase = introVideo.closest('.intro-showcase');
+        if (showcase) {
+            gsap.fromTo(showcase,
+                { rotateX: tiltX * 2, rotateZ: tiltZ * 2, scale: 0.97 },
+                { rotateX: tiltX, rotateZ: tiltZ, scale: 1, duration: 0.5, ease: 'back.out(1.5)' }
+            );
+        }
+    }
 }
 
 introDots.forEach((dot, index) => {
