@@ -624,10 +624,6 @@ function setLanguage(lang) {
     });
     updateIntroText(copy);
 
-    // intro section title
-    const introSectionTitle = document.querySelector('.intro-section-title');
-    if (introSectionTitle) introSectionTitle.textContent = copy.introTitle;
-
     characterTitle.textContent = copy.characters;
     const characterCopyEl = document.querySelector('.character-copy');
     if (characterCopyEl) characterCopyEl.textContent = copy.characterCopy;
