@@ -1350,12 +1350,75 @@ function initSnow() {
     tick();
 }
 
+// ── Character idle animation ──────────────────────────
+let characterIdleTl = null;
+
+function startCharacterIdle() {
+    if (!canUseGsap || prefersReducedMotion) return;
+    const preview = document.querySelector('.character-preview');
+    if (!preview) return;
+
+    if (characterIdleTl) characterIdleTl.kill();
+
+    // Base float: gentle bob up/down
+    characterIdleTl = gsap.timeline({ repeat: -1 });
+    characterIdleTl
+        .to(preview, { y: -10, duration: 1.1, ease: 'sine.inOut' })
+        .to(preview, { y: 0, scaleX: 1.04, scaleY: 0.97, duration: 0.18, ease: 'power2.in' })
+        .to(preview, { scaleX: 1, scaleY: 1, duration: 0.32, ease: 'elastic.out(1, 0.5)' })
+        .to(preview, { y: -10, duration: 1.1, ease: 'sine.inOut' });
+
+    // Random personality ticks: tilt, hop, wiggle
+    function scheduleRandomTick() {
+        const delay = 2.5 + Math.random() * 3.5;
+        window.setTimeout(() => {
+            if (!characterIdleTl || !document.querySelector('.character-preview')) return;
+            const actions = [
+                // tilt left
+                () => gsap.timeline()
+                    .to(preview, { rotation: -12, duration: 0.18, ease: 'power2.out' })
+                    .to(preview, { rotation: 0, duration: 0.5, ease: 'elastic.out(1.2, 0.4)' }),
+                // tilt right
+                () => gsap.timeline()
+                    .to(preview, { rotation: 12, duration: 0.18, ease: 'power2.out' })
+                    .to(preview, { rotation: 0, duration: 0.5, ease: 'elastic.out(1.2, 0.4)' }),
+                // quick hop
+                () => gsap.timeline()
+                    .to(preview, { y: '-=28', scaleY: 1.1, scaleX: 0.92, duration: 0.18, ease: 'power2.out' })
+                    .to(preview, { y: '+=28', scaleY: 0.9, scaleX: 1.08, duration: 0.14, ease: 'power2.in' })
+                    .to(preview, { scaleY: 1, scaleX: 1, duration: 0.28, ease: 'elastic.out(1, 0.4)' }),
+                // squish
+                () => gsap.timeline()
+                    .to(preview, { scaleX: 1.18, scaleY: 0.85, duration: 0.14, ease: 'power2.out' })
+                    .to(preview, { scaleX: 1, scaleY: 1, duration: 0.4, ease: 'elastic.out(1, 0.4)' }),
+            ];
+            actions[Math.floor(Math.random() * actions.length)]();
+            scheduleRandomTick();
+        }, delay * 1000);
+    }
+    scheduleRandomTick();
+}
+
+function stopCharacterIdle() {
+    if (characterIdleTl) {
+        characterIdleTl.pause();
+    }
+}
+
+function resumeCharacterIdle() {
+    if (characterIdleTl) {
+        characterIdleTl.play();
+    }
+}
+
 // ── Character drag & fall ─────────────────────────────
 function initCharacterDragDrop() {
     if (!canUseGsap || prefersReducedMotion) return;
 
     const preview = document.querySelector('.character-preview');
     if (!preview) return;
+
+    startCharacterIdle();
 
     let dragging = false;
     let startX = 0, startY = 0;
@@ -1365,6 +1428,7 @@ function initCharacterDragDrop() {
         dragging = true;
         startX = e.clientX;
         startY = e.clientY;
+        stopCharacterIdle();
         gsap.killTweensOf(preview);
         preview.style.cursor = 'grabbing';
         document.body.style.userSelect = 'none';
@@ -1388,7 +1452,7 @@ function initCharacterDragDrop() {
         const fallDist = Math.max(80, Math.abs(dy) * 0.5 + 80);
         const tilt = dx > 0 ? 12 : -12;
 
-        gsap.timeline()
+        gsap.timeline({ onComplete: startCharacterIdle })
             .to(preview, {
                 y: dy + fallDist,
                 rotation: tilt,
