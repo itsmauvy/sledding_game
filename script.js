@@ -1360,6 +1360,8 @@ function initCharacterDragDrop() {
     let dragging = false;
     let startX = 0, startY = 0;
 
+    const hint = document.querySelector('.character-drag-hint');
+
     preview.addEventListener('mousedown', (e) => {
         e.preventDefault();
         dragging = true;
@@ -1368,6 +1370,7 @@ function initCharacterDragDrop() {
         gsap.killTweensOf(preview);
         preview.style.cursor = 'grabbing';
         document.body.style.userSelect = 'none';
+        hint?.classList.add('is-hidden');
     });
 
     document.addEventListener('mousemove', (e) => {

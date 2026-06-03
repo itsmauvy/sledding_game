@@ -1606,6 +1606,30 @@ body.has-gsap .intro-showcase:hover {
     margin: clamp(44px, 5.2vh, 78px) auto 0;
 }
 
+.character-drag-hint {
+    position: absolute;
+    bottom: clamp(16px, 3vh, 28px);
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    font-size: clamp(13px, 1.1vw, 15px);
+    color: rgba(60, 120, 160, 0.7);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 1;
+    animation: hint-float 2.2s ease-in-out infinite;
+    transition: opacity 0.4s ease;
+}
+
+.character-drag-hint.is-hidden {
+    opacity: 0;
+}
+
+@keyframes hint-float {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-5px); }
+}
+
 .character-stage {
     position: relative;
     display: grid;
