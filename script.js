@@ -191,19 +191,19 @@ const translations = {
         introCopy: 'Hop on a sled with friends and race across the snow. Turn, jump, bump into each other, and keep rolling toward the finish in a cheerful winter dash.',
         introSlides: [
             {
-                label: 'A Bumpy Snowfield Race',
-                title: 'About',
-                copy: 'Hop on a sled with friends and race across the snow. Turn, jump, bump into each other, and keep rolling toward the finish in a cheerful winter dash.'
+                label: 'Customize Your Look!',
+                headline: 'Character Accessories &<br>Sled Items',
+                copy: 'Earn points and build your own unique style with a wide range of character decorations and sled gear.'
             },
             {
-                label: 'A Cozy Winter Hangout',
-                title: 'Get Ready With Friends',
-                copy: 'Meet up indoors, pick a favorite character, and get ready before everyone tumbles back out into the snow.'
+                label: 'Enjoy Mini Games!',
+                headline: 'Fun Winter Activities<br>With Friends',
+                copy: 'Snowball fights, curling, darts, and more — spend unforgettable moments with friends through all kinds of exciting activities.'
             },
             {
-                label: 'One Last Snowy Push',
-                title: 'Slide to the Finish',
-                copy: 'Out on the open snow, every little mistake turns into a laugh. Build speed, find your line, and keep sliding to the end.'
+                label: 'Catch the Legendary Fish!',
+                headline: 'Fishing Is More Fun<br>Together',
+                copy: 'Show off your catch to friends and compete to become the ultimate fishing champion.'
             }
         ],
         characters: 'Meet the Characters',
