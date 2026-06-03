@@ -562,9 +562,6 @@ function updateIntroText(copy, index = currentIntroIndex) {
     if (introLabel) {
         introLabel.textContent = slide.label;
     }
-    if (introTitle) {
-        introTitle.textContent = slide.title;
-    }
     if (introHeadline) {
         introHeadline.innerHTML = slide.headline || '';
     }
