@@ -2411,16 +2411,20 @@ body.has-gsap .intro-showcase:hover {
     }
 
     .intro-section {
-        min-height: auto;
-        padding: 86px 18px 72px;
+        height: 100svh;
+        min-height: 560px;
+        max-height: 860px;
+        padding: 96px 18px 24px;
+        overflow: hidden;
     }
 
     .intro-section-title {
-        top: 14px;
+        top: 16px;
         left: 50%;
         font-size: clamp(24px, 8vw, 38px);
         text-align: center;
         transform: translateX(-50%);
+        white-space: nowrap;
     }
 
     .character-section-title {
@@ -2432,7 +2436,7 @@ body.has-gsap .intro-showcase:hover {
     }
 
     .intro-dots {
-        top: 50px;
+        top: 68px;
         bottom: auto;
         gap: 8px;
     }
@@ -2454,21 +2458,28 @@ body.has-gsap .intro-showcase:hover {
     .intro-layout {
         grid-template-columns: 1fr;
         width: min(520px, 100%);
-        gap: 22px;
-        margin-top: 10px;
+        gap: 16px;
+        margin-top: 14px;
         justify-items: center;
     }
 
-    .intro-showcase {
+    .intro-showcase,
+    .intro-section[data-intro-slide="0"] .intro-showcase,
+    .intro-section[data-intro-slide="1"] .intro-showcase,
+    .intro-section[data-intro-slide="2"] .intro-showcase,
+    .intro-section.is-swapping .intro-showcase {
         order: 1;
         width: 100%;
-        aspect-ratio: 1 / 1;
+        aspect-ratio: 1 / 1 !important;
         border-width: 6px;
-        transform: none;
+        transform: none !important;
     }
 
-    .intro-showcase:hover {
-        transform: none;
+    .intro-showcase:hover,
+    .intro-section[data-intro-slide="0"] .intro-showcase:hover,
+    .intro-section[data-intro-slide="1"] .intro-showcase:hover,
+    .intro-section[data-intro-slide="2"] .intro-showcase:hover {
+        transform: none !important;
     }
 
     .intro-showcase.is-mobile-sliding {
@@ -2778,7 +2789,7 @@ body.has-gsap .intro-showcase:hover {
        CSS 자체 애니메이션/트랜지션도 꺼줌         */
     .intro-showcase {
         animation: none !important;
-        transition: transform 0.2s ease !important;
+        transition: opacity 0.3s ease !important;
     }
 
     .character-tile {
