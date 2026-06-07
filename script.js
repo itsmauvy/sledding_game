@@ -371,13 +371,23 @@ function applyMediaItems() {
 
 applyMediaItems();
 
+function getActiveSledPanel() {
+    if (isMobile) {
+        return document.querySelector('.media-panel.is-active') || mediaImagePanel;
+    }
+    return mediaImagePanel;
+}
+
 function updateMediaSledScroll() {
-    if (!mediaWrap || !mediaImagePanel) {
+    if (!mediaWrap) {
         return;
     }
 
-    const maxScroll = mediaImagePanel.scrollWidth - mediaImagePanel.clientWidth;
-    const progress = maxScroll > 0 ? mediaImagePanel.scrollLeft / maxScroll : 0;
+    const panel = getActiveSledPanel();
+    if (!panel) return;
+
+    const maxScroll = panel.scrollWidth - panel.clientWidth;
+    const progress = maxScroll > 0 ? panel.scrollLeft / maxScroll : 0;
     mediaWrap.style.setProperty('--media-sled-progress', clamp(progress, 0, 1).toFixed(4));
 }
 
@@ -439,13 +449,23 @@ function glideMediaImageScroll(targetScroll) {
 }
 
 function setMediaImageScrollFromPoint(clientX) {
-    if (!mediaSledScroll || !mediaImagePanel) {
+    if (!mediaSledScroll) {
         return;
     }
 
+    const panel = getActiveSledPanel();
+    if (!panel) return;
+
     const rect = mediaSledScroll.getBoundingClientRect();
     const progress = clamp((clientX - rect.left) / rect.width, 0, 1);
-    glideMediaImageScroll(progress * (mediaImagePanel.scrollWidth - mediaImagePanel.clientWidth));
+    const targetScroll = progress * (panel.scrollWidth - panel.clientWidth);
+
+    if (isMobile) {
+        panel.scrollLeft = targetScroll;
+        updateMediaSledScroll();
+    } else {
+        glideMediaImageScroll(targetScroll);
+    }
 }
 
 function setupMediaPanelDrag() {
@@ -502,6 +522,18 @@ function setupMediaPanelDrag() {
 }
 
 setupMediaPanelDrag();
+
+// 모바일: 영상 패널 스크롤 시 sled 진행도 업데이트
+if (isMobile) {
+    const mediaVideoPanel = document.querySelector('[data-media-panel="video"]');
+    if (mediaVideoPanel) {
+        mediaVideoPanel.addEventListener('scroll', () => {
+            if (mediaVideoPanel.classList.contains('is-active')) {
+                updateMediaSledScroll();
+            }
+        }, { passive: true });
+    }
+}
 
 function setupMediaSledScrollbar() {
     if (!mediaSledScroll || !mediaImagePanel) {

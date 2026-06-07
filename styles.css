@@ -2621,7 +2621,12 @@ body.has-gsap .intro-showcase:hover {
         --media-card-height: auto;
     }
 
-    /* ── 미디어 영상: 가로 scroll-snap 슬라이더 ─── */
+    /* ── 미디어: frog back 이미지 숨김 ─────────── */
+    .media-perched-frog {
+        display: none !important;
+    }
+
+    /* ── 미디어 영상: 이미지탭과 동일한 scroll-snap ─── */
     .media-panel[data-media-panel="video"].is-active {
         display: flex;
         flex-direction: row;
@@ -2629,12 +2634,11 @@ body.has-gsap .intro-showcase:hover {
         scroll-snap-type: x mandatory;
         scrollbar-width: none;
         -ms-overflow-style: none;
-        gap: 0;
+        gap: 16px;
         min-height: 0;
-        padding: 0;
-        margin: 0;
-        border-radius: 0;
-        width: 100%;
+        padding: 78px max(18px, calc((100% - 100%) / 2)) 22px;
+        margin: -78px -18px -22px;
+        width: calc(100% + 36px);
     }
 
     .media-panel[data-media-panel="video"].is-active::-webkit-scrollbar {
@@ -2643,12 +2647,22 @@ body.has-gsap .intro-showcase:hover {
 
     .media-panel[data-media-panel="video"] .media-card,
     .media-panel[data-media-panel="video"] .media-card.featured {
-        flex: 0 0 100%;
-        width: 100%;
-        height: auto;
-        aspect-ratio: 16 / 9;
+        flex: 0 0 min(520px, 82vw);
+        width: min(520px, 82vw);
+        height: 300px;
+        aspect-ratio: unset;
         scroll-snap-align: center;
         border-radius: 14px;
+    }
+
+    /* ── 영상/이미지 모두 sled-scroll 표시 ────── */
+    .media-wrap:has(.media-panel[data-media-panel="video"].is-active) .media-sled-scroll {
+        display: block;
+        width: 100%;
+    }
+
+    .media-sled-scroll {
+        width: 100%;
     }
 
     /* ── 미디어 이미지: 기존 유지 ───────────────── */
