@@ -25,9 +25,10 @@ if (isPageReload) {
 
 const body = document.body;
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isMobile = window.matchMedia('(max-width: 760px)').matches;
 let gsap = window.gsap;
 let ScrollTrigger = window.ScrollTrigger;
-let canUseGsap = Boolean(gsap) && !prefersReducedMotion;
+let canUseGsap = Boolean(gsap) && !prefersReducedMotion && !isMobile;
 let canUseScrollTrigger = canUseGsap && Boolean(ScrollTrigger);
 const trailerOpenButton = document.querySelector('.trailer-open-button');
 const trailerModal = document.querySelector('.trailer-modal');
@@ -84,7 +85,7 @@ let gsapMotionInitialized = false;
 function refreshGsapAvailability() {
     gsap = window.gsap;
     ScrollTrigger = window.ScrollTrigger;
-    canUseGsap = Boolean(gsap) && !prefersReducedMotion;
+    canUseGsap = Boolean(gsap) && !prefersReducedMotion && !isMobile;
     canUseScrollTrigger = canUseGsap && Boolean(ScrollTrigger);
 
     if (canUseGsap) {
@@ -602,6 +603,11 @@ function setLanguage(lang) {
 
     navLinks.forEach((link, index) => {
         link.textContent = copy.nav[index];
+    });
+
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+    mobileNavLinks.forEach((link, index) => {
+        if (copy.nav[index]) link.textContent = copy.nav[index];
     });
 
     playButtons.forEach((button) => {
@@ -1759,3 +1765,47 @@ function initCursorEffects() {
 
 initSnow();
 initCursorEffects();
+
+/* ── 햄버거 메뉴 ─────────────────────────────────────── */
+(function initHamburgerMenu() {
+    const hamburgerBtn = document.querySelector('.hamburger-button');
+    const mobileNav = document.querySelector('.mobile-nav');
+    const mobileNavBackdrop = document.querySelector('.mobile-nav-backdrop');
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+    if (!hamburgerBtn || !mobileNav) return;
+
+    function openNav() {
+        body.classList.add('is-nav-open');
+        hamburgerBtn.setAttribute('aria-expanded', 'true');
+        mobileNav.setAttribute('aria-hidden', 'false');
+        body.style.overflow = 'hidden';
+    }
+
+    function closeNav() {
+        body.classList.remove('is-nav-open');
+        hamburgerBtn.setAttribute('aria-expanded', 'false');
+        mobileNav.setAttribute('aria-hidden', 'true');
+        body.style.overflow = '';
+    }
+
+    hamburgerBtn.addEventListener('click', () => {
+        if (body.classList.contains('is-nav-open')) {
+            closeNav();
+        } else {
+            openNav();
+        }
+    });
+
+    mobileNavBackdrop?.addEventListener('click', closeNav);
+
+    mobileNavLinks.forEach((link) => {
+        link.addEventListener('click', closeNav);
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && body.classList.contains('is-nav-open')) {
+            closeNav();
+        }
+    });
+})();

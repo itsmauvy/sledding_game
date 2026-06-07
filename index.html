@@ -26,6 +26,11 @@
             <a href="#media">미디어</a>
             <a href="#news">뉴스</a>
         </nav>
+        <button class="hamburger-button" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobile-nav">
+            <span class="hamburger-bar"></span>
+            <span class="hamburger-bar"></span>
+            <span class="hamburger-bar"></span>
+        </button>
         <div class="header-actions" aria-label="상단 설정">
             <div class="language-picker">
                 <button class="header-icon-button language-button" type="button" aria-label="언어 선택" aria-haspopup="true" aria-expanded="false">
@@ -67,6 +72,16 @@
             <a class="play-link" href="https://store.steampowered.com/app/3438850/Sledding_Game/" target="_blank" rel="noopener">플레이 하기</a>
         </div>
     </header>
+
+    <div class="mobile-nav" id="mobile-nav" role="dialog" aria-label="모바일 메뉴" aria-hidden="true">
+        <nav class="mobile-nav-links" aria-label="모바일 주요 메뉴">
+            <a class="mobile-nav-link" href="#intro">게임 소개</a>
+            <a class="mobile-nav-link" href="#characters">캐릭터</a>
+            <a class="mobile-nav-link" href="#media">미디어</a>
+            <a class="mobile-nav-link" href="#news">뉴스</a>
+        </nav>
+    </div>
+    <div class="mobile-nav-backdrop"></div>
 
     <section class="page-section video-section" id="trailer">
         <div class="trailer-wrap" role="img" aria-label="Sledding Game hero image"></div>

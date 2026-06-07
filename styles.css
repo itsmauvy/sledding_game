@@ -2317,13 +2317,9 @@ body.has-gsap .intro-showcase:hover {
     }
 
     .nav {
-        justify-content: end;
-        gap: 14px;
-        font-size: 18px;
+        display: none;
     }
 
-    .nav a:nth-child(3),
-    .nav a:nth-child(4),
     .play-link {
         display: none;
     }
@@ -2609,5 +2605,169 @@ body.has-gsap .intro-showcase:hover {
 
     .scroll-frog {
         width: clamp(118px, 42vw, 190px);
+    }
+
+    /* ── 문구 정렬 (모바일) ─────────────────────── */
+    .section-kicker,
+    .section-title {
+        text-align: center;
+    }
+
+    .media-section .section-kicker,
+    .media-section .section-title,
+    .news-section .section-kicker,
+    .news-section .section-title {
+        text-align: center;
+    }
+
+    .news-key-hint {
+        justify-content: center;
+    }
+
+    /* ── 모바일 모션 제거 ─────────────────────────
+       GSAP은 JS에서 isMobile 체크로 비활성화되고
+       CSS 자체 애니메이션/트랜지션도 꺼줌         */
+    .intro-showcase {
+        animation: none !important;
+        transition: transform 0.2s ease !important;
+    }
+
+    .character-tile {
+        animation: none !important;
+        transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+    }
+
+    .scroll-frog {
+        animation: none !important;
+    }
+
+    @keyframes hint-float {
+        0%, 100% { transform: translateX(-50%) translateY(0); }
+    }
+}
+
+/* ══ 햄버거 버튼 (기본: 숨김) ══════════════════════════════ */
+.hamburger-button {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.hamburger-bar {
+    display: block;
+    width: 22px;
+    height: 2.5px;
+    background: currentColor;
+    border-radius: 2px;
+    transition: transform 0.22s ease, opacity 0.22s ease;
+    transform-origin: center;
+}
+
+/* 열렸을 때 X 모양 */
+body.is-nav-open .hamburger-bar:nth-child(1) {
+    transform: translateY(7.5px) rotate(45deg);
+}
+
+body.is-nav-open .hamburger-bar:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+body.is-nav-open .hamburger-bar:nth-child(3) {
+    transform: translateY(-7.5px) rotate(-45deg);
+}
+
+/* ══ 모바일 nav 드로어 ══════════════════════════════════ */
+.mobile-nav {
+    display: none;
+    position: fixed;
+    top: 62px;
+    left: 0;
+    right: 0;
+    z-index: 19;
+    padding: 12px 0 20px;
+    background: rgba(255, 253, 250, 0.97);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 2px solid rgba(17, 49, 67, 0.08);
+    transform: translateY(-8px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.24s ease, opacity 0.24s ease;
+}
+
+.mobile-nav-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 18;
+    background: rgba(0, 0, 0, 0.18);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.24s ease;
+}
+
+.mobile-nav-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+.mobile-nav-link {
+    display: block;
+    width: 100%;
+    padding: 14px 24px;
+    color: #113143;
+    font-size: 19px;
+    font-weight: 800;
+    text-align: center;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(17, 49, 67, 0.07);
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.mobile-nav-link:last-child {
+    border-bottom: none;
+}
+
+.mobile-nav-link:active {
+    background: rgba(17, 49, 67, 0.06);
+    color: #4aaa6e;
+}
+
+/* 열렸을 때 */
+body.is-nav-open .mobile-nav,
+body.is-nav-open .mobile-nav-backdrop {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+body.is-nav-open .mobile-nav {
+    transform: translateY(0);
+}
+
+/* ══ 모바일에서 햄버거 버튼 노출 ══════════════════════ */
+@media (max-width: 760px) {
+    .hamburger-button {
+        display: flex;
+    }
+
+    .mobile-nav,
+    .mobile-nav-backdrop {
+        display: block;
+    }
+
+    .site-header {
+        grid-template-columns: 104px 1fr auto auto;
     }
 }
