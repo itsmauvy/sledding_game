@@ -2733,6 +2733,7 @@ body.has-gsap .intro-showcase:hover {
     .character-drag-hint {
         font-size: 0 !important;
         animation: none !important;
+        bottom: 0px;
     }
 
     .character-drag-hint::before {
