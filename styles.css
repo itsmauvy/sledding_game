@@ -19,6 +19,7 @@
 
 html {
     min-height: 100%;
+    overflow-x: hidden;
     overflow-y: auto;
     scroll-behavior: smooth;
     scrollbar-width: none;
@@ -2430,7 +2431,7 @@ body.has-gsap .intro-showcase:hover {
 
     .intro-layout {
         grid-template-columns: 1fr;
-        width: min(520px, 94vw);
+        width: min(520px, 100%);
         gap: 22px;
         margin-top: 10px;
         justify-items: center;
@@ -2498,11 +2499,11 @@ body.has-gsap .intro-showcase:hover {
 
     .media-wrap,
     .news-wrap {
-        width: min(620px, 94vw);
+        width: min(620px, 100%);
     }
 
     .media-wrap {
-        --media-track-width: min(620px, 94vw);
+        --media-track-width: min(620px, 100%);
         --media-card-height: auto;
     }
 
@@ -2573,7 +2574,7 @@ body.has-gsap .intro-showcase:hover {
 
     .character-layout {
         grid-template-columns: 1fr;
-        width: min(560px, 92vw);
+        width: min(560px, 100%);
         gap: 0;
         margin-top: 34px;
     }
