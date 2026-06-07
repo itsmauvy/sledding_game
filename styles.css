@@ -2691,20 +2691,45 @@ body.has-gsap .intro-showcase:hover {
         width: min(560px, 100%);
         gap: 0;
         margin-top: 34px;
+        justify-items: center;
+        align-items: center;
     }
 
     .character-stage {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         min-height: 300px;
+        width: 100%;
         order: 1;
     }
 
     .character-preview {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
         transform: translateY(-12px);
     }
 
     .character-preview .character-face {
         width: clamp(190px, 58vw, 300px);
         height: clamp(190px, 58vw, 300px);
+    }
+
+    /* hint 텍스트 모바일 교체 */
+    .character-drag-hint {
+        font-size: 0 !important;
+        animation: none !important;
+    }
+
+    .character-drag-hint::before {
+        content: "캐릭터 클릭해보세요";
+        font-size: 14px;
+        color: rgba(60, 120, 160, 0.75);
+        white-space: nowrap;
     }
 
     .character-roster {
