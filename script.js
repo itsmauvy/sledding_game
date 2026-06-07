@@ -523,16 +523,23 @@ function setupMediaPanelDrag() {
 
 setupMediaPanelDrag();
 
-// 모바일: 영상 패널 스크롤 시 sled 진행도 업데이트
+// 모바일: RAF로 active 패널 scrollLeft 변화 추적 → sled 개구리 연동
 if (isMobile) {
-    const mediaVideoPanel = document.querySelector('[data-media-panel="video"]');
-    if (mediaVideoPanel) {
-        mediaVideoPanel.addEventListener('scroll', () => {
-            if (mediaVideoPanel.classList.contains('is-active')) {
+    let prevSledScrollLeft = -1;
+
+    function rafTrackSledScroll() {
+        const panel = getActiveSledPanel();
+        if (panel) {
+            const cur = panel.scrollLeft;
+            if (cur !== prevSledScrollLeft) {
+                prevSledScrollLeft = cur;
                 updateMediaSledScroll();
             }
-        }, { passive: true });
+        }
+        requestAnimationFrame(rafTrackSledScroll);
     }
+
+    rafTrackSledScroll();
 }
 
 function setupMediaSledScrollbar() {

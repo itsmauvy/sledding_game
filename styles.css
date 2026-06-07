@@ -2635,9 +2635,9 @@ body.has-gsap .intro-showcase:hover {
         -ms-overflow-style: none;
         gap: 16px;
         min-height: 0;
-        padding: 78px max(18px, calc((100% - 100%) / 2)) 22px;
-        margin: -78px -18px -22px;
-        width: calc(100% + 36px);
+        padding: 0;
+        margin: 0;
+        width: 100%;
     }
 
     .media-panel[data-media-panel="video"].is-active::-webkit-scrollbar {
