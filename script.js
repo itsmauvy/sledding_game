@@ -862,6 +862,15 @@ function setIntroDot(index) {
             );
         }
     }
+
+    if (isMobile && introVideo) {
+        const showcase = introVideo.closest('.intro-showcase');
+        if (showcase) {
+            showcase.classList.remove('is-mobile-sliding');
+            void showcase.offsetWidth;
+            showcase.classList.add('is-mobile-sliding');
+        }
+    }
 }
 
 introDots.forEach((dot, index) => {
