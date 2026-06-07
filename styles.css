@@ -2430,8 +2430,8 @@ body.has-gsap .intro-showcase:hover {
 
     .intro-layout {
         grid-template-columns: 1fr;
-        width: min(360px, 88vw);
-        gap: 20px;
+        width: min(520px, 94vw);
+        gap: 22px;
         margin-top: 10px;
         justify-items: center;
     }
@@ -2441,21 +2441,20 @@ body.has-gsap .intro-showcase:hover {
         width: 100%;
         aspect-ratio: 1 / 1;
         border-width: 6px;
-        transform: none !important;
-        transform-style: flat;
+        transform: none;
     }
 
     .intro-showcase:hover {
-        transform: none !important;
+        transform: none;
     }
 
     .intro-showcase.is-mobile-sliding {
-        animation: intro-mobile-slide 0.28s ease;
+        animation: intro-mobile-slide 0.3s ease;
     }
 
     @keyframes intro-mobile-slide {
-        from { opacity: 0.5; transform: translateX(16px) !important; }
-        to   { opacity: 1;   transform: translateX(0)   !important; }
+        from { opacity: 0; }
+        to   { opacity: 1; }
     }
 
     .intro-content {
@@ -2499,15 +2498,45 @@ body.has-gsap .intro-showcase:hover {
 
     .media-wrap,
     .news-wrap {
-        width: min(620px, 92vw);
+        width: min(620px, 94vw);
     }
 
     .media-wrap {
-        --media-track-width: min(620px, 92vw);
-        --media-card-height: 300px;
+        --media-track-width: min(620px, 94vw);
+        --media-card-height: auto;
     }
 
-    .media-panel[data-media-panel="video"],
+    /* ── 미디어 영상: 가로 scroll-snap 슬라이더 ─── */
+    .media-panel[data-media-panel="video"].is-active {
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        gap: 0;
+        min-height: 0;
+        padding: 0;
+        margin: 0;
+        border-radius: 0;
+        width: 100%;
+    }
+
+    .media-panel[data-media-panel="video"].is-active::-webkit-scrollbar {
+        display: none;
+    }
+
+    .media-panel[data-media-panel="video"] .media-card,
+    .media-panel[data-media-panel="video"] .media-card.featured {
+        flex: 0 0 100%;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9;
+        scroll-snap-align: center;
+        border-radius: 14px;
+    }
+
+    /* ── 미디어 이미지: 기존 유지 ───────────────── */
     .media-panel[data-media-panel="image"],
     .news-grid {
         grid-template-columns: 1fr;
@@ -2528,16 +2557,9 @@ body.has-gsap .intro-showcase:hover {
         background-size: min(68%, 280px) auto;
     }
 
-    .media-card,
-    .media-card.featured,
-    .media-panel[data-media-panel="video"] .media-card:not(.featured),
     .media-panel[data-media-panel="image"] .media-card {
         flex-basis: min(520px, 82vw);
         height: 300px;
-    }
-
-    .media-panel[data-media-panel="video"] {
-        grid-template-columns: 1fr;
     }
 
     .news-card {
