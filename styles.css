@@ -2312,11 +2312,50 @@ body.has-gsap .intro-showcase:hover {
         align-items: center;
         gap: 10px;
         padding: 10px 12px;
+        color: #1a4a5c;
+    }
+
+    /* 헤더 배경 항상 #fff 고정 (hover 불필요) */
+    .site-header::before {
+        background: #fff !important;
+    }
+
+    .site-header:hover {
+        color: #1a4a5c;
+    }
+
+    .site-header:hover::before {
+        background: #fff;
     }
 
     .header-logo-link {
         width: 96px;
         height: 44px;
+    }
+
+    /* 로고: 텍스트(워드마크) 항상 고정 표시, hover 스왑 없음 */
+    .header-logo-frog {
+        opacity: 0 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+
+    .header-logo-wordmark {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+
+    .header-logo-link:hover .header-logo-frog,
+    .header-logo-link:focus-visible .header-logo-frog {
+        opacity: 0 !important;
+        transform: none !important;
+    }
+
+    .header-logo-link:hover .header-logo-wordmark,
+    .header-logo-link:focus-visible .header-logo-wordmark {
+        opacity: 1 !important;
+        transform: none !important;
     }
 
     .nav {
