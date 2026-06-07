@@ -2402,17 +2402,18 @@ body.has-gsap .intro-showcase:hover {
     .intro-showcase {
         order: 2;
         border-width: 6px;
-        transform: rotate(-2.5deg);
+        transform: none;
     }
 
     .intro-showcase:hover {
-        transform: rotate(-1deg) scale(1.01);
+        transform: none;
     }
 
     .intro-arrow {
         width: 44px;
         height: 44px;
         border-width: 4px;
+        z-index: 16;
     }
 
     .intro-arrow::before {
@@ -2439,12 +2440,14 @@ body.has-gsap .intro-showcase:hover {
         width: auto;
         min-width: 82px;
         min-height: 34px;
-        padding: 0 13px 2px;
+        padding: 0 14px 2px;
         border-width: 3px;
+        white-space: nowrap;
     }
 
     .intro-dot::before {
         font-size: 17px;
+        white-space: nowrap;
     }
 
     .intro-content {
@@ -2605,6 +2608,12 @@ body.has-gsap .intro-showcase:hover {
 
     .scroll-frog {
         width: clamp(118px, 42vw, 190px);
+    }
+
+    /* ── 뉴스 개구리 / 힌트 숨김 ────────────────── */
+    .news-frog-player,
+    .news-key-hint {
+        display: none !important;
     }
 
     /* ── 문구 정렬 (모바일) ─────────────────────── */
