@@ -931,7 +931,7 @@ body.has-gsap .intro-showcase:hover {
 .intro-arrow {
     position: absolute;
     top: 50%;
-    z-index: 7;
+    z-index: 16;
     display: grid;
     width: 62px;
     height: 62px;
@@ -1548,38 +1548,6 @@ body.has-gsap .intro-showcase:hover {
     transition: transform 0.16s ease, box-shadow 0.16s ease;
 }
 
-.news-card.is-news-frog-target {
-    box-shadow:
-        0 5px 0 #2f4732,
-        0 18px 30px rgba(55, 127, 165, 0.18);
-}
-
-.news-frog-player {
-    position: absolute;
-    left: var(--news-frog-x, 50%);
-    top: var(--news-frog-y, 180px);
-    z-index: 8;
-    width: clamp(70px, 7vw, 112px);
-    aspect-ratio: 1.35;
-    object-fit: contain;
-    opacity: 0.98;
-    pointer-events: none;
-    filter: drop-shadow(0 16px 14px rgba(22, 70, 96, 0.22));
-    transform: translate(-50%, -88%) rotate(var(--news-frog-rotate, 0deg));
-    transform-origin: 50% 78%;
-    transition:
-        left 0.26s ease,
-        top 0.26s ease,
-        transform 0.26s ease;
-}
-
-.news-frog-player.is-hopping {
-    animation: news-frog-hop 0.42s cubic-bezier(0.2, 1.7, 0.42, 1);
-}
-
-.news-frog-player.is-falling {
-    animation: news-frog-fall 0.48s ease-in-out;
-}
 
 .news-card:hover {
     transform: translateY(-7px);
@@ -2262,30 +2230,6 @@ body.has-gsap .intro-showcase:hover {
     }
 }
 
-@keyframes news-frog-hop {
-    0%,
-    100% {
-        transform: translate(-50%, -88%) rotate(var(--news-frog-rotate, 0deg));
-    }
-
-    48% {
-        transform: translate(-50%, -132%) rotate(calc(var(--news-frog-rotate, 0deg) - 5deg));
-    }
-}
-
-@keyframes news-frog-fall {
-    0% {
-        transform: translate(-50%, -88%) rotate(var(--news-frog-rotate, 0deg));
-    }
-
-    46% {
-        transform: translate(-50%, -18%) rotate(calc(var(--news-frog-rotate, 0deg) + 18deg));
-    }
-
-    100% {
-        transform: translate(-50%, -88%) rotate(var(--news-frog-rotate, 0deg));
-    }
-}
 
 .character-tile.is-selected .character-face {
     animation: profile-tile-nod 0.68s cubic-bezier(0.2, 1.45, 0.42, 1);
@@ -2402,11 +2346,11 @@ body.has-gsap .intro-showcase:hover {
     .intro-showcase {
         order: 2;
         border-width: 6px;
-        transform: rotate(-2.5deg);
+        transform: none;
     }
 
     .intro-showcase:hover {
-        transform: rotate(-1deg) scale(1.01);
+        transform: none;
     }
 
     .intro-arrow {
@@ -2439,12 +2383,14 @@ body.has-gsap .intro-showcase:hover {
         width: auto;
         min-width: 82px;
         min-height: 34px;
-        padding: 0 13px 2px;
+        padding: 0 14px 2px;
         border-width: 3px;
+        white-space: nowrap;
     }
 
     .intro-dot::before {
         font-size: 17px;
+        white-space: nowrap;
     }
 
     .intro-content {
@@ -2646,9 +2592,9 @@ body.has-gsap .intro-showcase:hover {
     }
 }
 
-/* ══ 햄버거 버튼 (기본: 숨김) ══════════════════════════════ */
+/* ══ 햄버거 버튼 (데스크탑 숨김은 min-width 쿼리로) ══════════ */
 .hamburger-button {
-    display: none;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -2688,7 +2634,6 @@ body.is-nav-open .hamburger-bar:nth-child(3) {
 
 /* ══ 모바일 nav 드로어 ══════════════════════════════════ */
 .mobile-nav {
-    display: none;
     position: fixed;
     top: 62px;
     left: 0;
@@ -2700,20 +2645,21 @@ body.is-nav-open .hamburger-bar:nth-child(3) {
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 2px solid rgba(17, 49, 67, 0.08);
     transform: translateY(-8px);
+    visibility: hidden;
     opacity: 0;
     pointer-events: none;
-    transition: transform 0.24s ease, opacity 0.24s ease;
+    transition: transform 0.24s ease, opacity 0.24s ease, visibility 0.24s;
 }
 
 .mobile-nav-backdrop {
-    display: none;
     position: fixed;
     inset: 0;
     z-index: 18;
     background: rgba(0, 0, 0, 0.18);
+    visibility: hidden;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.24s ease;
+    transition: opacity 0.24s ease, visibility 0.24s;
 }
 
 .mobile-nav-links {
@@ -2746,28 +2692,31 @@ body.is-nav-open .hamburger-bar:nth-child(3) {
 }
 
 /* 열렸을 때 */
-body.is-nav-open .mobile-nav,
+body.is-nav-open .mobile-nav {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
 body.is-nav-open .mobile-nav-backdrop {
+    visibility: visible;
     opacity: 1;
     pointer-events: auto;
 }
 
-body.is-nav-open .mobile-nav {
-    transform: translateY(0);
-}
-
-/* ══ 모바일에서 햄버거 버튼 노출 ══════════════════════ */
-@media (max-width: 760px) {
-    .hamburger-button {
-        display: flex;
-    }
-
+/* ══ 데스크탑에서 햄버거/모바일nav 숨김 ══════════════ */
+@media (min-width: 761px) {
+    .hamburger-button,
     .mobile-nav,
     .mobile-nav-backdrop {
-        display: block;
+        display: none !important;
     }
+}
 
+/* ══ 모바일에서 header 그리드 재조정 ══════════════════ */
+@media (max-width: 760px) {
     .site-header {
-        grid-template-columns: 104px 1fr auto auto;
+        grid-template-columns: 104px 1fr auto;
     }
 }
