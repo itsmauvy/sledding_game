@@ -23,6 +23,7 @@ html {
     overflow-y: auto;
     scroll-behavior: smooth;
     scrollbar-width: none;
+    overscroll-behavior-x: none;
 }
 
 body {
@@ -31,6 +32,7 @@ body {
     margin: 0;
     overflow-x: hidden;
     overflow-y: auto;
+    overscroll-behavior-x: none;
     background: #fff;
     color: var(--ink);
     font-family: Arial, Helvetica, sans-serif;
@@ -2365,8 +2367,8 @@ body.has-gsap .intro-showcase:hover {
     }
 
     .page-section {
-        min-height: 72vh;
-        padding: 90px 18px 118px;
+        min-height: 60vh;
+        padding: 80px 18px 80px;
     }
 
     .trailer-wrap {
@@ -2375,18 +2377,19 @@ body.has-gsap .intro-showcase:hover {
 
     .hero-content {
         justify-items: center;
+        width: min(480px, 100%);
         margin-inline: auto;
         text-align: center;
-        transform: translateY(-54px);
+        transform: translateY(-40px);
     }
 
     .hero-copy {
-        width: min(520px, 88vw);
+        width: 100%;
     }
 
     .hero-actions {
-        width: min(360px, 88vw);
-        gap: 12px;
+        width: 100%;
+        gap: 10px;
     }
 
     .hero-content .cta {
@@ -2501,7 +2504,7 @@ body.has-gsap .intro-showcase:hover {
     .media-section,
     .news-section {
         min-height: auto;
-        padding: 96px 18px 118px;
+        padding: 72px 18px 80px;
     }
 
     .media-wrap,
