@@ -2717,6 +2717,16 @@ body.has-gsap .intro-showcase:hover {
     .character-preview .character-face {
         width: clamp(190px, 58vw, 300px);
         height: clamp(190px, 58vw, 300px);
+        margin: 0 auto;
+    }
+
+    /* has-large: 가운데 정렬 강제 (기본 background-position에 -24px 오프셋 제거) */
+    .character-preview .character-face.has-large {
+        width: clamp(260px, 68vw, 340px);
+        height: clamp(280px, 74vw, 360px);
+        background-position: 50% calc(100% - 14px) !important;
+        margin: 0 auto;
+        align-self: center;
     }
 
     /* hint 텍스트 모바일 교체 */
