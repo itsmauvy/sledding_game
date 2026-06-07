@@ -1548,7 +1548,7 @@ body.has-gsap .intro-showcase:hover {
         #dff4ff;
     color: #113143;
     box-shadow: 0 6px 0 #9fd2eb, 0 16px 24px rgba(55, 127, 165, 0.12);
-    transition: transform 0.16s ease, box-shadow 0.16s ease;
+    transition: box-shadow 0.16s ease;
 }
 
 .news-card.is-news-frog-target {
@@ -1585,7 +1585,6 @@ body.has-gsap .intro-showcase:hover {
 }
 
 .news-card:hover {
-    transform: translateY(-7px);
     box-shadow: 0 4px 0 #9fd2eb, 0 20px 30px rgba(55, 127, 165, 0.16);
 }
 
