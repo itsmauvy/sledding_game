@@ -3108,6 +3108,162 @@ body.is-nav-open .mobile-nav {
     transform: translateY(0);
 }
 
+/* ══ 사이트 푸터 ══════════════════════════════════════ */
+.site-footer {
+    background:
+        linear-gradient(180deg, #8edcff 0%, #b8e2fb 44%, #dff4ff 100%);
+    border-top: 3px solid rgba(159, 210, 235, 0.6);
+    padding: 56px 24px 36px;
+}
+
+.footer-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto auto;
+    gap: 28px 48px;
+    max-width: 1100px;
+    margin: 0 auto;
+    align-items: start;
+}
+
+.footer-brand {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.footer-logo {
+    width: 130px;
+    height: auto;
+    opacity: 0.92;
+    filter: drop-shadow(0 2px 6px rgba(17, 49, 67, 0.14));
+}
+
+.footer-tagline {
+    margin: 10px 0 0;
+    color: rgba(17, 49, 67, 0.65);
+    font-family: 'OngleipParkDahyeon', "Comic Sans MS", cursive;
+    font-size: 15px;
+}
+
+.footer-links {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.footer-links a {
+    color: rgba(17, 49, 67, 0.75);
+    font-family: 'OngleipParkDahyeon', "Comic Sans MS", cursive;
+    font-size: 17px;
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.15s ease;
+}
+
+.footer-links a:hover {
+    color: #2f4732;
+}
+
+.footer-socials {
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.footer-social-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.7);
+    color: #203723;
+    border: 2px solid rgba(159, 210, 235, 0.7);
+    box-shadow: 0 3px 0 rgba(159, 210, 235, 0.5);
+    transition: background 0.15s ease, transform 0.15s ease;
+    text-decoration: none;
+}
+
+.footer-social-btn:hover {
+    background: #fff;
+    transform: translateY(-2px);
+}
+
+.footer-social-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.footer-bottom {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(159, 210, 235, 0.5);
+}
+
+.footer-copy,
+.footer-dev {
+    margin: 0;
+    color: rgba(17, 49, 67, 0.52);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* 모바일 */
+@media (max-width: 760px) {
+    .site-footer {
+        padding: 44px 18px 28px;
+    }
+
+    .footer-inner {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        gap: 24px;
+    }
+
+    .footer-brand {
+        grid-column: 1;
+        grid-row: auto;
+        text-align: center;
+    }
+
+    .footer-links {
+        grid-column: 1;
+        grid-row: auto;
+        justify-content: center;
+        gap: 18px;
+    }
+
+    .footer-socials {
+        grid-column: 1;
+        grid-row: auto;
+        justify-content: center;
+    }
+
+    .footer-bottom {
+        grid-column: 1;
+        grid-row: auto;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 6px;
+    }
+}
+
 /* ══ 모바일에서 햄버거 버튼 노출 ══════════════════════ */
 @media (max-width: 760px) {
     .hamburger-button {
