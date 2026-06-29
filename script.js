@@ -178,9 +178,9 @@ const translations = {
         nav: ['About', 'Characters', 'Media', 'News'],
         play: 'Play Now',
         trailer: 'Watch Trailer',
-        kicker: 'Rolling together is better',
-        heroTitle: 'Go Sledding With Friends',
-        heroCopy: 'Sled, throw snowballs, bump around,<br>and enjoy the happiest winter playground',
+        kicker: 'Rolling Is Better Together',
+        heroTitle: 'Grab Your Sled,<br>Join the Fun',
+        heroCopy: 'Race down snowy slopes, start snowball fights,<br>crash into your friends, and make some chaos<br>in the ultimate winter playground.',
         introVideoLabel: 'About video',
         introDotsLabel: 'Choose intro',
         prevIntro: 'Previous intro',
@@ -193,18 +193,18 @@ const translations = {
         introSlides: [
             {
                 label: 'Customize Your Look!',
-                headline: 'Character Accessories &<br>Sled Items',
-                copy: 'Earn points and build your own unique style with a wide range of character decorations and sled gear.'
+                headline: 'Style Your Character,<br>Upgrade Your Sled',
+                copy: 'Earn points, unlock new gear,<br>and stand out on the snowy slopes.'
             },
             {
                 label: 'Enjoy Mini Games!',
-                headline: 'Fun Winter Activities<br>With Friends',
-                copy: 'Snowball fights, curling, darts, and more — spend unforgettable moments with friends through all kinds of exciting activities.'
+                headline: 'Winter Fun<br>With Friends',
+                copy: 'Start snowball fights, play curling and darts,<br>and make unforgettable memories together.'
             },
             {
                 label: 'Catch the Legendary Fish!',
-                headline: 'Fishing Is More Fun<br>Together',
-                copy: 'Show off your catch to friends and compete to become the ultimate fishing champion.'
+                headline: 'Fishing Is<br>Better Together',
+                copy: 'Show off your catch, compete with friends,<br>and become the ultimate fishing champion.'
             }
         ],
         characters: 'Meet the Characters',
@@ -220,12 +220,12 @@ const translations = {
         news: 'News',
         newsListLabel: 'Latest news',
         newsFeaturedTitle: '100,000 Copies in 5 Days!',
-        newsFeaturedBody: 'We hit 100,000 copies sold in just five days. As our first Steam game, we are truly overwhelmed by your support. Thank you to every player who made this dream possible.',
+        newsFeaturedBody: 'We hit 100,000 copies sold in just five days.<br>As our first Steam game, we\'re truly overwhelmed by your support.<br>Thank you to every player who made this dream possible.',
         newsFeaturedLink: 'View News Page',
         newsCards: [
-            { title: 'Early Access Launch', body: 'Now available on Steam and Xbox in Early Access. Sled down snowy slopes with friends, enjoy mini games, and have a blast.' },
-            { title: 'Early Access Date Revealed', body: 'Launching on April 30th in Early Access. Catch the latest announcement trailer from the Triple-i showcase for the biggest news yet.' },
-            { title: 'New Trailer Released', body: 'The game trailer is out! Join our Discord and follow us on Instagram and YouTube for daily dev updates.' }
+            { title: 'Early Access Launch', body: 'Now available on Steam and Xbox in Early Access.<br>Sled with friends, enjoy mini games, and have a blast.' },
+            { title: 'Early Access Date Revealed', body: 'Launching in Early Access on April 30th.<br>Watch the latest trailer from the Triple-i showcase.' },
+            { title: 'New Trailer Released', body: 'The new game trailer is out now.<br>Follow us on Discord, Instagram, and YouTube for updates.' }
         ],
         trailerModalLabel: 'Trailer video',
         characterDragHint: '🖱️ Click and drag',
@@ -658,7 +658,7 @@ function setLanguage(lang) {
     });
 
     document.querySelector('.hero-kicker').textContent = copy.kicker;
-    document.querySelector('.hero-title').textContent = copy.heroTitle;
+    document.querySelector('.hero-title').innerHTML = copy.heroTitle;
     document.querySelector('.hero-copy').innerHTML = copy.heroCopy;
     introShowcase.setAttribute('aria-label', copy.introVideoLabel);
     introDotsWrap.setAttribute('aria-label', copy.introDotsLabel);
