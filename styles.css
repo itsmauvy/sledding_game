@@ -114,6 +114,13 @@ body.is-ready .loader {
 .loading-gif {
     width: clamp(96px, 22vw, 180px);
     height: auto;
+    animation: spin-frog 1.2s linear infinite;
+    transform-origin: center center;
+}
+
+@keyframes spin-frog {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
 }
 
 .loading {
@@ -1076,6 +1083,14 @@ body.has-gsap .intro-showcase:hover {
     will-change: transform, opacity;
 }
 
+:lang(en) .intro-headline {
+    font-size: clamp(30px, 3vw, 56px);
+}
+
+:lang(en) .intro-copy {
+    font-size: clamp(15px, 1.2vw, 20px);
+}
+
 .intro-section-title,
 .character-section-title {
     position: absolute;
@@ -1175,8 +1190,8 @@ body.has-gsap .intro-showcase:hover {
     font-weight: 900;
     line-height: 1.42;
     text-align: left;
-    white-space: pre-line;
-    word-break: keep-all;
+    white-space: normal;
+    word-break: normal;
     overflow-wrap: normal;
 }
 

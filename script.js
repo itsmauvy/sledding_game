@@ -154,12 +154,12 @@ const translations = {
         news: '뉴스',
         newsListLabel: '최근 소식',
         newsFeaturedTitle: '5일 만에 100,000장 판매!',
-        newsFeaturedBody: '출시 5일만에 100,000장 판매를 달성했습니다. 첫 스팀 게임으로 이만큼 큰 사랑을 받게 되어 정말 꿈만 같고 이 게임을 만들 수 있게 해준 모든 플레이어에게 감사드립니다.',
+        newsFeaturedBody: '출시 5일 만에 100,000장 판매를 달성했습니다.<br>첫 스팀 게임에 보내주신 큰 사랑 덕분에<br>꿈만 같던 순간을 함께할 수 있었습니다.',
         newsFeaturedLink: '뉴스 페이지 보기',
         newsCards: [
-            { title: '얼리 액세스 출시', body: '스팀과 Xbox에서 얼리 액세스로 출시 되었습니다. 친구들과 함께 눈밭을 달리고 미니게임과 재밌는 요소를 즐겨보세요.' },
-            { title: '얼리 액세스 출시일 공개', body: '4월30일 얼리 액세스로 출시될 예정입니다. Triple-i 쇼케이스에서 공개한 새로운 발표 트레일러와 함께 가장 큰 소식을 전합니다.' },
-            { title: '새 트레일러 공개', body: '게임 트레일러 공개되었습니다. 디스코드에 참여하고 인스타그램, 유튜브에서 매일 올라오는 개발 소식도 확인해보세요.' }
+            { title: '얼리 액세스 출시', body: '스팀과 Xbox에서 얼리 액세스로 출시되었습니다.<br>친구들과 눈밭을 달리며 다양한 미니게임을 즐겨보세요.' },
+            { title: '얼리 액세스 출시일 공개', body: '4월 30일 얼리 액세스로 출시될 예정입니다.<br>Triple-i 쇼케이스에서 공개한 새 트레일러도 확인해보세요.' },
+            { title: '새 트레일러 공개', body: '새로운 게임 트레일러가 공개되었습니다.<br>디스코드와 SNS에서 최신 개발 소식도 확인해보세요.' }
         ],
         trailerModalLabel: '트레일러 영상',
         characterDragHint: '🖱️ 클릭하고 끌어보세요',
@@ -178,9 +178,9 @@ const translations = {
         nav: ['About', 'Characters', 'Media', 'News'],
         play: 'Play Now',
         trailer: 'Watch Trailer',
-        kicker: 'Rolling together is better',
-        heroTitle: 'Go Sledding With Friends',
-        heroCopy: 'Sled, throw snowballs, bump around,<br>and enjoy the happiest winter playground',
+        kicker: 'Rolling Is Better Together',
+        heroTitle: 'Grab Your Sled,<br>Join the Fun',
+        heroCopy: 'Race down snowy slopes, start snowball fights,<br>crash into your friends, and make some chaos<br>in the ultimate winter playground.',
         introVideoLabel: 'About video',
         introDotsLabel: 'Choose intro',
         prevIntro: 'Previous intro',
@@ -193,18 +193,18 @@ const translations = {
         introSlides: [
             {
                 label: 'Customize Your Look!',
-                headline: 'Character Accessories &<br>Sled Items',
-                copy: 'Earn points and build your own unique style with a wide range of character decorations and sled gear.'
+                headline: 'Style Your Character,<br>Upgrade Your Sled',
+                copy: 'Earn points, unlock new gear,<br>and stand out on the snowy slopes.'
             },
             {
                 label: 'Enjoy Mini Games!',
-                headline: 'Fun Winter Activities<br>With Friends',
-                copy: 'Snowball fights, curling, darts, and more — spend unforgettable moments with friends through all kinds of exciting activities.'
+                headline: 'Winter Fun<br>With Friends',
+                copy: 'Start snowball fights, play curling and darts,<br>and make unforgettable memories together.'
             },
             {
                 label: 'Catch the Legendary Fish!',
-                headline: 'Fishing Is More Fun<br>Together',
-                copy: 'Show off your catch to friends and compete to become the ultimate fishing champion.'
+                headline: 'Fishing Is<br>Better Together',
+                copy: 'Show off your catch, compete with friends,<br>and become the ultimate fishing champion.'
             }
         ],
         characters: 'Meet the Characters',
@@ -220,12 +220,12 @@ const translations = {
         news: 'News',
         newsListLabel: 'Latest news',
         newsFeaturedTitle: '100,000 Copies in 5 Days!',
-        newsFeaturedBody: 'We hit 100,000 copies sold in just five days. As our first Steam game, we are truly overwhelmed by your support. Thank you to every player who made this dream possible.',
+        newsFeaturedBody: 'We hit 100,000 copies sold in just five days.<br>As our first Steam game, we\'re truly overwhelmed by your support.<br>Thank you to every player who made this dream possible.',
         newsFeaturedLink: 'View News Page',
         newsCards: [
-            { title: 'Early Access Launch', body: 'Now available on Steam and Xbox in Early Access. Sled down snowy slopes with friends, enjoy mini games, and have a blast.' },
-            { title: 'Early Access Date Revealed', body: 'Launching on April 30th in Early Access. Catch the latest announcement trailer from the Triple-i showcase for the biggest news yet.' },
-            { title: 'New Trailer Released', body: 'The game trailer is out! Join our Discord and follow us on Instagram and YouTube for daily dev updates.' }
+            { title: 'Early Access Launch', body: 'Now available on Steam and Xbox in Early Access.<br>Sled with friends, enjoy mini games, and have a blast.' },
+            { title: 'Early Access Date Revealed', body: 'Launching in Early Access on April 30th.<br>Watch the latest trailer from the Triple-i showcase.' },
+            { title: 'New Trailer Released', body: 'The new game trailer is out now.<br>Follow us on Discord, Instagram, and YouTube for updates.' }
         ],
         trailerModalLabel: 'Trailer video',
         characterDragHint: '🖱️ Click and drag',
@@ -242,19 +242,19 @@ const koreanIntroSlides = [
         label: '멋진 외관을 꾸며보세요!',
         headline: '다양한 캐릭터 장식과<br>썰매 아이템',
         title: '게임 소개',
-        copy: '포인트를 적립해 나만의 개성이 담긴 스타일을 완성해보세요.'
+        copy: '포인트를 적립해 나만의 개성이 담긴<br>스타일을 완성해보세요.'
     },
     {
         label: '다양한 미니게임을 즐겨보세요!',
         headline: '친구들과 함께 재밌는 겨울 액티비티',
         title: '게임 소개',
-        copy: '눈싸움, 컬링, 다트 등 다양한 활동으로 친구들과 특별한 시간을 보내보세요.'
+        copy: '눈싸움, 컬링, 다트 등 다양한 활동으로<br>친구들과 특별한 시간을 보내보세요.'
     },
     {
         label: '전설의 물고기를 잡아라!',
         headline: '함께라서 더 즐거운 낚시',
         title: '게임 소개',
-        copy: '잡은 물고기를 친구들에게 자랑하고 최고의 낚시꾼이 되어보세요.'
+        copy: '잡은 물고기를 친구들에게 자랑하고<br>최고의 낚시꾼이 되어보세요.'
     }
 ];
 const frogRuns = [
@@ -610,7 +610,7 @@ function updateIntroText(copy, index = currentIntroIndex) {
         introHeadline.innerHTML = slide.headline || '';
     }
     if (introCopy) {
-        introCopy.textContent = slide.copy;
+        introCopy.innerHTML = slide.copy;
     }
 }
 
@@ -658,7 +658,7 @@ function setLanguage(lang) {
     });
 
     document.querySelector('.hero-kicker').textContent = copy.kicker;
-    document.querySelector('.hero-title').textContent = copy.heroTitle;
+    document.querySelector('.hero-title').innerHTML = copy.heroTitle;
     document.querySelector('.hero-copy').innerHTML = copy.heroCopy;
     introShowcase.setAttribute('aria-label', copy.introVideoLabel);
     introDotsWrap.setAttribute('aria-label', copy.introDotsLabel);
@@ -706,7 +706,7 @@ function setLanguage(lang) {
         const p = newsFeatured.querySelector('p');
         const a = newsFeatured.querySelector('a');
         if (strong) strong.textContent = copy.newsFeaturedTitle;
-        if (p) p.textContent = copy.newsFeaturedBody;
+        if (p) p.innerHTML = copy.newsFeaturedBody;
         if (a) a.textContent = copy.newsFeaturedLink;
     }
     const newsCards = document.querySelectorAll('.news-card:not(.news-card-featured)');
@@ -715,7 +715,7 @@ function setLanguage(lang) {
         const strong = card.querySelector('strong');
         const p = card.querySelector('p');
         if (strong) strong.textContent = copy.newsCards[i].title;
-        if (p) p.textContent = copy.newsCards[i].body;
+        if (p) p.innerHTML = copy.newsCards[i].body;
     });
 
     // character drag hint
